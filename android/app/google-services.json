@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "161668906055",
+    "project_id": "kmrgroup-a7e50",
+    "storage_bucket": "kmrgroup-a7e50.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:161668906055:android:424c69f727843dc3da8562",
+        "android_client_info": {
+          "package_name": "com.kmr.agsolutions"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6mKY_fVaKv38fiAx7Kry-RIkirDTgk3A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
