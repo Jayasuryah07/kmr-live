@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kmr/Controllers/HomeController.dart';
-import 'package:kmr/Utils/ConstHelper.dart';
+
+import '../../Controllers/HomeController.dart';
+import '../../Utils/ConstHelper.dart';
 
 class NewsDataPage extends StatefulWidget {
   const NewsDataPage({super.key});
@@ -30,24 +31,36 @@ class _NewsDataPageState extends State<NewsDataPage> {
             ),
           ),
           backgroundColor: ConstHelper.whiteColor,
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Center(
-                    child: Container(
-                      height: Get.width/3,
-                      width: Get.width/3,
-                      color: Color(0xffF7F7F7),
-                      // child: Image.asset('assets/image/imageNotFound.png',fit: BoxFit.cover,),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height*0.04,),
+                Center(
+                  child: Container(
+                    height: Get.width/2.5,
+                    width: Get.width/2.5,
+                    decoration: BoxDecoration(
+                        color: Color(0xffF7F7F7),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3), // Light grey shadow with opacity
+                          spreadRadius: 2, // Spread radius
+                          blurRadius: 5, // Blur radius for softness
+                          offset: Offset(2, 2), // Horizontal and vertical offset
+                        ),
+                      ],
+                        border: Border.all(color: ConstHelper.darkBlueColor),
+                        borderRadius: BorderRadius.all(Radius.circular(MediaQuery.of(context).size.width*0.06),),),
+                    // child: Image.asset('assets/image/imageNotFound.png',fit: BoxFit.cover,),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(MediaQuery.of(context).size.width*0.06),),
                       child: CachedNetworkImage(
                         imageUrl: homeController.selectNewsData.value.newsImage == null || homeController.selectNewsData.value.newsImage!.trim().isEmpty ? ConstHelper.noImageFoundPath : '${ConstHelper.newsImagePath}${homeController.selectNewsData.value.newsImage!}',
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Center(
                           child: SizedBox(
-                            height: Get.width/20,
-                            width: Get.width/20,
+                            height: Get.width/15,
+                            width: Get.width/15,
                             child: CircularProgressIndicator(color: ConstHelper.darkBlueColor,strokeWidth: 2,),
                           ),
                         ),
@@ -64,12 +77,34 @@ class _NewsDataPageState extends State<NewsDataPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: Get.width/40,),
-                  Center(child: Text(homeController.selectNewsData.value.newsHeadlines == null || homeController.selectNewsData.value.newsHeadlines!.trim().isEmpty ? 'Headline N/A' : homeController.selectNewsData.value.newsHeadlines!,textAlign: TextAlign.center,style: TextStyle(color: ConstHelper.blackColor,fontWeight: FontWeight.w600,fontSize: 15,),)),
-                  SizedBox(height: Get.width/40,),
-                  Center(child: Text(homeController.selectNewsData.value.newsContent == null || homeController.selectNewsData.value.newsContent!.trim().isEmpty ? 'Details N/A' : homeController.selectNewsData.value.newsContent!,style: TextStyle(color: ConstHelper.blackColor.withOpacity(0.6),fontWeight: FontWeight.w500,fontSize: 13,))),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+                Container(
+                  padding: EdgeInsets.all( Get.width/40),
+                  margin: EdgeInsets.all( Get.width/30),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3), // Light grey shadow with opacity
+                        spreadRadius: 2, // Spread radius
+                        blurRadius: 5, // Blur radius for softness
+                        offset: Offset(2, 2), // Horizontal and vertical offset
+                      ),
+                    ],
+                    borderRadius: BorderRadius.all(Radius.circular(MediaQuery.of(context).size.width*0.01),),),
+                  // child: Image.asset('assets/image/imageNotFound.png',fit: BoxFit.cover,),
+                  child: Column(
+                    children: [
+                      Center(child: Text(homeController.selectNewsData.value.newsHeadlines == null || homeController.selectNewsData.value.newsHeadlines!.trim().isEmpty ? 'Headline N/A' : homeController.selectNewsData.value.newsHeadlines!.toUpperCase(),textAlign: TextAlign.center,style: TextStyle(color: ConstHelper.blackColor,fontWeight: FontWeight.w700,fontSize: 18,),)),
+                      Divider(thickness: 0.9,),
+                      SizedBox(height: Get.width/40,),
+                      Center(child: Text(homeController.selectNewsData.value.newsContent == null || homeController.selectNewsData.value.newsContent!.trim().isEmpty ? 'Details N/A' : homeController.selectNewsData.value.newsContent!,textAlign:TextAlign.center,style: TextStyle(color: ConstHelper.blackColor.withOpacity(0.6),fontWeight: FontWeight.w500,fontSize: 14,),),),
+
+                    ],
+                  ),
+                ),
                 ],
-              ),
             ),
           ),
         ));

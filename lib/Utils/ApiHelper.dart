@@ -1,16 +1,17 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:intl/intl.dart';
-import 'package:kmr/Controllers/HomeController.dart';
-import 'package:kmr/Models/CategoryDataModel.dart';
-import 'package:kmr/Models/LiveDataModel.dart';
-import 'package:kmr/Models/NewsDataModel.dart';
-import 'package:kmr/Models/SubCategoryModel.dart';
-import 'package:kmr/Models/VendorRateDataModel.dart';
-import 'package:kmr/Models/VendorSpotRateDataModel.dart';
-import 'package:kmr/Utils/API.dart';
+
 import 'package:get/get.dart' as getX;
+
+import '../Controllers/HomeController.dart';
+import '../Models/CategoryDataModel.dart';
+import '../Models/LiveDataModel.dart';
+import '../Models/NewsDataModel.dart';
+import '../Models/SubCategoryModel.dart';
+import '../Models/VendorRateDataModel.dart';
+import '../Models/VendorSpotRateDataModel.dart';
+import 'API.dart';
+import '../Models/CategoryItemModel.dart';
 
 class ApiHelper {
   ApiHelper._();
@@ -112,6 +113,38 @@ class ApiHelper {
     } catch (error) {
       print('Error $error');
       return [];
+    }
+  }
+
+  Future<CategoryItemModel> getSubCategoryItem({
+    required String id,
+  }) async {
+    try {
+      getAuthorizationToken();
+      var data = FormData.fromMap({
+        'id': id,
+      });
+
+      var headers = {'Authorization': 'Bearer $authorizationToken'};
+
+      // Dio dio = Dio();
+
+      Response response = await api.dio.post('fetch-live-history',
+          data: data,
+          options: Options(
+            headers: headers,
+          ));
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        print('getSubCategoryItem $data');
+        return  CategoryItemModel.fromJson(data);
+      } else {
+        return CategoryItemModel();
+      }
+    } catch (error) {
+      print('Error $error');
+      return CategoryItemModel();
     }
   }
 

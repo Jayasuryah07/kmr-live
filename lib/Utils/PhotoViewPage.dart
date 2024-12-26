@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kmr/Utils/ConstHelper.dart';
+
+import 'ConstHelper.dart';
 
 class PhotoViewPage extends StatefulWidget {
-  String imagePath="";
-  PhotoViewPage({super.key,required this.imagePath});
+  String imagePath = "";
+
+  PhotoViewPage({super.key, required this.imagePath});
 
   @override
   State<PhotoViewPage> createState() => _PhotoViewPageState();
@@ -21,13 +23,20 @@ class _PhotoViewPageState extends State<PhotoViewPage> {
         appBar: AppBar(
           iconTheme: IconThemeData(color: ConstHelper.whiteColor),
           backgroundColor: Colors.black,
-          title: Text('photo'.tr,style: TextStyle(color: ConstHelper.whiteColor),),
+          title: Text(
+            'photo'.tr,
+            style: TextStyle(color: ConstHelper.whiteColor),
+          ),
           centerTitle: true,
         ),
         body: InteractiveViewer(
           minScale: 1.0,
           maxScale: 3.0,
-          child: Image.file(File(widget.imagePath),height: Get.height,width: Get.width,), // Optional: Align panning to one axis
+          child: Image.file(
+            File(widget.imagePath),
+            height: Get.height,
+            width: Get.width,
+          ), // Optional: Align panning to one axis
         ),
       ),
     );

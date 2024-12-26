@@ -1,25 +1,27 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kmr/Models/CategoryDataModel.dart';
-import 'package:kmr/Models/LiveDataModel.dart';
-import 'package:kmr/Models/NewsDataModel.dart';
-import 'package:kmr/Models/SubCategoryModel.dart';
-import 'package:kmr/Models/UserDataModel.dart';
-import 'package:kmr/Models/VendorRateDataModel.dart';
-import 'package:kmr/Models/VendorSpotRateDataModel.dart';
-import 'package:kmr/Screens/HomeScreen/LivePage.dart';
-import 'package:kmr/Screens/HomeScreen/NewsPage.dart';
-import 'package:kmr/Screens/HomeScreen/RatesPage.dart';
-import 'package:kmr/Screens/HomeScreen/SpotPage.dart';
-import 'package:kmr/Utils/ApiHelper.dart';
-import 'package:kmr/Utils/SharedPrefHelper.dart';
+import '../Models/CategoryDataModel.dart';
+import '../Models/LiveDataModel.dart';
+import '../Models/NewsDataModel.dart';
+import '../Models/SubCategoryModel.dart';
+import '../Models/UserDataModel.dart';
+import '../Models/VendorRateDataModel.dart';
+import '../Models/VendorSpotRateDataModel.dart';
+import '../Screens/HomeScreen/LivePage.dart';
+import '../Screens/HomeScreen/NewsPage.dart';
+import '../Screens/HomeScreen/RatesPage.dart';
+import '../Screens/HomeScreen/SpotPage.dart';
+import '../Utils/ApiHelper.dart';
+import '../Utils/SharedPrefHelper.dart';
+import '../Models/CategoryItemModel.dart';
 
 class HomeController extends GetxController {
   RxBool check = false.obs;
   RxInt sliderIndex = 0.obs;
   RxBool favorite = false.obs;
   RxBool loadData = false.obs;
+  RxBool loadCatData = false.obs;
   RxInt selectedIndex = 0.obs;
   RxBool searchStart = false.obs;
   RxBool searchClick = false.obs;
@@ -28,11 +30,12 @@ class HomeController extends GetxController {
   RxInt selectedTabIndex = 0.obs;
   RxList<LiveDataModel> allLiveDataList = <LiveDataModel>[].obs;
   RxList<VendorRateDataModel> allRatesDataList = <VendorRateDataModel>[].obs;
-  RxList<VendorSpotRateDataModel> allSpotRateDataList =
+  var allSpotRateDataList =
       <VendorSpotRateDataModel>[].obs;
   RxList<NewsDataModel> allNewsDataList = <NewsDataModel>[].obs;
 
   RxList<LiveDataModel> searchedLiveDataList = <LiveDataModel>[].obs;
+   RxList<CategoryItem> categoryFirstItem =  <CategoryItem>[].obs;
   RxList<VendorRateDataModel> searchedRatesDataList =
       <VendorRateDataModel>[].obs;
   RxList<VendorSpotRateDataModel> searchedSpotRateDataList =
@@ -98,6 +101,30 @@ class HomeController extends GetxController {
       );
     } catch (error) {
       loadData.value = false;
+      print('Cache-Error : $error');
+    }
+  }
+
+  Future<void> getCategoryItemData({
+    required String id,
+  }) async {
+    loadCatData.value = true;
+    categoryFirstItem.clear();
+    try {
+      await ApiHelper.apiHelper
+          .getSubCategoryItem(
+        id: id,
+      )
+          .then(
+        (categoryData) {
+          if(categoryData.data != null && categoryData.data!.isNotEmpty){
+            categoryFirstItem.value = categoryData.data??[];
+            loadCatData.value = false;
+          }
+        },
+      );
+    } catch (error) {
+      loadCatData.value = false;
       print('Cache-Error : $error');
     }
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kmr/Utils/ConstHelper.dart';
+
+import '../../Utils/ConstHelper.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});

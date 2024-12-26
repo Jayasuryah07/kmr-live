@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:kmr/Screens/HomeScreen/HomePage.dart';
-import 'package:kmr/Screens/LoginScreen/LoginPage.dart';
-import 'package:kmr/Screens/SplashScreen/SplashPage.dart';
-import 'package:kmr/Utils/ConstHelper.dart';
-import 'package:kmr/Utils/SharedPrefHelper.dart';
+import 'Screens/HomeScreen/HomePage.dart';
+import 'Screens/LoginScreen/LoginPage.dart';
+import 'Screens/SplashScreen/SplashPage.dart';
+import 'Utils/ConstHelper.dart';
+import 'Utils/SharedPrefHelper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

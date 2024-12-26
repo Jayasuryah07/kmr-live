@@ -1,16 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kmr/Controllers/HomeController.dart';
-import 'package:kmr/Models/VendorRateDataModel.dart';
-import 'package:kmr/Screens/HomeScreen/BottomPage.dart';
-import 'package:kmr/Utils/ApiHelper.dart';
-import 'package:kmr/Utils/ConstHelper.dart';
+
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../Controllers/HomeController.dart';
+import '../../Utils/ApiHelper.dart';
+import '../../Utils/ConstHelper.dart';
+import 'BottomPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -79,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                 fontWeight: FontWeight.w600,
                 fontSize: 18),
           ),
-          actions: [
+          /*actions: [
             Padding(
               padding: const EdgeInsets.only(right: 10),
               child: Row(
@@ -97,11 +96,12 @@ class _HomePageState extends State<HomePage> {
                         Icons.call,
                         color: ConstHelper.whiteColor,
                         size: 20,
-                      ))
+                      ),
+                  )
                 ],
               ),
             )
-          ],
+          ],*/
         ),
         backgroundColor: ConstHelper.whiteColor,
         body: Column(
@@ -144,26 +144,33 @@ class _HomePageState extends State<HomePage> {
                         InkWell(
                           onTap: () async {
                             if (await ConstHelper.checkInternet()) {
-                              EasyLoading.show(status: "Please Wait...");
-                              homeController.selectCategoryData.value =
-                                  homeController.allCategoryDataList[index];
-                              await ApiHelper.apiHelper
-                                  .getCategoryIdWiseSubCategoryDataList(
-                                      categoryId: homeController
-                                          .allCategoryDataList[index].id
-                                          .toString())
-                                  .then(
-                                (allSubCategoryDataList) {
-                                  homeController.allSubCategoryDataList.value =
-                                      allSubCategoryDataList;
-                                  homeController.selectedIndex.value = 0;
-                                  Get.to(const BottomPage(),
-                                      transition: Transition.fadeIn);
-                                  EasyLoading.dismiss();
-                                  print(
-                                      "KKKKKKKKKKKKK ${homeController.allSubCategoryDataList.length}");
-                                },
-                              );
+                              if(!(DateFormat('yyyy-MM-dd')
+                                      .parse(homeController.userData.value.validityDate!.toString())
+                                      .difference(DateTime.now())
+                                      .inDays <=
+                                      0)){
+                                EasyLoading.show(status: "Please Wait...");
+                                homeController.selectCategoryData.value =
+                                homeController.allCategoryDataList[index];
+                                await ApiHelper.apiHelper
+                                    .getCategoryIdWiseSubCategoryDataList(
+                                    categoryId: homeController
+                                        .allCategoryDataList[index].id
+                                        .toString())
+                                    .then(
+                                      (allSubCategoryDataList) {
+                                    homeController.allSubCategoryDataList.value =
+                                        allSubCategoryDataList;
+                                    homeController.selectedIndex.value = 0;
+                                    Get.to(const BottomPage(),
+                                        transition: Transition.fadeIn);
+                                    EasyLoading.dismiss();
+                                    print(
+                                        "KKKKKKKKKKKKK ${homeController.allSubCategoryDataList.length}");
+                                  },
+                                );
+                              }
+
                             } else {
                               EasyLoading.showError(
                                   "Please check your network");
@@ -184,16 +191,33 @@ class _HomePageState extends State<HomePage> {
                               child: CircleAvatar(
                                 radius: Get.width / 8,
                                 backgroundColor: ConstHelper.whiteColor,
-                                backgroundImage: NetworkImage(homeController
-                                                .allCategoryDataList[index]
-                                                .categoriesImages ==
-                                            null ||
-                                        homeController
-                                            .allCategoryDataList[index]
-                                            .categoriesImages!
-                                            .isEmpty
-                                    ? "https://kmrlive.in/api/storage/app/public/no_image.jpg"
-                                    : "https://kmrlive.in/storage/app/public/categories_images/${homeController.allCategoryDataList[index].categoriesImages}"),
+                                child:Container(
+                                  width: Get.width / 4, // Diameter of the circle
+                                  height: Get.width / 4,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: ConstHelper.whiteColor, // Background color of the circle
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        homeController.allCategoryDataList[index].categoriesImages == null ||
+                                            homeController.allCategoryDataList[index].categoriesImages!.isEmpty
+                                            ? "https://kmrlive.in/api/storage/app/public/no_image.jpg"
+                                            : "https://kmrlive.in/storage/app/public/categories_images/${homeController.allCategoryDataList[index].categoriesImages}",
+                                      ),
+                                      fit: BoxFit.cover, // Scales the image to cover the circle
+                                      colorFilter: (DateFormat('yyyy-MM-dd')
+                                          .parse(homeController.userData.value.validityDate!.toString())
+                                          .difference(DateTime.now())
+                                          .inDays <=
+                                          0)
+                                          ? const ColorFilter.mode(
+                                        Colors.grey, // Grayscale color
+                                        BlendMode.saturation, // Apply desaturation effect
+                                      )
+                                          : null, // No filter for the original image
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -209,7 +233,13 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
-            Padding(
+         if( homeController.userData.value.validityDate != null &&
+      homeController.userData.value.validityDate!.year > 0 &&
+          DateFormat('yyyy-MM-dd')
+          .parse(homeController.userData.value.validityDate!.toString())
+          .difference(DateTime.now())
+          .inDays <=
+          10) Padding(
               padding: const EdgeInsets.only(right: 10, bottom: 20, left: 10),
               child: Column(
                 children: [
@@ -278,7 +308,9 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Trial Period",
+                                    (homeController.userData.value.trail != null &&
+                                        homeController.userData.value.trail!.trim().toLowerCase() == "no")
+                                        ? "Plan Getting Expire":"Trial Period",
                                     style: TextStyle(
                                         color: Colors.blue.shade600,
                                         fontSize: 16,

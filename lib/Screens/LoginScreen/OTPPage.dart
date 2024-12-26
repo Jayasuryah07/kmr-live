@@ -6,14 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:kmr/Controllers/HomeController.dart';
-import 'package:kmr/Models/UserDataModel.dart';
-import 'package:kmr/Screens/HomeScreen/HomePage.dart';
-import 'package:kmr/Screens/SignupScreen/SignupPage.dart';
-import 'package:kmr/Utils/ApiHelper.dart';
-import 'package:kmr/Utils/ConstHelper.dart';
-import 'package:kmr/Utils/FirebaseHelper.dart';
-import 'package:kmr/Utils/SharedPrefHelper.dart';
+
+import '../../Controllers/HomeController.dart';
+import '../../Models/UserDataModel.dart';
+import '../../Utils/ApiHelper.dart';
+import '../../Utils/ConstHelper.dart';
+import '../../Utils/FirebaseHelper.dart';
+import '../../Utils/SharedPrefHelper.dart';
+import '../HomeScreen/HomePage.dart';
+import '../SignupScreen/SignupPage.dart';
 
 class OTPPage extends StatefulWidget {
   const OTPPage({super.key});

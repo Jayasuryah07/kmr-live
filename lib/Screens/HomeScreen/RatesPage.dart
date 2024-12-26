@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kmr/Controllers/HomeController.dart';
-import 'package:kmr/Utils/ConstHelper.dart';
+
+import '../../Controllers/HomeController.dart';
+import '../../Utils/ConstHelper.dart';
+
 
 class RatesPage extends StatefulWidget {
   const RatesPage({super.key});
@@ -85,7 +87,7 @@ class _RatesPageState extends State<RatesPage> {
                             itemCount:
                                 homeController.searchedRatesDataList.length,
                             itemBuilder: (context, index) {
-                              return Padding(
+                              return homeController.searchedRatesDataList[index].vendorProduct == null || homeController.searchedRatesDataList[index].vendorProduct!.isEmpty ?SizedBox():Padding(
                                 padding: EdgeInsets.only(
                                   top: Get.width / 30,
                                   bottom: (index + 1) !=
@@ -406,7 +408,8 @@ class _RatesPageState extends State<RatesPage> {
                                               ]),
                                         ),
                                         SizedBox(height: homeController.searchedRatesDataList[index].vendorProduct == null || homeController.searchedRatesDataList[index].vendorProduct!.isEmpty?0:Get.width/60,),
-                                        homeController.searchedRatesDataList[index].vendorProduct == null || homeController.searchedRatesDataList[index].vendorProduct!.isEmpty?Text(""):Align(
+                                        homeController.searchedRatesDataList[index].vendorProduct == null || homeController.searchedRatesDataList[index].vendorProduct!.isEmpty?Text(""):
+                                        Align(
                                             alignment: Alignment.centerRight,
                                             child: InkWell(
                                                 onTap: () {
@@ -418,7 +421,8 @@ class _RatesPageState extends State<RatesPage> {
                                                         children: [
                                                           Container(
                                                             decoration: BoxDecoration(
-                                                              color: Color(0xffD8F2FF),
+                                                              color: ConstHelper.whiteColor,
+                                                              border: Border.all(color: ConstHelper.darkBlueColor),
                                                               borderRadius:
                                                               BorderRadius.circular(5),
                                                             ),
@@ -613,7 +617,7 @@ class _RatesPageState extends State<RatesPage> {
                           child: ListView.builder(
                             itemCount: homeController.allRatesDataList.length,
                             itemBuilder: (context, index) {
-                              return Padding(
+                              return homeController.allRatesDataList[index].vendorProduct == null || homeController.allRatesDataList[index].vendorProduct!.isEmpty ?SizedBox():Padding(
                                 padding: EdgeInsets.only(
                                   top: Get.width / 30,
                                   bottom: (index + 1) !=
@@ -933,7 +937,8 @@ class _RatesPageState extends State<RatesPage> {
                                               ]),
                                         ),
                                         SizedBox(height: homeController.allRatesDataList[index].vendorProduct == null || homeController.allRatesDataList[index].vendorProduct!.isEmpty?0:Get.width/60,),
-                                        homeController.allRatesDataList[index].vendorProduct == null || homeController.allRatesDataList[index].vendorProduct!.isEmpty || homeController.allRatesDataList[index].vendorProduct!.length < 2 ? Text(""):Align(
+                                        homeController.allRatesDataList[index].vendorProduct == null || homeController.allRatesDataList[index].vendorProduct!.isEmpty || homeController.allRatesDataList[index].vendorProduct!.length < 2 ? Text(""):
+                                        Align(
                                           alignment: Alignment.centerRight,
                                             child: InkWell(
                                                 onTap: () {
@@ -945,8 +950,10 @@ class _RatesPageState extends State<RatesPage> {
                                                           mainAxisSize: MainAxisSize.min,
                                                           children: [
                                                             Container(
+                                                              padding: EdgeInsets.symmetric(horizontal:  MediaQuery.of(context).size.width*0.03,vertical:  MediaQuery.of(context).size.height*0.01),
                                                               decoration: BoxDecoration(
-                                                                color: Color(0xffD8F2FF),
+                                                                color: ConstHelper.whiteColor,
+                                                                border: Border.all(color: ConstHelper.darkBlueColor),
                                                                 borderRadius:
                                                                 BorderRadius.circular(5),
                                                               ),
