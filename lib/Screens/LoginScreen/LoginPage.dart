@@ -189,6 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                             );
                           } else {
                             try {
+
                               await ApiHelper.apiHelper
                                   .checkMobileNumber(
                                 mobileNo: txtUsername.text,
@@ -197,7 +198,25 @@ class _LoginPageState extends State<LoginPage> {
                                 (value) async {
                                   if (value.isNotEmpty) {
                                     if (value['code'] == 200) {
-                                      EasyLoading.dismiss();
+                                     /* Get.to(
+                                        const OTPPage(),
+                                        transition: Transition.fadeIn,
+                                      );
+                                      homeController.mobileNo.value =
+                                          txtUsername.text;
+                                      homeController.password.value =
+                                          value['data'] ?? '';
+                                      homeController
+                                          .firebaseFCMToken.value =
+                                      await FirebaseHelper
+                                          .firebaseHelper
+                                          .getFirebaseToken();*/
+
+                                      await FirebaseAuth.instance.setSettings(
+                                      appVerificationDisabledForTesting:
+                                      false, // Ensure this is false for production
+                                      );
+
                                       await FirebaseAuth.instance
                                           .verifyPhoneNumber(
                                         phoneNumber: '+91 ${txtUsername.text}',
@@ -215,6 +234,30 @@ class _LoginPageState extends State<LoginPage> {
                                         },
                                         verificationFailed:
                                             (FirebaseAuthException e) async {
+
+                                              switch (e.code) {
+                                                case 'invalid-phone-number':
+                                                  ConstHelper.errorDialog(
+                                                    text: ConstHelper
+                                                        .invalidPhoneNumberErrorMsg,
+                                                    seconds: 10,
+                                                  );
+                                                  break;
+                                                case 'too-many-requests':
+                                                  EasyLoading.dismiss();
+                                                  ConstHelper.errorDialog(
+                                                    text: ConstHelper
+                                                        .manyRequestErrorMsg,
+                                                    seconds: 10,
+                                                  );
+                                                  break;
+                                                default:
+                                                  EasyLoading.dismiss();
+                                                  ConstHelper.errorDialog(
+                                                    text:"Error: ${e.message ?? "Something went wrong"}",
+                                                    seconds: 10,
+                                                  );
+                                              }
                                           // EasyLoading.dismiss();
                                           print(
                                               'Error~~ : ${e.code}~${e.message}');

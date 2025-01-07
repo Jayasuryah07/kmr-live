@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -108,15 +108,58 @@ class _SpotPageState extends State<SpotPage> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Row(
                                       children: [
-                                        Container(
-                                          height: Get.width / 4,
-                                          width: Get.width / 4,
-                                          color: Color(0xffF7F7F7),
-                                          child: Image.asset(
-                                            'assets/image/imageNotFound.png',
-                                            fit: BoxFit.cover,
+                                        SizedBox(
+                                          height: Get.width / 5,
+                                          width: Get.width / 5,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                            BorderRadius.circular(6),
+                                            child: CachedNetworkImage(
+                                              imageUrl:  ConstHelper.categoryImagePath+( homeController
+                                                  .searchedSpotRateDataList[
+                                              index]
+                                                  .categoriesImages??"") ,
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) =>
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          6),
+                                                      color: ConstHelper
+                                                          .whiteColor,
+                                                    ),
+                                                    alignment: Alignment.center,
+                                                    child: SizedBox(
+                                                      height: Get.width / 20,
+                                                      width: Get.width / 20,
+                                                      child:
+                                                      CircularProgressIndicator(
+                                                        color: ConstHelper
+                                                            .orangeColor,
+                                                        strokeWidth: 2,
+                                                      ),
+                                                    ),
+                                                  ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          6),
+                                                      color: ConstHelper
+                                                          .whiteColor,
+                                                    ),
+                                                    child: Image.asset(
+                                                      'assets/image/imageNotFound.png',
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                            ),
                                           ),
                                         ),
+
                                         SizedBox(
                                           width: Get.width / 60,
                                         ),
@@ -370,6 +413,10 @@ class _SpotPageState extends State<SpotPage> {
                             itemCount:
                                 homeController.allSpotRateDataList.length,
                             itemBuilder: (context, index) {
+                              print(ConstHelper.categoryImagePath+( homeController
+                                  .allSpotRateDataList[
+                              index]
+                                  .categoriesImages??""));
                               return Padding(
                                 padding: EdgeInsets.only(
                                   top: Get.width / 30,
@@ -396,15 +443,58 @@ class _SpotPageState extends State<SpotPage> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Row(
                                       children: [
-                                        Container(
-                                          height: Get.width / 4,
-                                          width: Get.width / 4,
-                                          color: Color(0xffF7F7F7),
-                                          child: Image.asset(
-                                            'assets/image/imageNotFound.png',
-                                            fit: BoxFit.cover,
+                                        SizedBox(
+                                          height: Get.width / 5,
+                                          width: Get.width / 5,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                            BorderRadius.circular(6),
+                                            child: CachedNetworkImage(
+                                              imageUrl:  ConstHelper.categoryImagePath+( homeController
+                                                  .allSpotRateDataList[
+                                              index]
+                                                  .categoriesImages??"") ,
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) =>
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          6),
+                                                      color: ConstHelper
+                                                          .whiteColor,
+                                                    ),
+                                                    alignment: Alignment.center,
+                                                    child: SizedBox(
+                                                      height: Get.width / 20,
+                                                      width: Get.width / 20,
+                                                      child:
+                                                      CircularProgressIndicator(
+                                                        color: ConstHelper
+                                                            .orangeColor,
+                                                        strokeWidth: 2,
+                                                      ),
+                                                    ),
+                                                  ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          6),
+                                                      color: ConstHelper
+                                                          .whiteColor,
+                                                    ),
+                                                    child: Image.asset(
+                                                      'assets/image/imageNotFound.png',
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                            ),
                                           ),
                                         ),
+
                                         SizedBox(
                                           width: Get.width / 60,
                                         ),

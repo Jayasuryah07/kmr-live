@@ -25,10 +25,12 @@ class _LivePageState extends State<LivePage> {
   @override
   void initState() {
     // TODO: implement initState
-    homeController.getLiveData(
-        categoryValue: homeController.selectCategoryData.value.categoryName!,
-        subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categorySubName!
-    );
+    if(homeController.allSubCategoryDataList.isNotEmpty){
+      homeController.getLiveData(
+          categoryValue: homeController.selectCategoryData.value.categoryName!,
+          subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
+      );
+    }
     super.initState();
   }
 
@@ -143,7 +145,7 @@ class _LivePageState extends State<LivePage> {
                                 onRefresh: () async {
                                   await homeController.getLiveData(
                                     categoryValue: homeController.selectCategoryData.value.categoryName!,
-                                    subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categorySubName!
+                                    subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
                                   );
                                 },
                                 backgroundColor: ConstHelper.whiteColor,
@@ -172,7 +174,7 @@ class _LivePageState extends State<LivePage> {
                                 onRefresh: () async {
                                   await homeController.getLiveData(
                                       categoryValue: homeController.selectCategoryData.value.categoryName!,
-                                      subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categorySubName!
+                                      subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
                                   );
                                 },
                                 backgroundColor: ConstHelper.whiteColor,
@@ -213,13 +215,52 @@ class _LivePageState extends State<LivePage> {
                                                 CrossAxisAlignment.center,
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              Container(
-                                                height: Get.width / 5,
-                                                width: Get.width / 5,
-                                                color: const Color(0xffF7F7F7),
-                                                child: Image.asset(
-                                                  'assets/image/imageNotFound.png',
-                                                  fit: BoxFit.cover,
+                                              SizedBox(
+                                                height: Get.width / 6,
+                                                width: Get.width / 6,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                  BorderRadius.circular(6),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl:  ConstHelper.subCategoryImagePath+(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categoriesSubImages??"") ,
+                                                    fit: BoxFit.cover,
+                                                    placeholder: (context, url) =>
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius:
+                                                            BorderRadius.circular(
+                                                                6),
+                                                            color: ConstHelper
+                                                                .whiteColor,
+                                                          ),
+                                                          alignment: Alignment.center,
+                                                          child: SizedBox(
+                                                            height: Get.width / 20,
+                                                            width: Get.width / 20,
+                                                            child:
+                                                            CircularProgressIndicator(
+                                                              color: ConstHelper
+                                                                  .orangeColor,
+                                                              strokeWidth: 2,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                    errorWidget:
+                                                        (context, url, error) =>
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius:
+                                                            BorderRadius.circular(
+                                                                6),
+                                                            color: ConstHelper
+                                                                .whiteColor,
+                                                          ),
+                                                          child: Image.asset(
+                                                            'assets/image/imageNotFound.png',
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                  ),
                                                 ),
                                               ),
                                               SizedBox(
@@ -427,7 +468,7 @@ class _LivePageState extends State<LivePage> {
                                                                                   children: [
                                                                                     Expanded(
                                                                                       child: Text(
-                                                                                        homeController.searchedLiveDataList[index].vendorProductCategory??"".toUpperCase(),
+                                                                                        homeController.searchedLiveDataList[index].vendorProductCategory?.toString()??"".toUpperCase(),
                                                                                         style: TextStyle(
                                                                                           color: ConstHelper.blackColor,
                                                                                           fontWeight: FontWeight.w600,
@@ -653,7 +694,7 @@ class _LivePageState extends State<LivePage> {
                                 onRefresh: () async {
                                   await homeController.getLiveData(
                                       categoryValue: homeController.selectCategoryData.value.categoryName!,
-                                      subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categorySubName!
+                                      subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
                                   );
                                 },
                                 backgroundColor: ConstHelper.whiteColor,
@@ -682,7 +723,7 @@ class _LivePageState extends State<LivePage> {
                                 onRefresh: () async {
                                   await homeController.getLiveData(
                                       categoryValue: homeController.selectCategoryData.value.categoryName!,
-                                      subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categorySubName!
+                                      subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
                                   );
                                 },
                                 backgroundColor: ConstHelper.whiteColor,
@@ -723,15 +764,55 @@ class _LivePageState extends State<LivePage> {
                                                 CrossAxisAlignment.center,
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              Container(
-                                                height: Get.width / 5,
-                                                width: Get.width / 5,
-                                                color: const Color(0xffF7F7F7),
-                                                child: Image.asset(
-                                                  'assets/image/imageNotFound.png',
-                                                  fit: BoxFit.cover,
+                                              SizedBox(
+                                                height: Get.width / 6,
+                                                width: Get.width / 6,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                  BorderRadius.circular(6),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl:  ConstHelper.subCategoryImagePath+(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categoriesSubImages??"") ,
+                                                    fit: BoxFit.cover,
+                                                    placeholder: (context, url) =>
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius:
+                                                            BorderRadius.circular(
+                                                                6),
+                                                            color: ConstHelper
+                                                                .whiteColor,
+                                                          ),
+                                                          alignment: Alignment.center,
+                                                          child: SizedBox(
+                                                            height: Get.width / 20,
+                                                            width: Get.width / 20,
+                                                            child:
+                                                            CircularProgressIndicator(
+                                                              color: ConstHelper
+                                                                  .orangeColor,
+                                                              strokeWidth: 2,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                    errorWidget:
+                                                        (context, url, error) =>
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius:
+                                                            BorderRadius.circular(
+                                                                6),
+                                                            color: ConstHelper
+                                                                .whiteColor,
+                                                          ),
+                                                          child: Image.asset(
+                                                            'assets/image/imageNotFound.png',
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                  ),
                                                 ),
                                               ),
+
                                               SizedBox(
                                                 width: Get.width / 60,
                                               ),
@@ -937,7 +1018,7 @@ class _LivePageState extends State<LivePage> {
                                                                                 children: [
                                                                                   Expanded(
                                                                                     child: Text(
-                                                                                      homeController.allLiveDataList[index].vendorProductCategory??"".toUpperCase(),
+                                                                                      homeController.allLiveDataList[index].vendorProductCategory?.toString()??"".toUpperCase(),
                                                                                       style: TextStyle(
                                                                                         color: ConstHelper.blackColor,
                                                                                         fontWeight: FontWeight.w600,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:another_telephony/telephony.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,6 +39,51 @@ class _OTPPageState extends State<OTPPage> {
   FocusNode otp4FocusNode = FocusNode();
   FocusNode otp5FocusNode = FocusNode();
   FocusNode otp6FocusNode = FocusNode();
+  // OtpController controller = Get.put(OtpController());
+  int backspaceCount = 0;
+  final telephony = Telephony.instance;
+  RxBool checkTermsCondition = false.obs;
+
+  //final controller = WebViewController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    listenToIncomingSMS(context);
+    super.initState();
+  }
+
+  void listenToIncomingSMS(BuildContext context) {
+    txtOTP1.clear();
+    txtOTP2.clear();
+    txtOTP3.clear();
+    txtOTP4.clear();
+    txtOTP5.clear();
+    txtOTP6.clear();
+    print("Listening to sms.");
+    telephony.listenIncomingSms(
+        onNewMessage: (SmsMessage message) {
+          // Handle message
+          print("sms received : ${message.body}");
+          // verify if we are reading the correct sms or not
+
+          if (message.body!.contains("kmrgroup-a7e50.firebaseapp.com")) {
+            String otpCode = message.body!.substring(0, 6);
+            List<String> otpCharacters = otpCode.split('');
+            print("OTP::::::$otpCode");
+            setState(() {
+              txtOTP1.text = otpCode.substring(0, 1).toString();
+              txtOTP2.text = otpCode.substring(1, 2).toString();
+              txtOTP3.text = otpCode.substring(2, 3).toString();
+              txtOTP4.text = otpCode.substring(3, 4).toString();
+              txtOTP5.text = otpCode.substring(4, 5).toString();
+              txtOTP6.text = otpCode.substring(5, 6).toString();
+            });
+          }
+        },
+        listenInBackground: false);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -238,7 +284,6 @@ class _OTPPageState extends State<OTPPage> {
                               otp6FocusNode.unfocus();
                               otp5FocusNode.requestFocus();
                             }
-
                             checkAllOTPFill();
                           },
                         ),
@@ -446,6 +491,48 @@ class _OTPPageState extends State<OTPPage> {
                         ),
                       );
                       try {
+                     /*   await ApiHelper.apiHelper
+                            .loginUser(
+                          mobileNo: homeController.mobileNo.trim(),
+                          password: homeController.password.trim(),
+                          deviceId: homeController.firebaseFCMToken.trim(),
+
+                          // mobileNo: '9972837003',
+                          // password: '123456',
+                        )
+                            .then((userData) async {
+                          if (userData['code'] == 200) {
+                            UserDataModel userDataModel =
+                            UserDataModel.fromJson(
+                                userData['data'] ?? {});
+                            SharedPrefHelper.sharedPreferences
+                                .setString(
+                              'userData',
+                              jsonEncode(userDataModel),
+                            );
+                            SharedPrefHelper.sharedPreferences.setBool(
+                              'login',
+                              true,
+                            );
+                            await homeController.getUserData();
+                            EasyLoading.dismiss();
+                            // homeController.bottomIndex.value = 0;
+                            Get.offAll(
+                              const HomePage(),
+                            );
+                            // ConstHelper.successDialog(
+                            //   text: 'Success',
+                            //   seconds: 10,
+                            // );
+                          } else {
+                            EasyLoading.dismiss();
+                            ConstHelper.errorDialog(
+                              text: userData['msg'] ??
+                                  ConstHelper.unauthorizedMsg,
+                              seconds: 10,
+                            );
+                          }
+                        });*/
                         FirebaseAuth firebaseAuth = FirebaseAuth.instance;
                         String otp =
                             '${txtOTP1.text}${txtOTP2.text}${txtOTP3.text}${txtOTP4.text}${txtOTP5.text}${txtOTP6.text}';

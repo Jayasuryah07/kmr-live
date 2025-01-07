@@ -54,6 +54,7 @@ class ConstHelper {
   static String categoryImagePath = "https://kmrlive.in/storage/app/public/categories_images/";
   static String developerImagePath = "https://kmrlive.in/storage/app/public/developer_images/";
   static String newsImagePath = "https://kmrlive.in/storage/app/public/News/";
+  static String spotImagePath = "https://kmrlive.in/storage/app/public/Spot/";
   static String sliderImagePath = "https://kmrlive.in/storage/app/public/slider_images/";
   static String subCategoryImagePath = "https://kmrlive.in/storage/app/public/sub_categories_images/";
 

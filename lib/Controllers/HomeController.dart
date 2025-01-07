@@ -30,6 +30,7 @@ class HomeController extends GetxController {
   RxInt selectedTabIndex = 0.obs;
   RxList<LiveDataModel> allLiveDataList = <LiveDataModel>[].obs;
   RxList<VendorRateDataModel> allRatesDataList = <VendorRateDataModel>[].obs;
+  RxList<SubCatg> allSubCtgList = <SubCatg>[].obs;
   var allSpotRateDataList =
       <VendorSpotRateDataModel>[].obs;
   RxList<NewsDataModel> allNewsDataList = <NewsDataModel>[].obs;
@@ -46,6 +47,7 @@ class HomeController extends GetxController {
   Rx<CategoryDataModel> selectCategoryData = CategoryDataModel().obs;
   RxList<SubCategoryDataModel> allSubCategoryDataList =
       <SubCategoryDataModel>[].obs;
+  TabController? tabController;
   RxString otpVerificationId = "".obs;
   RxInt otpResendCode = 0.obs;
   RxString mobileNo = "".obs;
@@ -95,7 +97,8 @@ class HomeController extends GetxController {
       )
           .then(
         (liveDataList) {
-          allLiveDataList.value = liveDataList;
+          allLiveDataList.value = liveDataList.data??[];
+          allSubCtgList.value = liveDataList.subCatg??[];
           loadData.value = false;
         },
       );
@@ -146,7 +149,8 @@ class HomeController extends GetxController {
       )
           .then(
         (ratesDataList) {
-          allRatesDataList.value = ratesDataList;
+          allRatesDataList.value = ratesDataList.data??[];
+          allSubCtgList.value = ratesDataList.subCatg??[];
           loadData.value = false;
         },
       );

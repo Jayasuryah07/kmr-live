@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:kmr_flutter_application/Screens/LoginScreen/LoginPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -101,7 +103,29 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             )
-          ],*/
+          ],*/actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Row(
+                children: [
+                  IconButton(
+                      onPressed: () async {
+                        final SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.clear();
+                        Get.offAll(LoginPage());
+                      },
+                      icon: Icon(
+                        color: ConstHelper.whiteColor,
+
+                        Icons.logout,
+                      ),
+                  ),
+
+                ],
+              ),
+            )
+          ],
         ),
         backgroundColor: ConstHelper.whiteColor,
         body: Column(
@@ -155,8 +179,9 @@ class _HomePageState extends State<HomePage> {
                                 await ApiHelper.apiHelper
                                     .getCategoryIdWiseSubCategoryDataList(
                                     categoryId: homeController
-                                        .allCategoryDataList[index].id
-                                        .toString())
+                                        .allCategoryDataList[index].categoryName
+                                        .toString(), index: 0)
+
                                     .then(
                                       (allSubCategoryDataList) {
                                     homeController.allSubCategoryDataList.value =

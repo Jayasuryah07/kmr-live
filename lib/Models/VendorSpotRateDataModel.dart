@@ -16,6 +16,7 @@ class VendorSpotRateDataModel {
   String? vendorSpotDetails;
   DateTime? vendorSpotCreatedDate;
   String? vendorSpotCreatedTime;
+  String? categoriesImages;
 
   VendorSpotRateDataModel({
     this.id,
@@ -25,6 +26,7 @@ class VendorSpotRateDataModel {
     this.vendorSpotDetails,
     this.vendorSpotCreatedDate,
     this.vendorSpotCreatedTime,
+    this.categoriesImages,
   });
 
   factory VendorSpotRateDataModel.fromJson(Map<String, dynamic> json) => VendorSpotRateDataModel(
@@ -35,6 +37,7 @@ class VendorSpotRateDataModel {
     vendorSpotDetails: json["vendor_spot_details"],
     vendorSpotCreatedDate: json["vendor_spot_created_date"] == null ? null : DateTime.parse(json["vendor_spot_created_date"]),
     vendorSpotCreatedTime: json["vendor_spot_created_time"],
+    categoriesImages: json["categories_images"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -45,5 +48,6 @@ class VendorSpotRateDataModel {
     "vendor_spot_details": vendorSpotDetails,
     "vendor_spot_created_date": vendorSpotCreatedDate?.toIso8601String(),
     "vendor_spot_created_time": vendorSpotCreatedTime,
+    "categories_images": categoriesImages,
   };
 }

@@ -4,26 +4,68 @@
 
 import 'dart:convert';
 
-SubCategoryDataModel subCategoryDataModelFromJson(String str) => SubCategoryDataModel.fromJson(json.decode(str));
+class SubCategoryModel {
+  int? code;
+  List<SubCategoryDataModel>? data;
 
-String subCategoryDataModelToJson(SubCategoryDataModel data) => json.encode(data.toJson());
-
-class SubCategoryDataModel {
-  int? id;
-  String? categorySubName;
-
-  SubCategoryDataModel({
-    this.id,
-    this.categorySubName,
+  SubCategoryModel({
+    this.code,
+    this.data,
   });
 
-  factory SubCategoryDataModel.fromJson(Map<String, dynamic> json) => SubCategoryDataModel(
-    id: json["id"],
-    categorySubName: json["category_sub_name"],
+  SubCategoryModel copyWith({
+    int? code,
+    List<SubCategoryDataModel>? data,
+  }) =>
+      SubCategoryModel(
+        code: code ?? this.code,
+        data: data ?? this.data,
+      );
+
+  factory SubCategoryModel.fromRawJson(String str) => SubCategoryModel.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory SubCategoryModel.fromJson(Map<String, dynamic> json) => SubCategoryModel(
+    code: json["code"],
+    data: json["data"] == null ? [] : List<SubCategoryDataModel>.from(json["data"]!.map((x) => SubCategoryDataModel.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "category_sub_name": categorySubName,
+    "code": code,
+    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+  };
+}
+
+class SubCategoryDataModel {
+  String? vendorProductCategorySub;
+  String? categoriesSubImages;
+
+  SubCategoryDataModel({
+    this.vendorProductCategorySub,
+    this.categoriesSubImages,
+  });
+
+  SubCategoryDataModel copyWith({
+    String? vendorProductCategorySub,
+    String? categoriesSubImages,
+  }) =>
+      SubCategoryDataModel(
+        vendorProductCategorySub: vendorProductCategorySub ?? this.vendorProductCategorySub,
+        categoriesSubImages: categoriesSubImages ?? this.categoriesSubImages,
+      );
+
+  factory SubCategoryDataModel.fromRawJson(String str) => SubCategoryDataModel.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory SubCategoryDataModel.fromJson(Map<String, dynamic> json) => SubCategoryDataModel(
+    vendorProductCategorySub: json["vendor_product_category_sub"],
+    categoriesSubImages: json["categories_sub_images"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "vendor_product_category_sub": vendorProductCategorySub,
+    "categories_sub_images": categoriesSubImages,
   };
 }

@@ -1,3 +1,5 @@
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -19,15 +21,17 @@ class _RatesPageState extends State<RatesPage> {
   @override
   void initState() {
     // TODO: implement initState
+    if( homeController.allSubCategoryDataList.isNotEmpty)
     homeController.getRateData(
         categoryValue: homeController.selectCategoryData.value.categoryName!,
-        subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categorySubName!
+        subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
     );
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print(homeController.allRatesDataList.isEmpty);
     return SafeArea(
         child: Scaffold(
       backgroundColor: ConstHelper.whiteColor,
@@ -43,12 +47,14 @@ class _RatesPageState extends State<RatesPage> {
                   ),
                 )
               : homeController.searchStart.value
-                  ? homeController.searchedRatesDataList.isEmpty
+                  ? homeController.searchedRatesDataList.isEmpty || homeController.searchedRatesDataList.every(
+                (element) => element.vendorProduct!.isEmpty,
+          )
                       ? RefreshIndicator(
                           onRefresh: () async {
                             await homeController.getRateData(
                                 categoryValue: homeController.selectCategoryData.value.categoryName!,
-                                subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categorySubName!
+                                subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
                             );
                           },
                           backgroundColor: ConstHelper.whiteColor,
@@ -78,7 +84,7 @@ class _RatesPageState extends State<RatesPage> {
                             print("GGGGGGGGGGG ${homeController.selectCategoryData.value.categoryName!}");
                             await homeController.getRateData(
                                 categoryValue: homeController.selectCategoryData.value.categoryName!,
-                                subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categorySubName!
+                                subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
                             );
                           },
                           backgroundColor: ConstHelper.whiteColor,
@@ -115,15 +121,55 @@ class _RatesPageState extends State<RatesPage> {
                                       children: [
                                         Row(
                                           children: [
-                                            Container(
-                                              height: Get.width / 10,
-                                              width: Get.width / 10,
-                                              color: Color(0xffF7F7F7),
-                                              child: Image.asset(
-                                                'assets/image/imageNotFound.png',
-                                                fit: BoxFit.cover,
+                                            SizedBox(
+                                              height: Get.width / 7,
+                                              width: Get.width / 7,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                BorderRadius.circular(6),
+                                                child: CachedNetworkImage(
+                                                  imageUrl:  ConstHelper.subCategoryImagePath+homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!,
+                                                  fit: BoxFit.cover,
+                                                  placeholder: (context, url) =>
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              6),
+                                                          color: ConstHelper
+                                                              .whiteColor,
+                                                        ),
+                                                        alignment: Alignment.center,
+                                                        child: SizedBox(
+                                                          height: Get.width / 20,
+                                                          width: Get.width / 20,
+                                                          child:
+                                                          CircularProgressIndicator(
+                                                            color: ConstHelper
+                                                                .orangeColor,
+                                                            strokeWidth: 2,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              6),
+                                                          color: ConstHelper
+                                                              .whiteColor,
+                                                        ),
+                                                        child: Image.asset(
+                                                          'assets/image/imageNotFound.png',
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                ),
                                               ),
                                             ),
+
                                             SizedBox(
                                               width: Get.width / 60,
                                             ),
@@ -573,13 +619,15 @@ class _RatesPageState extends State<RatesPage> {
                             },
                           ),
                         )
-                  : homeController.allRatesDataList.isEmpty
+                  : homeController.allRatesDataList.isEmpty || homeController.allRatesDataList.every(
+                (element) => element.vendorProduct!.isEmpty,
+          )
                       ? RefreshIndicator(
                           onRefresh: () async {
                             print("GGGGGGGGGGG ${homeController.selectCategoryData.value.categoryName!}");
                             await homeController.getRateData(
                                 categoryValue: homeController.selectCategoryData.value.categoryName!,
-                                subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categorySubName!
+                                subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
                             );
                           },
                           backgroundColor: ConstHelper.whiteColor,
@@ -609,7 +657,7 @@ class _RatesPageState extends State<RatesPage> {
                             print("PPPPPPPPPP");
                             await homeController.getRateData(
                                 categoryValue: homeController.selectCategoryData.value.categoryName!,
-                                subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categorySubName!
+                                subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
                             );
                           },
                           backgroundColor: ConstHelper.whiteColor,
@@ -617,6 +665,7 @@ class _RatesPageState extends State<RatesPage> {
                           child: ListView.builder(
                             itemCount: homeController.allRatesDataList.length,
                             itemBuilder: (context, index) {
+                              print(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub);
                               return homeController.allRatesDataList[index].vendorProduct == null || homeController.allRatesDataList[index].vendorProduct!.isEmpty ?SizedBox():Padding(
                                 padding: EdgeInsets.only(
                                   top: Get.width / 30,
@@ -644,15 +693,55 @@ class _RatesPageState extends State<RatesPage> {
                                       children: [
                                         Row(
                                           children: [
-                                            Container(
-                                              height: Get.width / 10,
-                                              width: Get.width / 10,
-                                              color: Color(0xffF7F7F7),
-                                              child: Image.asset(
-                                                'assets/image/imageNotFound.png',
-                                                fit: BoxFit.cover,
+                                            SizedBox(
+                                              height: Get.width / 7,
+                                              width: Get.width / 7,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                BorderRadius.circular(6),
+                                                child: CachedNetworkImage(
+                                                  imageUrl:  ConstHelper.subCategoryImagePath+(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categoriesSubImages??"") ,
+                                                  fit: BoxFit.cover,
+                                                  placeholder: (context, url) =>
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              6),
+                                                          color: ConstHelper
+                                                              .whiteColor,
+                                                        ),
+                                                        alignment: Alignment.center,
+                                                        child: SizedBox(
+                                                          height: Get.width / 20,
+                                                          width: Get.width / 20,
+                                                          child:
+                                                          CircularProgressIndicator(
+                                                            color: ConstHelper
+                                                                .orangeColor,
+                                                            strokeWidth: 2,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              6),
+                                                          color: ConstHelper
+                                                              .whiteColor,
+                                                        ),
+                                                        child: Image.asset(
+                                                          'assets/image/imageNotFound.png',
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                ),
                                               ),
                                             ),
+
                                             SizedBox(
                                               width: Get.width / 60,
                                             ),
@@ -937,7 +1026,7 @@ class _RatesPageState extends State<RatesPage> {
                                               ]),
                                         ),
                                         SizedBox(height: homeController.allRatesDataList[index].vendorProduct == null || homeController.allRatesDataList[index].vendorProduct!.isEmpty?0:Get.width/60,),
-                                        homeController.allRatesDataList[index].vendorProduct == null || homeController.allRatesDataList[index].vendorProduct!.isEmpty || homeController.allRatesDataList[index].vendorProduct!.length < 2 ? Text(""):
+
                                         Align(
                                           alignment: Alignment.centerRight,
                                             child: InkWell(

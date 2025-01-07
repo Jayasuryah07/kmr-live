@@ -17,7 +17,7 @@ Future<void> main() async {
       appId: '1:161668906055:android:424c69f727843dc3da8562',
       messagingSenderId: '161668906055',
       projectId: 'kmrgroup-a7e50',
-      storageBucket: 'kmrgroup-a7e50.appspot.com',
+      storageBucket: 'kmrgroup-a7e50.firebasestorage.app',
     ),
   );
   await SharedPrefHelper.sharedPrefHelper.initSharedPref();

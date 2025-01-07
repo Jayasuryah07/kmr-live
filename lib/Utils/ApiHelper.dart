@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 
 import 'package:get/get.dart' as getX;
@@ -24,7 +26,7 @@ class ApiHelper {
   void getAuthorizationToken() {
     HomeController homeController = getX.Get.put(HomeController());
     authorizationToken = homeController.userDataWithToken.value.token ?? '';
-    print('Token : $authorizationToken');
+    log('Token : $authorizationToken');
   }
 
   Future<Map> checkMobileNumber({
@@ -63,6 +65,11 @@ class ApiHelper {
         'password': password,
         'device_id': deviceId,
       });
+      print({
+        'mobile': mobileNo,
+        'password': password,
+        'device_id': deviceId,
+      }.toString());
       Response response = await api.dio.post(
         'login',
         data: data,
@@ -78,7 +85,7 @@ class ApiHelper {
     }
   }
 
-  Future<List<LiveDataModel>> getAllLiveDataList({
+  Future<LiveDataListModel> getAllLiveDataList({
     required String categoryValue,
     required String subCategoryValue,
   }) async {
@@ -88,6 +95,10 @@ class ApiHelper {
         'c_value': categoryValue,
         'c_sub_value': subCategoryValue,
       });
+      print({
+        'c_value': categoryValue,
+        'c_sub_value': subCategoryValue,
+      }.toString());
 
       var headers = {'Authorization': 'Bearer $authorizationToken'};
 
@@ -102,17 +113,14 @@ class ApiHelper {
       if (response.statusCode == 200) {
         var data = response.data;
         print('aadadada $data');
-        return List.from(data == null
-            ? []
-            : (data['data'] ?? [])
-                .map((e) => LiveDataModel.fromJson(e))
-                .toList());
+        return LiveDataListModel.fromJson(data)
+                ;
       } else {
-        return [];
+        return LiveDataListModel();
       }
     } catch (error) {
       print('Error $error');
-      return [];
+      return LiveDataListModel();
     }
   }
 
@@ -148,7 +156,7 @@ class ApiHelper {
     }
   }
 
-  Future<List<VendorRateDataModel>> getAllRatesDataList({
+  Future<VendorRateModel> getAllRatesDataList({
     required String categoryValue,
     required String subCategoryValue,
   }) async {
@@ -158,7 +166,10 @@ class ApiHelper {
         'c_value': categoryValue,
         'c_sub_value': subCategoryValue,
       });
-
+   print({
+     'c_value': categoryValue,
+     'c_sub_value': subCategoryValue,
+   }.toString());
       var headers = {'Authorization': 'Bearer $authorizationToken'};
 
       // Dio dio = Dio();
@@ -171,18 +182,14 @@ class ApiHelper {
 
       if (response.statusCode == 200) {
         var data = response.data;
-        print('aadadada $data');
-        return List.from(data == null
-            ? []
-            : (data['data'] ?? [])
-                .map((e) => VendorRateDataModel.fromJson(e))
-                .toList());
+        log('aadadada $data');
+        return VendorRateModel.fromJson(data);
       } else {
-        return [];
+        return VendorRateModel();
       }
     } catch (error) {
       print('Error $error');
-      return [];
+      return VendorRateModel();
     }
   }
 
@@ -281,20 +288,18 @@ class ApiHelper {
   }
 
   Future<List<SubCategoryDataModel>> getCategoryIdWiseSubCategoryDataList(
-      {required String categoryId}) async {
+      {required String categoryId,
+      required int index
+      }) async {
     try {
       getAuthorizationToken();
-
-      var data = FormData.fromMap({
-        'c_id': categoryId,
-      });
-
+     print(categoryId);
       var headers = {'Authorization': 'Bearer $authorizationToken'};
 
       // Dio dio = Dio();
-
-      Response response = await api.dio.post('fetch-sub-category',
-          data: data,
+     var path = index ==0?'fetch-live-sub-category':index ==1?"fetch-rates-sub-category":"fetch-spot-rates-sub-category";
+      Response response = await api.dio.post(/*'fetch-sub-category'*/path,
+          data: {'c_value': categoryId},
           options: Options(
             headers: headers,
           ));

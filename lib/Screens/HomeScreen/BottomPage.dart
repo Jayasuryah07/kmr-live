@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../Controllers/HomeController.dart';
 import '../../Models/VendorRateDataModel.dart';
+import '../../Utils/ApiHelper.dart';
 import '../../Utils/ConstHelper.dart';
 
 class BottomPage extends StatefulWidget {
@@ -13,7 +15,7 @@ class BottomPage extends StatefulWidget {
   State<BottomPage> createState() => _BottomPageState();
 }
 
-class _BottomPageState extends State<BottomPage> {
+class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
   HomeController homeController = Get.put(HomeController());
 
   // RxInt selectedIndex = 0.obs;
@@ -52,12 +54,22 @@ class _BottomPageState extends State<BottomPage> {
   @override
   void initState() {
     // TODO: implement initState
-    homeController.selectedTabIndex.value = 0;
+    if (homeController.allSubCategoryDataList.isNotEmpty) {
+      homeController.tabController = TabController(
+        length: homeController.allSubCategoryDataList.length,
+        vsync: this,
+      );
+      homeController.selectedTabIndex.value = 0; // Default to the first tab
+    } else {
+      // Fallback for empty list (this shouldn't trigger if you have one item)
+      homeController.selectedTabIndex.value = -1;
+    }homeController.selectedTabIndex.value = 0;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print( homeController.selectedIndex.value);
     return SafeArea(
       child: Obx(
         () => Scaffold(
@@ -290,7 +302,7 @@ class _BottomPageState extends State<BottomPage> {
                   ],
                   bottom: PreferredSize(
                     preferredSize: Size.fromHeight(Get.width / 8),
-                    child: DefaultTabController(
+                    child: homeController.allSubCategoryDataList.isEmpty ?SizedBox():DefaultTabController(
                       length: homeController.allSubCategoryDataList.length,
                       child: TabBar(
                         labelColor: Colors.white,
@@ -298,13 +310,14 @@ class _BottomPageState extends State<BottomPage> {
                         isScrollable: true,
                         tabAlignment: TabAlignment.start,
                         unselectedLabelColor: Colors.grey.shade400,
+                        controller: homeController.tabController,
                         tabs: [
                           for (int i = 0;
                               i < homeController.allSubCategoryDataList.length;
                               i++)
                             Tab(
                               text:
-                                  "${homeController.allSubCategoryDataList[i].categorySubName}",
+                                  "${homeController.allSubCategoryDataList[i].vendorProductCategorySub}",
                             ),
                         ],
                         onTap: (value) {
@@ -317,7 +330,7 @@ class _BottomPageState extends State<BottomPage> {
                                 subCategoryValue: homeController
                                     .allSubCategoryDataList[
                                         homeController.selectedTabIndex.value]
-                                    .categorySubName!);
+                                    .vendorProductCategorySub!);
                           } else if (homeController.selectedIndex.value == 1) {
                             homeController.getRateData(
                                 categoryValue: homeController
@@ -325,7 +338,7 @@ class _BottomPageState extends State<BottomPage> {
                                 subCategoryValue: homeController
                                     .allSubCategoryDataList[
                                         homeController.selectedTabIndex.value]
-                                    .categorySubName!);
+                                    .vendorProductCategorySub!);
                           }
                         },
                       ),
@@ -506,15 +519,45 @@ class _BottomPageState extends State<BottomPage> {
               NavigationDestination(icon: Icon(Icons.newspaper), label: "News"),
             ],
             selectedIndex: homeController.selectedIndex.value,
-            onDestinationSelected: (value) {
-              homeController.selectedTabIndex.value = value;
-              print(value);
+            onDestinationSelected: (value) async {
+              if(value != 3){
+                await ApiHelper.apiHelper
+                    .getCategoryIdWiseSubCategoryDataList(
+                  categoryId: homeController.selectCategoryData.value.categoryName!,
+                  index: value,
+                )
+                    .then(
+                      (allSubCategoryDataList) {
+                    // Update the subcategory list
+                    homeController.allSubCategoryDataList.value = allSubCategoryDataList;
+
+                    // Dispose of the previous TabController
+
+                    // Create a new TabController if there are subcategories
+                    if (homeController.allSubCategoryDataList.isNotEmpty) {
+                      homeController.tabController = TabController(
+                        length: homeController.allSubCategoryDataList.length,
+                        vsync: this,
+                      );
+                      homeController.tabController?.addListener(() { });
+
+                      // Reset the tab index only after the TabController is initialized
+                      homeController.tabController?.index = 0;
+                    }
+                  },
+                );
+              }
+
+              // Update other state values
+              homeController.selectedTabIndex.value = 0;
               homeController.txtSearch.clear();
               homeController.searchFocusNode.unfocus();
               homeController.searchStart.value = false;
               homeController.searchClick.value = false;
               homeController.selectedIndex.value = value;
-              print("RRRRRRRRRRR ${homeController.selectedIndex.value}");
+
+              print("Selected Tab Index: ${homeController.selectedTabIndex.value}");
+              print("Selected Index: ${homeController.selectedIndex.value}");
             },
             height: Get.width / 6,
           ),
