@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'Screens/HomeScreen/HomePage.dart';
 import 'Screens/LoginScreen/LoginPage.dart';
 import 'Screens/SplashScreen/SplashPage.dart';
+import 'Screens/SplashScreen/splash_common_page.dart';
 import 'Utils/ConstHelper.dart';
 import 'Utils/SharedPrefHelper.dart';
 
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: ConstHelper.navigatorKey,
       builder: EasyLoading.init(),
       routes: {
-        '/' : (p0) => const SplashPage(),
+        '/' : (p0) => const SplashCommonPage(),
         'login' : (p0) => const LoginPage(),
         'home' : (p0) => const HomePage(),
       },

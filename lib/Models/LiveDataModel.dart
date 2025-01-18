@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:kmr_flutter_application/Models/VendorRateDataModel.dart';
+import 'VendorRateDataModel.dart';
 
 LiveDataListModel liveDataListModelFromJson(String str) => LiveDataListModel.fromJson(json.decode(str));
 
@@ -48,6 +48,7 @@ class LiveDataListModel {
 class LiveDataModel {
   int? id;
   int? vendorId;
+  String? vendorName;
   VendorProductCategory? vendorProductCategory;
   VendorProductCategorySub? vendorProductCategorySub;
   String? vendorProduct;
@@ -62,6 +63,7 @@ class LiveDataModel {
   LiveDataModel({
     this.id,
     this.vendorId,
+    this.vendorName,
     this.vendorProductCategory,
     this.vendorProductCategorySub,
     this.vendorProduct,
@@ -77,6 +79,7 @@ class LiveDataModel {
   LiveDataModel copyWith({
     int? id,
     int? vendorId,
+    String? vendorName,
     VendorProductCategory? vendorProductCategory,
     VendorProductCategorySub? vendorProductCategorySub,
     String? vendorProduct,
@@ -91,6 +94,7 @@ class LiveDataModel {
       LiveDataModel(
         id: id ?? this.id,
         vendorId: vendorId ?? this.vendorId,
+        vendorName: vendorName ?? this.vendorName,
         vendorProductCategory: vendorProductCategory ?? this.vendorProductCategory,
         vendorProductCategorySub: vendorProductCategorySub ?? this.vendorProductCategorySub,
         vendorProduct: vendorProduct ?? this.vendorProduct,
@@ -106,6 +110,7 @@ class LiveDataModel {
   factory LiveDataModel.fromJson(Map<String, dynamic> json) => LiveDataModel(
     id: json["id"],
     vendorId: json["vendor_id"],
+    vendorName: json["vendor_name"],
     vendorProductCategory: vendorProductCategoryValues.map[json["vendor_product_category"]],
     vendorProductCategorySub: vendorProductCategorySubValues.map[json["vendor_product_category_sub"]],
     vendorProduct: json["vendor_product"],
@@ -121,6 +126,7 @@ class LiveDataModel {
   Map<String, dynamic> toJson() => {
     "id": id,
     "vendor_id": vendorId,
+    "vendor_name": vendorName,
     "vendor_product_category": vendorProductCategoryValues.reverse[vendorProductCategory],
     "vendor_product_category_sub": vendorProductCategorySubValues.reverse[vendorProductCategorySub],
     "vendor_product": vendorProduct,
@@ -149,6 +155,7 @@ enum VendorProductCategorySub {
 final vendorProductCategorySubValues = EnumValues({
   "edible Oil": VendorProductCategorySub.EDIBLE_OIL
 });
+
 
 
 class EnumValues<T> {

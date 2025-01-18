@@ -25,6 +25,7 @@ class ApiHelper {
 
   void getAuthorizationToken() {
     HomeController homeController = getX.Get.put(HomeController());
+    homeController.getUserData();
     authorizationToken = homeController.userDataWithToken.value.token ?? '';
     log('Token : $authorizationToken');
   }
@@ -83,13 +84,46 @@ class ApiHelper {
     } catch (error) {
       return {};
     }
+  }  Future<Map> signUpUser({
+    required String mobileNo,
+    required String name,
+    required String email,
+    required String remarks,
+  }) async {
+    try {
+      getAuthorizationToken();
+      var data = FormData.fromMap({
+        'name': name ,
+        'mobile': mobileNo,
+        'email': email,
+        'remarks': remarks,
+      });
+      print({
+        'name': name ,
+        'mobile': mobileNo,
+        'email': email,
+        'remarks': remarks,
+      }.toString());
+      Response response = await api.dio.post(
+        'panel-create-vendor-user-signup',
+        data: data,
+      );
+      if (response.statusCode == 200) {
+        var data = response.data;
+        return data;
+      } else {
+        return {};
+      }
+    } catch (error) {
+      return {};
+    }
   }
 
   Future<LiveDataListModel> getAllLiveDataList({
     required String categoryValue,
     required String subCategoryValue,
   }) async {
-    try {
+
       getAuthorizationToken();
       var data = FormData.fromMap({
         'c_value': categoryValue,
@@ -118,16 +152,14 @@ class ApiHelper {
       } else {
         return LiveDataListModel();
       }
-    } catch (error) {
-      print('Error $error');
-      return LiveDataListModel();
-    }
+
   }
 
   Future<CategoryItemModel> getSubCategoryItem({
     required String id,
   }) async {
     try {
+      print(id);
       getAuthorizationToken();
       var data = FormData.fromMap({
         'id': id,

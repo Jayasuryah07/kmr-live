@@ -89,7 +89,7 @@ class HomeController extends GetxController {
     searchFocusNode.unfocus();
     searchStart.value = false;
     searchClick.value = false;
-    try {
+
       await ApiHelper.apiHelper
           .getAllLiveDataList(
         categoryValue: categoryValue,
@@ -102,10 +102,9 @@ class HomeController extends GetxController {
           loadData.value = false;
         },
       );
-    } catch (error) {
+
       loadData.value = false;
-      print('Cache-Error : $error');
-    }
+
   }
 
   Future<void> getCategoryItemData({

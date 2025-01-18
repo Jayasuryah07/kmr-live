@@ -16,6 +16,7 @@ import '../../Utils/FirebaseHelper.dart';
 import '../../Utils/SharedPrefHelper.dart';
 import '../HomeScreen/HomePage.dart';
 import '../SignupScreen/SignupPage.dart';
+import 'LoginPage.dart';
 
 class OTPPage extends StatefulWidget {
   const OTPPage({super.key});
@@ -49,11 +50,11 @@ class _OTPPageState extends State<OTPPage> {
   @override
   void initState() {
     // TODO: implement initState
-    listenToIncomingSMS(context);
+    //listenToIncomingSMS(context);
     super.initState();
   }
 
-  void listenToIncomingSMS(BuildContext context) {
+ /* void listenToIncomingSMS(BuildContext context) {
     txtOTP1.clear();
     txtOTP2.clear();
     txtOTP3.clear();
@@ -82,7 +83,7 @@ class _OTPPageState extends State<OTPPage> {
           }
         },
         listenInBackground: false);
-  }
+  }*/
 
 
   @override
@@ -542,6 +543,8 @@ class _OTPPageState extends State<OTPPage> {
                           homeController.otpVerificationId.value,
                           smsCode: otp,
                         );
+
+
                         // Sign the user in (or link) with the credential
 
                         await firebaseAuth
@@ -577,9 +580,10 @@ class _OTPPageState extends State<OTPPage> {
                                 await homeController.getUserData();
                                 EasyLoading.dismiss();
                                 // homeController.bottomIndex.value = 0;
-                                Get.offAll(
-                                  const HomePage(),
-                                );
+
+                                  Get.offAll(
+                                    const HomePage(),
+                                  );
                                 // ConstHelper.successDialog(
                                 //   text: 'Success',
                                 //   seconds: 10,

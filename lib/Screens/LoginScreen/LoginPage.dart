@@ -216,7 +216,8 @@ class _LoginPageState extends State<LoginPage> {
                                       appVerificationDisabledForTesting:
                                       false, // Ensure this is false for production
                                       );
-
+                                      homeController.mobileNo.value =
+                                          txtUsername.text;
                                       await FirebaseAuth.instance
                                           .verifyPhoneNumber(
                                         phoneNumber: '+91 ${txtUsername.text}',

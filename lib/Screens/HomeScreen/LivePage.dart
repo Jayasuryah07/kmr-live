@@ -41,92 +41,6 @@ class _LivePageState extends State<LivePage> {
           backgroundColor: ConstHelper.whiteColor,
       body: Column(
         children: [
-          CarouselSlider(
-            items: [
-              1,
-              2,
-              3,
-            ].map((i) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 1,
-                ),
-                child: SizedBox(
-                  width: Get.width,
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    imageUrl:
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUPIfiGgUML8G3ZqsNLHfaCnZK3I5g4tJabQ&s",
-                    placeholder: (context, url) => Center(
-                      child: CircularProgressIndicator(
-                        color: ConstHelper.darkBlueColor,
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => Center(
-                      child: Image.asset(
-                        'assets/image/imageNotFound.png',
-                        color: ConstHelper.blackColor,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-            options: CarouselOptions(
-              height: Get.width / 3,
-              // aspectRatio: 1,
-              viewportFraction: 1,
-              initialPage: 0,
-              enableInfiniteScroll: true,
-              reverse: false,
-              autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 3),
-              autoPlayAnimationDuration: const Duration(milliseconds: 800),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              scrollDirection: Axis.horizontal,
-              onPageChanged: (index, reason) =>
-                  homeController.sliderIndex.value = index,
-            ),
-          ),
-          SizedBox(
-            height: Get.width / 90,
-          ),
-          Obx(
-            () => Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                1,
-                2,
-                3,
-              ]
-                  .asMap()
-                  .entries
-                  .map(
-                    (e) => Container(
-                      margin: EdgeInsets.only(
-                        left: e.key == 0 ? 0 : Get.width / 150,
-                      ),
-                      height: e.key == homeController.sliderIndex.value
-                          ? Get.width / 45
-                          : Get.width / 80,
-                      width: e.key == homeController.sliderIndex.value
-                          ? Get.width / 45
-                          : Get.width / 80,
-                      decoration: BoxDecoration(
-                        color: e.key == homeController.sliderIndex.value
-                            ? ConstHelper.darkBlueColor
-                            : ConstHelper.cementColor,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-          ),
-          SizedBox(
-            height: Get.width / 20,
-          ),
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -192,496 +106,551 @@ class _LivePageState extends State<LivePage> {
                                             ? 0
                                             : Get.width / 30,
                                       ),
-                                      child: Ink(
-                                        decoration: BoxDecoration(
-                                          color: ConstHelper.whiteColor,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: ConstHelper.cementColor
-                                                  .withOpacity(0.6),
-                                              blurRadius: 1,
-                                              offset: const Offset(0, 2),
-                                            ),
-                                          ],
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              SizedBox(
-                                                height: Get.width / 6,
-                                                width: Get.width / 6,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                  BorderRadius.circular(6),
-                                                  child: CachedNetworkImage(
-                                                    imageUrl:  ConstHelper.subCategoryImagePath+(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categoriesSubImages??"") ,
-                                                    fit: BoxFit.cover,
-                                                    placeholder: (context, url) =>
-                                                        Container(
-                                                          decoration: BoxDecoration(
-                                                            borderRadius:
-                                                            BorderRadius.circular(
-                                                                6),
-                                                            color: ConstHelper
-                                                                .whiteColor,
-                                                          ),
-                                                          alignment: Alignment.center,
-                                                          child: SizedBox(
-                                                            height: Get.width / 20,
-                                                            width: Get.width / 20,
-                                                            child:
-                                                            CircularProgressIndicator(
-                                                              color: ConstHelper
-                                                                  .orangeColor,
-                                                              strokeWidth: 2,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                    errorWidget:
-                                                        (context, url, error) =>
-                                                        Container(
-                                                          decoration: BoxDecoration(
-                                                            borderRadius:
-                                                            BorderRadius.circular(
-                                                                6),
-                                                            color: ConstHelper
-                                                                .whiteColor,
-                                                          ),
-                                                          child: Image.asset(
-                                                            'assets/image/imageNotFound.png',
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
+                                      child:InkWell(
+                                        onTap: () async {
+                                          await homeController.getCategoryItemData(id: homeController.searchedLiveDataList[index].id?.toString()??"");
+                                          if(homeController.categoryFirstItem.isNotEmpty) {
+                                            showDialog(context: context, builder: (context) {
+                                              return Dialog(
+                                                backgroundColor: ConstHelper.whiteColor,
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(horizontal:  MediaQuery.of(context).size.width*0.07,vertical:  MediaQuery.of(context).size.height*0.03),
+                                                  decoration: BoxDecoration(
+                                                    color: ConstHelper.whiteColor,
+                                                    border: Border.all(color: ConstHelper.darkBlueColor),
+                                                    borderRadius:
+                                                    BorderRadius.circular(5),
                                                   ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: Get.width / 60,
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                  child: SingleChildScrollView(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Expanded(
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                homeController.searchedLiveDataList[index].vendorProduct ==
-                                                                            null ||
-                                                                        homeController
-                                                                            .searchedLiveDataList[
-                                                                                index]
-                                                                            .vendorProduct!
-                                                                            .trim()
-                                                                            .isEmpty
-                                                                    ? 'Name N/A'
-                                                                    : homeController
-                                                                        .searchedLiveDataList[
-                                                                            index]
-                                                                        .vendorProduct!,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: ConstHelper
-                                                                      .blackColor,
-                                                                  fontSize: 15,
+                                                        Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+
+                                                          children: [
+                                                            Expanded(
+                                                              child: Text(
+                                                                homeController.searchedLiveDataList[index].vendorName?.toString()??"".toUpperCase(),
+                                                                style: TextStyle(
+                                                                  color: ConstHelper.blackColor,
+                                                                  fontWeight: FontWeight.w400,
+                                                                  fontSize: 16,
                                                                 ),
                                                               ),
-                                                              Text(
-                                                                homeController.searchedLiveDataList[index].vendorProductSize ==
-                                                                            null ||
-                                                                        homeController
-                                                                            .searchedLiveDataList[
-                                                                                index]
-                                                                            .vendorProductSize!
-                                                                            .trim()
-                                                                            .isEmpty
-                                                                    ? 'Size N/A'
-                                                                    : homeController
-                                                                        .searchedLiveDataList[
-                                                                            index]
-                                                                        .vendorProductSize!,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: ConstHelper
-                                                                      .blackColor
-                                                                      .withOpacity(
-                                                                          0.6),
-                                                                  fontSize: 13,
-                                                                ),
+                                                            ),
+
+                                                            Text(
+                                                              "₹${homeController.searchedLiveDataList[index].vendorProductRate?.toString()??""}",
+                                                              style: TextStyle(
+                                                                color: ConstHelper.blackColor
+                                                                    .withOpacity(0.6),
+                                                                fontWeight: FontWeight.w500,
+                                                                fontSize: 14,
                                                               ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          // height: Get.width/15,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: ConstHelper
-                                                                .blackColor,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        3),
-                                                          ),
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                            horizontal:
-                                                                Get.width / 75,
-                                                          ),
-                                                          child: Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                "₹ ${homeController.searchedLiveDataList[index].vendorProductRate == null ? 'Price N/A' : homeController.searchedLiveDataList[index].vendorProductRate!}",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: ConstHelper
-                                                                      .whiteColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  fontSize: 15,
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                width:
-                                                                    Get.width /
-                                                                        60,
-                                                              ),
-                                                              Text(
-                                                                "(+40)",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: ConstHelper
-                                                                      .lightGreenColor,
+                                                            ),
+                                                            Text(
+                                                              homeController.searchedLiveDataList[index].oldVendorProductRate != null && homeController.searchedLiveDataList[index].oldVendorProductRate!= 0?"+(${(homeController.searchedLiveDataList[index].vendorProductRate??0) -(homeController.searchedLiveDataList[index].oldVendorProductRate??0)})":"(+0)",
+                                                              style:
+                                                              TextStyle(
+                                                                  color:Color(
+                                                                      0xff507503),
                                                                   fontSize: 10,
-                                                                ),
-                                                              )
-                                                            ],
+                                                                  fontWeight: FontWeight.w600
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        Text(
+                                                          homeController.searchedLiveDataList[index].vendorProductCategory?.toString()??"".toUpperCase(),
+                                                          style: TextStyle(
+                                                            color: ConstHelper.blackColor,
+                                                            fontWeight: FontWeight.w600,
+                                                            fontSize: 18,
                                                           ),
                                                         ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Text.rich(
-                                                            TextSpan(
-                                                              children: [
-                                                                TextSpan(
-                                                                  text: homeController.searchedLiveDataList[index].vendorProductCreatedDate ==
-                                                                              null ||
-                                                                          homeController.searchedLiveDataList[index].vendorProductCreatedDate!.year <=
-                                                                              0
-                                                                      ? 'Date N/A'
-                                                                      : DateFormat('dd/MMM/yyyy').format(homeController
-                                                                          .searchedLiveDataList[
-                                                                              index]
-                                                                          .vendorProductCreatedDate!),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        12,
-                                                                    color: ConstHelper
-                                                                        .blackColor
-                                                                        .withOpacity(
-                                                                            0.6),
+                                                        Row(
+                                                          children: [
+                                                            Expanded(
+                                                              child: Text(
+                                                                homeController.searchedLiveDataList[index].vendorProductSize??"",
+                                                                style: TextStyle(
+                                                                  color: ConstHelper.blackColor
+                                                                      .withOpacity(0.6),
+                                                                  fontWeight: FontWeight.w500,
+                                                                  fontSize: 14,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              child: Align(
+                                                                alignment: Alignment.centerRight,
+                                                                child: Text.rich(
+                                                                  TextSpan(
+                                                                    children: [
+                                                                      TextSpan(
+                                                                        text: homeController.searchedLiveDataList[index].vendorProductUpdatedDate ==
+                                                                            null ||
+                                                                            homeController.searchedLiveDataList[index].vendorProductUpdatedDate!.year <=
+                                                                                0
+                                                                            ? 'Date N/A'
+                                                                            : DateFormat('dd/MMM/yyyy').format(homeController.searchedLiveDataList[index].vendorProductUpdatedDate!),
+
+                                                                        style:
+                                                                        TextStyle(
+                                                                          fontSize:
+                                                                          12,
+                                                                          color: ConstHelper
+                                                                              .blackColor
+                                                                              .withOpacity(
+                                                                              0.6),
+                                                                        ),
+                                                                      ),
+                                                                      const TextSpan(
+                                                                          text: '  '),
+                                                                      TextSpan(
+                                                                        text: homeController.searchedLiveDataList[index].vendorProductCreatedTime ==
+                                                                            null ||
+                                                                            homeController
+                                                                                .searchedLiveDataList[
+                                                                            index]
+                                                                                .vendorProductCreatedTime!
+                                                                                .trim()
+                                                                                .isEmpty
+                                                                            ? 'Time N/A'
+                                                                            : DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
+                                                                            .searchedLiveDataList[
+                                                                        index]
+                                                                            .vendorProductCreatedTime!)),
+                                                                        style:
+                                                                        TextStyle(
+                                                                          fontSize:
+                                                                          12,
+                                                                          color: ConstHelper
+                                                                              .blackColor
+                                                                              .withOpacity(
+                                                                              0.6),
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   ),
                                                                 ),
-                                                                const TextSpan(
-                                                                    text: '  '),
-                                                                TextSpan(
-                                                                  text: homeController.searchedLiveDataList[index].vendorProductCreatedTime ==
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const Divider(),
+                                                        if(homeController.categoryFirstItem.isNotEmpty)
+                                                          Text("Last 10 Prices",
+                                                            textAlign:TextAlign.start,
+                                                            style: TextStyle(
+                                                              color: ConstHelper.darkBlueColor,
+                                                              fontWeight: FontWeight. w600,
+                                                              fontSize: 16,
+                                                            ),).paddingOnly(bottom: Get.height/60),
+                                                        if(homeController.categoryFirstItem.isNotEmpty)
+                                                          ListView.separated(
+                                                              shrinkWrap: true,
+                                                              itemBuilder: (context, index) {
+                                                                return Row(
+                                                                  children: [
+                                                                    Expanded(
+                                                                      child: Align(
+                                                                        alignment: Alignment.centerLeft,
+                                                                        child: Text.rich(
+                                                                          TextSpan(
+                                                                            children: [
+                                                                              TextSpan(
+                                                                                text: homeController.categoryFirstItem[index].vendorProductUpdatedDate ==
+                                                                                    null ||
+                                                                                    homeController.categoryFirstItem[index].vendorProductUpdatedDate!.year <=
+                                                                                        0
+                                                                                    ? 'Date N/A'
+                                                                                    : DateFormat('dd-MMM-yyyy').format(homeController.categoryFirstItem[index].vendorProductUpdatedDate!),
+
+                                                                                style:
+                                                                                TextStyle(
+                                                                                  fontSize:
+                                                                                  13,
+                                                                                  color: ConstHelper
+                                                                                      .blackColor
+                                                                                      .withOpacity(
+                                                                                      0.6),
+                                                                                ),
+                                                                              ),
+                                                                              const TextSpan(
+                                                                                  text: '  '),
+                                                                              TextSpan(
+                                                                                text: homeController.categoryFirstItem[index].vendorProductUpdatedTime ==
+                                                                                    null ||
+                                                                                    homeController
+                                                                                        .categoryFirstItem[
+                                                                                    index]
+                                                                                        .vendorProductUpdatedTime!
+                                                                                        .trim()
+                                                                                        .isEmpty
+                                                                                    ? 'Time N/A'
+                                                                                    : DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
+                                                                                    .categoryFirstItem[
+                                                                                index]
+                                                                                    .vendorProductUpdatedTime!)),
+                                                                                style:
+                                                                                TextStyle(
+                                                                                  fontSize:
+                                                                                  13,
+                                                                                  color: ConstHelper
+                                                                                      .blackColor
+                                                                                      .withOpacity(
+                                                                                      0.6),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Text("₹ ${homeController.categoryFirstItem[index].vendorProductRate?.toString()??""}",
+                                                                      textAlign:TextAlign.end,
+                                                                      style: TextStyle(
+                                                                        color: ConstHelper.darkBlueColor,
+                                                                        fontWeight: FontWeight.w400,
+                                                                        fontSize: 13,
+                                                                      ),),],);
+                                                              }, separatorBuilder: (context, index) => const SizedBox(height: 10,), itemCount: homeController.categoryFirstItem.length)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },);
+                                          }else{
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: const Text(
+                                                  'No Data Available',
+                                                  style: TextStyle(color: Colors.white),
+                                                ),
+                                                backgroundColor: Colors.black.withOpacity(0.5),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),
+                                                behavior: SnackBarBehavior.floating, // Makes it float above content
+                                                action: SnackBarAction(
+                                                  label: 'DISMISS',
+                                                  onPressed: () {},
+                                                  textColor: Colors.white,
+                                                ),
+                                              ),
+                                            );
+
+                                          }
+                                        },
+                                        splashColor: Colors.transparent,
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Ink(
+                                          decoration: BoxDecoration(
+                                            color: ConstHelper.whiteColor,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: ConstHelper.cementColor
+                                                    .withOpacity(0.6),
+                                                blurRadius: 1,
+                                                offset: const Offset(0, 2),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                SizedBox(
+                                                  height: Get.width / 6,
+                                                  width: Get.width / 6,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                    BorderRadius.circular(6),
+                                                    child: CachedNetworkImage(
+                                                      imageUrl:  ConstHelper.subCategoryImagePath+(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categoriesSubImages??"") ,
+                                                      fit: BoxFit.cover,
+                                                      placeholder: (context, url) =>
+                                                          Container(
+                                                            decoration: BoxDecoration(
+                                                              borderRadius:
+                                                              BorderRadius.circular(
+                                                                  6),
+                                                              color: ConstHelper
+                                                                  .whiteColor,
+                                                            ),
+                                                            alignment: Alignment.center,
+                                                            child: SizedBox(
+                                                              height: Get.width / 20,
+                                                              width: Get.width / 20,
+                                                              child:
+                                                              CircularProgressIndicator(
+                                                                color: ConstHelper
+                                                                    .orangeColor,
+                                                                strokeWidth: 2,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                      errorWidget:
+                                                          (context, url, error) =>
+                                                          Container(
+                                                            decoration: BoxDecoration(
+                                                              borderRadius:
+                                                              BorderRadius.circular(
+                                                                  6),
+                                                              color: ConstHelper
+                                                                  .whiteColor,
+                                                            ),
+                                                            child: Image.asset(
+                                                              'assets/image/imageNotFound.png',
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: Get.width / 60,
+                                                ),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    children: [
+                                                      Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Expanded(
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  homeController.searchedLiveDataList[index].vendorName ==
                                                                               null ||
                                                                           homeController
                                                                               .searchedLiveDataList[
                                                                                   index]
-                                                                              .vendorProductCreatedTime!
+                                                                              .vendorName!
                                                                               .trim()
                                                                               .isEmpty
-                                                                      ? 'Time N/A'
-                                                                      : DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
+                                                                      ? 'Name N/A'
+                                                                      : homeController
                                                                           .searchedLiveDataList[
                                                                               index]
-                                                                          .vendorProductCreatedTime!)),
+                                                                          .vendorName!,
                                                                   style:
                                                                       TextStyle(
-                                                                    fontSize:
-                                                                        12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
                                                                     color: ConstHelper
-                                                                        .blackColor
-                                                                        .withOpacity(
-                                                                            0.6),
+                                                                        .blackColor,
+                                                                    fontSize: 14,
                                                                   ),
                                                                 ),
+                                                                Text(
+                                                                  homeController.searchedLiveDataList[index].vendorProduct ==
+                                                                      null ||
+                                                                      homeController
+                                                                          .searchedLiveDataList[
+                                                                      index]
+                                                                          .vendorProduct!
+                                                                          .trim()
+                                                                          .isEmpty
+                                                                      ? 'Name N/A'
+                                                                      : homeController
+                                                                      .searchedLiveDataList[
+                                                                  index]
+                                                                      .vendorProduct!,
+                                                                  style:
+                                                                  TextStyle(
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                    color: ConstHelper
+                                                                        .blackColor,
+                                                                    fontSize: 15,
+                                                                  ),
+                                                                ),
+
                                                               ],
                                                             ),
                                                           ),
-                                                        ),
-                                                        Align(
-                                                            alignment: Alignment.centerRight,
-                                                            child: InkWell(
-                                                                onTap: () async {
-                                                                  await homeController.getCategoryItemData(id: homeController.searchedLiveDataList[index].vendorId?.toString()??"");
-                                                                  if(homeController.categoryFirstItem.isNotEmpty) {
-                                                                    showDialog(context: context, builder: (context) {
-                                                                      return Dialog(
-                                                                        backgroundColor: ConstHelper.whiteColor,
-                                                                        child: Container(
-                                                                          padding: EdgeInsets.symmetric(horizontal:  MediaQuery.of(context).size.width*0.03,vertical:  MediaQuery.of(context).size.height*0.01),
-                                                                          decoration: BoxDecoration(
-                                                                            color: ConstHelper.whiteColor,
-                                                                            border: Border.all(color: ConstHelper.darkBlueColor),
-                                                                            borderRadius:
-                                                                            BorderRadius.circular(5),
-                                                                          ),
-                                                                          child: SingleChildScrollView(
-                                                                            child: Column(
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children: [
-                                                                                Row(
-                                                                                  children: [
-                                                                                    Expanded(
-                                                                                      child: Text(
-                                                                                        homeController.searchedLiveDataList[index].vendorProductCategory?.toString()??"".toUpperCase(),
-                                                                                        style: TextStyle(
-                                                                                          color: ConstHelper.blackColor,
-                                                                                          fontWeight: FontWeight.w600,
-                                                                                          fontSize: 18,
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-
-                                                                                    Text(
-                                                                                      "₹${homeController.searchedLiveDataList[index].vendorProductRate?.toString()??""}",
-                                                                                      style: TextStyle(
-                                                                                        color: ConstHelper.blackColor
-                                                                                            .withOpacity(0.6),
-                                                                                        fontWeight: FontWeight.w500,
-                                                                                        fontSize: 14,
-                                                                                      ),
-                                                                                    ),
-                                                                                    Text(
-                                                                                      "(+40)",
-                                                                                      style:
-                                                                                      TextStyle(
-                                                                                          color:Color(
-                                                                                              0xff507503),
-                                                                                          fontSize: 10,
-                                                                                          fontWeight: FontWeight.w600
-                                                                                      ),
-                                                                                    )
-                                                                                  ],
-                                                                                ),
-                                                                                Row(
-                                                                                  children: [
-                                                                                    Text(
-                                                                                      homeController.searchedLiveDataList[index].vendorProductSize??"",
-                                                                                      style: TextStyle(
-                                                                                        color: ConstHelper.blackColor
-                                                                                            .withOpacity(0.6),
-                                                                                        fontWeight: FontWeight.w500,
-                                                                                        fontSize: 14,
-                                                                                      ),
-                                                                                    ),
-                                                                                    Expanded(
-                                                                                      child: Align(
-                                                                                        alignment: Alignment.centerRight,
-                                                                                        child: Text.rich(
-                                                                                          TextSpan(
-                                                                                            children: [
-                                                                                              TextSpan(
-                                                                                                text: homeController.searchedLiveDataList[index].vendorProductUpdatedDate ==
-                                                                                                    null ||
-                                                                                                    homeController.searchedLiveDataList[index].vendorProductUpdatedDate!.year <=
-                                                                                                        0
-                                                                                                    ? 'Date N/A'
-                                                                                                    : DateFormat('dd/MMM/yyyy').format(homeController.searchedLiveDataList[index].vendorProductUpdatedDate!),
-
-                                                                                                style:
-                                                                                                TextStyle(
-                                                                                                  fontSize:
-                                                                                                  12,
-                                                                                                  color: ConstHelper
-                                                                                                      .blackColor
-                                                                                                      .withOpacity(
-                                                                                                      0.6),
-                                                                                                ),
-                                                                                              ),
-                                                                                              const TextSpan(
-                                                                                                  text: '  '),
-                                                                                              TextSpan(
-                                                                                                text: homeController.searchedLiveDataList[index].vendorProductCreatedTime ==
-                                                                                                    null ||
-                                                                                                    homeController
-                                                                                                        .searchedLiveDataList[
-                                                                                                    index]
-                                                                                                        .vendorProductCreatedTime!
-                                                                                                        .trim()
-                                                                                                        .isEmpty
-                                                                                                    ? 'Time N/A'
-                                                                                                    : DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
-                                                                                                    .searchedLiveDataList[
-                                                                                                index]
-                                                                                                    .vendorProductCreatedTime!)),
-                                                                                                style:
-                                                                                                TextStyle(
-                                                                                                  fontSize:
-                                                                                                  12,
-                                                                                                  color: ConstHelper
-                                                                                                      .blackColor
-                                                                                                      .withOpacity(
-                                                                                                      0.6),
-                                                                                                ),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                                const Divider(),
-                                                                                if(homeController.categoryFirstItem.isNotEmpty)
-                                                                                  Text("Last 10 Prices",
-                                                                                    textAlign:TextAlign.start,
-                                                                                    style: TextStyle(
-                                                                                      color: ConstHelper.darkBlueColor,
-                                                                                      fontWeight: FontWeight. w600,
-                                                                                      fontSize: 16,
-                                                                                    ),).paddingOnly(bottom: Get.height/60),
-                                                                                if(homeController.categoryFirstItem.isNotEmpty)
-                                                                                  ListView.separated(
-                                                                                      shrinkWrap: true,
-                                                                                      itemBuilder: (context, index) {
-                                                                                        return Row(
-                                                                                          children: [
-                                                                                            Expanded(
-                                                                                              child: Align(
-                                                                                                alignment: Alignment.centerLeft,
-                                                                                                child: Text.rich(
-                                                                                                  TextSpan(
-                                                                                                    children: [
-                                                                                                      TextSpan(
-                                                                                                        text: homeController.categoryFirstItem[index].vendorProductUpdatedDate ==
-                                                                                                            null ||
-                                                                                                            homeController.categoryFirstItem[index].vendorProductUpdatedDate!.year <=
-                                                                                                                0
-                                                                                                            ? 'Date N/A'
-                                                                                                            : DateFormat('dd-MMM-yyyy').format(homeController.categoryFirstItem[index].vendorProductUpdatedDate!),
-
-                                                                                                        style:
-                                                                                                        TextStyle(
-                                                                                                          fontSize:
-                                                                                                          13,
-                                                                                                          color: ConstHelper
-                                                                                                              .blackColor
-                                                                                                              .withOpacity(
-                                                                                                              0.6),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                      const TextSpan(
-                                                                                                          text: '  '),
-                                                                                                      TextSpan(
-                                                                                                        text: homeController.categoryFirstItem[index].vendorProductUpdatedTime ==
-                                                                                                            null ||
-                                                                                                            homeController
-                                                                                                                .categoryFirstItem[
-                                                                                                            index]
-                                                                                                                .vendorProductUpdatedTime!
-                                                                                                                .trim()
-                                                                                                                .isEmpty
-                                                                                                            ? 'Time N/A'
-                                                                                                            : DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
-                                                                                                            .categoryFirstItem[
-                                                                                                        index]
-                                                                                                            .vendorProductUpdatedTime!)),
-                                                                                                        style:
-                                                                                                        TextStyle(
-                                                                                                          fontSize:
-                                                                                                          13,
-                                                                                                          color: ConstHelper
-                                                                                                              .blackColor
-                                                                                                              .withOpacity(
-                                                                                                              0.6),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                            ),
-                                                                                            Text("₹ ${homeController.categoryFirstItem[index].vendorProductRate?.toString()??""}",
-                                                                                              textAlign:TextAlign.end,
-                                                                                              style: TextStyle(
-                                                                                                color: ConstHelper.darkBlueColor,
-                                                                                                fontWeight: FontWeight.w400,
-                                                                                                fontSize: 13,
-                                                                                              ),),],);
-                                                                                      }, separatorBuilder: (context, index) => const SizedBox(height: 10,), itemCount: homeController.categoryFirstItem.length)
-                                                                              ],
-                                                                            ),
+                                                          Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                                            children: [
+                                                              Container(
+                                                                // height: Get.width/15,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: ConstHelper
+                                                                      .blackColor,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              3),
+                                                                ),
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                  horizontal:
+                                                                      Get.width / 75,
+                                                                ),
+                                                                child: Row(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Column(
+                                                                      children: [
+                                                                        Text(
+                                                                          "₹ ${homeController.searchedLiveDataList[index].vendorProductRate == null ? 'Price N/A' : homeController.searchedLiveDataList[index].vendorProductRate!}",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color: ConstHelper
+                                                                                .whiteColor,
+                                                                            fontWeight:
+                                                                                FontWeight
+                                                                                    .w500,
+                                                                            fontSize: 15,
                                                                           ),
                                                                         ),
-                                                                      );
-                                                                    },);
-                                                                  }else{
-                                                                    ScaffoldMessenger.of(context).showSnackBar(
-                                                                      SnackBar(
-                                                                        content: const Text(
-                                                                          'No Data Available',
-                                                                          style: TextStyle(color: Colors.white),
-                                                                        ),
-                                                                        backgroundColor: Colors.black.withOpacity(0.5),
-                                                                        shape: RoundedRectangleBorder(
-                                                                          borderRadius: BorderRadius.circular(10),
-                                                                        ),
-                                                                        behavior: SnackBarBehavior.floating, // Makes it float above content
-                                                                        action: SnackBarAction(
-                                                                          label: 'DISMISS',
-                                                                          onPressed: () {},
-                                                                          textColor: Colors.white,
-                                                                        ),
+
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width:
+                                                                          Get.width /
+                                                                              60,
+                                                                    ),
+                                                                    Text(
+                                                                      homeController.searchedLiveDataList[index].oldVendorProductRate != null && homeController.searchedLiveDataList[index].oldVendorProductRate!= 0?"+(${(homeController.searchedLiveDataList[index].vendorProductRate??0) -(homeController.searchedLiveDataList[index].oldVendorProductRate??0)})":"(+0)",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: ConstHelper
+                                                                            .lightGreenColor,
+                                                                        fontSize: 10,
                                                                       ),
-                                                                    );
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                width: Get.width*0.2,
+                                                                child: Text(
+                                                                  homeController.searchedLiveDataList[index].vendorProductSize ==
+                                                                      null ||
+                                                                      homeController
+                                                                          .searchedLiveDataList[
+                                                                      index]
+                                                                          .vendorProductSize!
+                                                                          .trim()
+                                                                          .isEmpty
+                                                                      ? 'Size N/A'
+                                                                      : homeController
+                                                                      .searchedLiveDataList[
+                                                                  index]
+                                                                      .vendorProductSize!,
+                                                                  textAlign: TextAlign.end,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                  style:
+                                                                  TextStyle(
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                    color: ConstHelper
+                                                                        .blackColor
+                                                                        .withOpacity(
+                                                                        0.6),
+                                                                    fontSize: 13,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
 
-                                                                  }
-                                                                },
-                                                                splashColor: Colors.transparent,
-                                                                borderRadius: BorderRadius.circular(10),
-                                                                child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: 12,fontWeight: FontWeight.w600),)))
-                                                        // Obx(() => Icon(Icons.favorite,color: homeController.favorite.value == false?Color(0xff5D646C):Colors.redAccent,),),
-                                                      ],
-                                                    )
-                                                  ],
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        children: [
+                                                       /*   Expanded(
+                                                            child: Text.rich(
+                                                              TextSpan(
+                                                                children: [
+                                                                  TextSpan(
+                                                                    text: homeController.searchedLiveDataList[index].vendorProductCreatedDate ==
+                                                                                null ||
+                                                                            homeController.searchedLiveDataList[index].vendorProductCreatedDate!.year <=
+                                                                                0
+                                                                        ? 'Date N/A'
+                                                                        : DateFormat('dd/MMM/yyyy').format(homeController
+                                                                            .searchedLiveDataList[
+                                                                                index]
+                                                                            .vendorProductCreatedDate!),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: ConstHelper
+                                                                          .blackColor
+                                                                          .withOpacity(
+                                                                              0.6),
+                                                                    ),
+                                                                  ),
+                                                                  const TextSpan(
+                                                                      text: '  '),
+                                                                  TextSpan(
+                                                                    text: homeController.searchedLiveDataList[index].vendorProductCreatedTime ==
+                                                                                null ||
+                                                                            homeController
+                                                                                .searchedLiveDataList[
+                                                                                    index]
+                                                                                .vendorProductCreatedTime!
+                                                                                .trim()
+                                                                                .isEmpty
+                                                                        ? 'Time N/A'
+                                                                        : DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
+                                                                            .searchedLiveDataList[
+                                                                                index]
+                                                                            .vendorProductCreatedTime!)),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: ConstHelper
+                                                                          .blackColor
+                                                                          .withOpacity(
+                                                                              0.6),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),*/
+                                                          Align(
+                                                              alignment: Alignment.centerRight,
+                                                              child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: 12,fontWeight: FontWeight.w600),))
+                                                          // Obx(() => Icon(Icons.favorite,color: homeController.favorite.value == false?Color(0xff5D646C):Colors.redAccent,),),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -741,499 +710,549 @@ class _LivePageState extends State<LivePage> {
                                             ? 0
                                             : Get.width / 30,
                                       ),
-                                      child: Ink(
-                                        decoration: BoxDecoration(
-                                          color: ConstHelper.whiteColor,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: ConstHelper.cementColor
-                                                  .withOpacity(0.6),
-                                              blurRadius: 1,
-                                              offset: const Offset(0, 2),
-                                            ),
-                                          ],
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              SizedBox(
-                                                height: Get.width / 6,
-                                                width: Get.width / 6,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                  BorderRadius.circular(6),
-                                                  child: CachedNetworkImage(
-                                                    imageUrl:  ConstHelper.subCategoryImagePath+(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categoriesSubImages??"") ,
-                                                    fit: BoxFit.cover,
-                                                    placeholder: (context, url) =>
-                                                        Container(
-                                                          decoration: BoxDecoration(
-                                                            borderRadius:
-                                                            BorderRadius.circular(
-                                                                6),
-                                                            color: ConstHelper
-                                                                .whiteColor,
-                                                          ),
-                                                          alignment: Alignment.center,
-                                                          child: SizedBox(
-                                                            height: Get.width / 20,
-                                                            width: Get.width / 20,
-                                                            child:
-                                                            CircularProgressIndicator(
-                                                              color: ConstHelper
-                                                                  .orangeColor,
-                                                              strokeWidth: 2,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                    errorWidget:
-                                                        (context, url, error) =>
-                                                        Container(
-                                                          decoration: BoxDecoration(
-                                                            borderRadius:
-                                                            BorderRadius.circular(
-                                                                6),
-                                                            color: ConstHelper
-                                                                .whiteColor,
-                                                          ),
-                                                          child: Image.asset(
-                                                            'assets/image/imageNotFound.png',
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
+                                      child:InkWell(
+                                        onTap: () async {
+                                          await homeController.getCategoryItemData(id: homeController.allLiveDataList[index].id?.toString()??"");
+                                          if(homeController.categoryFirstItem.isNotEmpty) {
+                                            showDialog(context: context, builder: (context) {
+                                              return Dialog(
+                                                backgroundColor: ConstHelper.whiteColor,
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(horizontal:  MediaQuery.of(context).size.width*0.07,vertical:  MediaQuery.of(context).size.height*0.03),
+                                                  decoration: BoxDecoration(
+                                                    color: ConstHelper.whiteColor,
+                                                    border: Border.all(color: ConstHelper.darkBlueColor),
+                                                    borderRadius:
+                                                    BorderRadius.circular(5),
                                                   ),
-                                                ),
-                                              ),
-
-                                              SizedBox(
-                                                width: Get.width / 60,
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                  child: SingleChildScrollView(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Expanded(
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                homeController.allLiveDataList[index].vendorProduct ==
-                                                                            null ||
-                                                                        homeController
-                                                                            .allLiveDataList[
-                                                                                index]
-                                                                            .vendorProduct!
-                                                                            .trim()
-                                                                            .isEmpty
-                                                                    ? 'Name N/A'
-                                                                    : homeController
-                                                                        .allLiveDataList[
-                                                                            index]
-                                                                        .vendorProduct!,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: ConstHelper
-                                                                      .blackColor,
-                                                                  fontSize: 15,
+                                                        Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Expanded(
+                                                              child: Text(
+                                                                homeController.allLiveDataList[index].vendorName?.toString()??"".toUpperCase(),
+                                                                style: TextStyle(
+                                                                  color: ConstHelper.blackColor,
+                                                                  fontWeight: FontWeight.w400,
+                                                                  fontSize: 18,
                                                                 ),
                                                               ),
-                                                              Text(
-                                                                homeController.allLiveDataList[index].vendorProductSize ==
-                                                                            null ||
-                                                                        homeController
-                                                                            .allLiveDataList[
-                                                                                index]
-                                                                            .vendorProductSize!
-                                                                            .trim()
-                                                                            .isEmpty
-                                                                    ? 'Size N/A'
-                                                                    : homeController
-                                                                        .allLiveDataList[
-                                                                            index]
-                                                                        .vendorProductSize!,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: ConstHelper
-                                                                      .blackColor
-                                                                      .withOpacity(
-                                                                          0.6),
-                                                                  fontSize: 13,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          // height: Get.width/15,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: ConstHelper
-                                                                .blackColor,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        3),
-                                                          ),
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                            horizontal:
-                                                                Get.width / 75,
-                                                          ),
-                                                          child: Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                "₹ ${homeController.allLiveDataList[index].vendorProductRate == null ? 'Price N/A' : homeController.allLiveDataList[index].vendorProductRate!}",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: ConstHelper
-                                                                      .whiteColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  fontSize: 15,
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                width:
-                                                                    Get.width /
-                                                                        60,
-                                                              ),
-                                                              Text(
-                                                                "(+40)",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: ConstHelper
-                                                                      .lightGreenColor,
-                                                                  fontSize: 10,
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Text.rich(
-                                                            TextSpan(
-                                                              children: [
-                                                                TextSpan(
-                                                                  text: homeController.allLiveDataList[index].vendorProductCreatedDate ==
-                                                                              null ||
-                                                                          homeController.allLiveDataList[index].vendorProductCreatedDate!.year <=
-                                                                              0
-                                                                      ? 'Date N/A'
-                                                                      : DateFormat('dd/MMM/yyyy').format(homeController
-                                                                          .allLiveDataList[
-                                                                              index]
-                                                                          .vendorProductCreatedDate!),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        12,
-                                                                    color: ConstHelper
-                                                                        .blackColor
-                                                                        .withOpacity(
-                                                                            0.6),
-                                                                  ),
-                                                                ),
-                                                                const TextSpan(
-                                                                    text: '  '),
-                                                                TextSpan(
-                                                                  text: homeController.allLiveDataList[index].vendorProductCreatedTime ==
-                                                                              null ||
-                                                                          homeController
-                                                                              .allLiveDataList[
-                                                                                  index]
-                                                                              .vendorProductCreatedTime!
-                                                                              .trim()
-                                                                              .isEmpty
-                                                                      ? 'Time N/A'
-                                                                      : DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
-                                                                          .allLiveDataList[
-                                                                              index]
-                                                                          .vendorProductCreatedTime!)),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        12,
-                                                                    color: ConstHelper
-                                                                        .blackColor
-                                                                        .withOpacity(
-                                                                            0.6),
-                                                                  ),
-                                                                ),
-                                                              ],
                                                             ),
+
+                                                            Text(
+                                                              "₹${homeController.allLiveDataList[index].vendorProductRate?.toString()??""}",
+                                                              style: TextStyle(
+                                                                color: ConstHelper.blackColor
+                                                                    .withOpacity(0.6),
+                                                                fontWeight: FontWeight.w500,
+                                                                fontSize: 14,
+                                                              ),
+                                                            ),
+                                                             Text(
+                                                              ((homeController.allLiveDataList[index].vendorProductRate??0) -(homeController.allLiveDataList[index].oldVendorProductRate??0)).toString(),
+                                                              style:
+                                                              TextStyle(
+                                                                  color:Color(
+                                                                      0xff507503),
+                                                                  fontSize: 10,
+                                                                  fontWeight: FontWeight.w600
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        Text(
+                                                          homeController.allLiveDataList[index].vendorProduct?.toString()??"".toUpperCase(),
+                                                          style: TextStyle(
+                                                            color: ConstHelper.blackColor,
+                                                            fontWeight: FontWeight.w600,
+                                                            fontSize: 18,
                                                           ),
                                                         ),
-                                                        Align(
-                                                            alignment: Alignment.centerRight,
-                                                            child: InkWell(
-                                                                onTap: () async {
-                                                                  await homeController.getCategoryItemData(id: homeController.allLiveDataList[index].vendorId?.toString()??"");
-                                                                  if(homeController.categoryFirstItem.isNotEmpty) {
-                                                                    showDialog(context: context, builder: (context) {
-                                                                    return Dialog(
-                                                                      backgroundColor: ConstHelper.whiteColor,
-                                                                      child: Container(
-                                                                        padding: EdgeInsets.symmetric(horizontal:  MediaQuery.of(context).size.width*0.03,vertical:  MediaQuery.of(context).size.height*0.01),
-                                                                        decoration: BoxDecoration(
-                                                                          color: ConstHelper.whiteColor,
-                                                                          border: Border.all(color: ConstHelper.darkBlueColor),
-                                                                          borderRadius:
-                                                                          BorderRadius.circular(5),
+
+                                                        Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+
+                                                          children: [
+                                                            Text(
+                                                              homeController.allLiveDataList[index].vendorProductSize??"",
+                                                              style: TextStyle(
+                                                                color: ConstHelper.blackColor
+                                                                    .withOpacity(0.6),
+                                                                fontWeight: FontWeight.w500,
+                                                                fontSize: 14,
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              child: Align(
+                                                                alignment: Alignment.centerRight,
+                                                                child: Text.rich(
+                                                                  TextSpan(
+
+                                                                    children: [
+                                                                      TextSpan(
+                                                                        text: homeController.allLiveDataList[index].vendorProductUpdatedDate ==
+                                                                            null ||
+                                                                            homeController.allLiveDataList[index].vendorProductUpdatedDate!.year <=
+                                                                                0
+                                                                            ? 'Date N/A'
+                                                                            : DateFormat('dd/MMM/yyyy').format(homeController.allLiveDataList[index].vendorProductUpdatedDate!),
+
+                                                                        style:
+                                                                        TextStyle(
+                                                                          fontSize:
+                                                                          12,
+                                                                          color: ConstHelper
+                                                                              .blackColor
+                                                                              .withOpacity(
+                                                                              0.6),
                                                                         ),
-                                                                        child: SingleChildScrollView(
-                                                                          child: Column(
-                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                      ),
+                                                                      const TextSpan(
+                                                                          text: '  '),
+                                                                      TextSpan(
+                                                                        text: homeController.allLiveDataList[index].vendorProductCreatedTime ==
+                                                                            null ||
+                                                                            homeController
+                                                                                .allLiveDataList[
+                                                                            index]
+                                                                                .vendorProductCreatedTime!
+                                                                                .trim()
+                                                                                .isEmpty
+                                                                            ? 'Time N/A'
+                                                                            : DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
+                                                                            .allLiveDataList[
+                                                                        index]
+                                                                            .vendorProductCreatedTime!)),
+                                                                        style:
+                                                                        TextStyle(
+                                                                          fontSize:
+                                                                          12,
+                                                                          color: ConstHelper
+                                                                              .blackColor
+                                                                              .withOpacity(
+                                                                              0.6),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const Divider(),
+                                                        if(homeController.categoryFirstItem.isNotEmpty)
+                                                          Text("Last 10 Prices",
+                                                            textAlign:TextAlign.start,
+                                                            style: TextStyle(
+                                                              color: ConstHelper.darkBlueColor,
+                                                              fontWeight: FontWeight. w600,
+                                                              fontSize: 16,
+                                                            ),).paddingOnly(bottom: Get.height/60),
+                                                        if(homeController.categoryFirstItem.isNotEmpty)
+                                                          ListView.separated(
+                                                              shrinkWrap: true,
+                                                              itemBuilder: (context, index) {
+                                                                return Row(
+                                                                  children: [
+                                                                    Expanded(
+                                                                      child: Align(
+                                                                        alignment: Alignment.centerLeft,
+                                                                        child: Text.rich(
+                                                                          TextSpan(
                                                                             children: [
-                                                                              Row(
-                                                                                children: [
-                                                                                  Expanded(
-                                                                                    child: Text(
-                                                                                      homeController.allLiveDataList[index].vendorProductCategory?.toString()??"".toUpperCase(),
-                                                                                      style: TextStyle(
-                                                                                        color: ConstHelper.blackColor,
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                        fontSize: 18,
-                                                                                      ),
-                                                                                    ),
-                                                                                  ),
+                                                                              TextSpan(
+                                                                                text: homeController.categoryFirstItem[index].vendorProductUpdatedDate ==
+                                                                                    null ||
+                                                                                    homeController.categoryFirstItem[index].vendorProductUpdatedDate!.year <=
+                                                                                        0
+                                                                                    ? 'Date N/A'
+                                                                                    : DateFormat('dd-MMM-yyyy').format(homeController.categoryFirstItem[index].vendorProductUpdatedDate!),
 
-                                                                                  Text(
-                                                                               "₹${homeController.allLiveDataList[index].vendorProductRate?.toString()??""}",
-                                                                                    style: TextStyle(
-                                                                                      color: ConstHelper.blackColor
-                                                                                          .withOpacity(0.6),
-                                                                                      fontWeight: FontWeight.w500,
-                                                                                      fontSize: 14,
-                                                                                    ),
-                                                                                  ),
-                                                                                  const Text(
-                                                                                    "(+40)",
-                                                                                    style:
-                                                                                    TextStyle(
-                                                                                      color:Color(
-                                                                                          0xff507503),
-                                                                                      fontSize: 10,
-                                                                                      fontWeight: FontWeight.w600
-                                                                                    ),
-                                                                                  )
-                                                                                ],
+                                                                                style:
+                                                                                TextStyle(
+                                                                                  fontSize:
+                                                                                  13,
+                                                                                  color: ConstHelper
+                                                                                      .blackColor
+                                                                                      .withOpacity(
+                                                                                      0.6),
+                                                                                ),
                                                                               ),
-                                                                              Row(
-                                                                                children: [
-                                                                                  Text(
-                                                                                    homeController.allLiveDataList[index].vendorProductSize??"",
-                                                                                    style: TextStyle(
-                                                                                      color: ConstHelper.blackColor
-                                                                                          .withOpacity(0.6),
-                                                                                      fontWeight: FontWeight.w500,
-                                                                                      fontSize: 14,
-                                                                                    ),
-                                                                                  ),
-                                                                                  Expanded(
-                                                                                    child: Align(
-                                                                                      alignment: Alignment.centerRight,
-                                                                                      child: Text.rich(
-                                                                                        TextSpan(
-
-                                                                                          children: [
-                                                                                            TextSpan(
-                                                                                              text: homeController.allLiveDataList[index].vendorProductUpdatedDate ==
-                                                                                                  null ||
-                                                                                                  homeController.allLiveDataList[index].vendorProductUpdatedDate!.year <=
-                                                                                                      0
-                                                                                                  ? 'Date N/A'
-                                                                                                  : DateFormat('dd/MMM/yyyy').format(homeController.allLiveDataList[index].vendorProductUpdatedDate!),
-
-                                                                                              style:
-                                                                                              TextStyle(
-                                                                                                fontSize:
-                                                                                                12,
-                                                                                                color: ConstHelper
-                                                                                                    .blackColor
-                                                                                                    .withOpacity(
-                                                                                                    0.6),
-                                                                                              ),
-                                                                                            ),
-                                                                                            const TextSpan(
-                                                                                                text: '  '),
-                                                                                            TextSpan(
-                                                                                              text: homeController.allLiveDataList[index].vendorProductCreatedTime ==
-                                                                                                  null ||
-                                                                                                  homeController
-                                                                                                      .allLiveDataList[
-                                                                                                  index]
-                                                                                                      .vendorProductCreatedTime!
-                                                                                                      .trim()
-                                                                                                      .isEmpty
-                                                                                                  ? 'Time N/A'
-                                                                                                  : DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
-                                                                                                  .allLiveDataList[
-                                                                                              index]
-                                                                                                  .vendorProductCreatedTime!)),
-                                                                                              style:
-                                                                                              TextStyle(
-                                                                                                fontSize:
-                                                                                                12,
-                                                                                                color: ConstHelper
-                                                                                                    .blackColor
-                                                                                                    .withOpacity(
-                                                                                                    0.6),
-                                                                                              ),
-                                                                                            ),
-                                                                                          ],
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ),
-                                                                                ],
+                                                                              const TextSpan(
+                                                                                  text: '  '),
+                                                                              TextSpan(
+                                                                                text: homeController.categoryFirstItem[index].vendorProductUpdatedTime ==
+                                                                                    null ||
+                                                                                    homeController
+                                                                                        .categoryFirstItem[
+                                                                                    index]
+                                                                                        .vendorProductUpdatedTime!
+                                                                                        .trim()
+                                                                                        .isEmpty
+                                                                                    ? 'Time N/A'
+                                                                                    : DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
+                                                                                    .categoryFirstItem[
+                                                                                index]
+                                                                                    .vendorProductUpdatedTime!)),
+                                                                                style:
+                                                                                TextStyle(
+                                                                                  fontSize:
+                                                                                  13,
+                                                                                  color: ConstHelper
+                                                                                      .blackColor
+                                                                                      .withOpacity(
+                                                                                      0.6),
+                                                                                ),
                                                                               ),
-                                                                              const Divider(),
-                                                                              if(homeController.categoryFirstItem.isNotEmpty)
-                                                                              Text("Last 10 Prices",
-                                                                                textAlign:TextAlign.start,
-                                                                                style: TextStyle(
-                                                                                  color: ConstHelper.darkBlueColor,
-                                                                                  fontWeight: FontWeight. w600,
-                                                                                  fontSize: 16,
-                                                                                ),).paddingOnly(bottom: Get.height/60),
-                                                                              if(homeController.categoryFirstItem.isNotEmpty)
-                                                                              ListView.separated(
-                                                                                  shrinkWrap: true,
-                                                                                  itemBuilder: (context, index) {
-                                                                                    return Row(
-                                                                                        children: [
-                                                                                          Expanded(
-                                                                                            child: Align(
-                                                                                              alignment: Alignment.centerLeft,
-                                                                                              child: Text.rich(
-                                                                                                TextSpan(
-                                                                                                  children: [
-                                                                                                    TextSpan(
-                                                                                                      text: homeController.categoryFirstItem[index].vendorProductUpdatedDate ==
-                                                                                                          null ||
-                                                                                                          homeController.categoryFirstItem[index].vendorProductUpdatedDate!.year <=
-                                                                                                              0
-                                                                                                          ? 'Date N/A'
-                                                                                                          : DateFormat('dd-MMM-yyyy').format(homeController.categoryFirstItem[index].vendorProductUpdatedDate!),
-
-                                                                                                      style:
-                                                                                                      TextStyle(
-                                                                                                        fontSize:
-                                                                                                        13,
-                                                                                                        color: ConstHelper
-                                                                                                            .blackColor
-                                                                                                            .withOpacity(
-                                                                                                            0.6),
-                                                                                                      ),
-                                                                                                    ),
-                                                                                                    const TextSpan(
-                                                                                                        text: '  '),
-                                                                                                    TextSpan(
-                                                                                                      text: homeController.categoryFirstItem[index].vendorProductUpdatedTime ==
-                                                                                                          null ||
-                                                                                                          homeController
-                                                                                                              .categoryFirstItem[
-                                                                                                          index]
-                                                                                                              .vendorProductUpdatedTime!
-                                                                                                              .trim()
-                                                                                                              .isEmpty
-                                                                                                          ? 'Time N/A'
-                                                                                                          : DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
-                                                                                                          .categoryFirstItem[
-                                                                                                      index]
-                                                                                                          .vendorProductUpdatedTime!)),
-                                                                                                      style:
-                                                                                                      TextStyle(
-                                                                                                        fontSize:
-                                                                                                        13,
-                                                                                                        color: ConstHelper
-                                                                                                            .blackColor
-                                                                                                            .withOpacity(
-                                                                                                            0.6),
-                                                                                                      ),
-                                                                                                    ),
-                                                                                                  ],
-                                                                                                ),
-                                                                                              ),
-                                                                                            ),
-                                                                                          ),
-
-                                                                                          Text("₹ ${homeController.categoryFirstItem[index].vendorProductRate?.toString()??""}",
-                                                                                            textAlign:TextAlign.end,
-                                                                                            style: TextStyle(
-                                                                                              color: ConstHelper.darkBlueColor,
-                                                                                              fontWeight: FontWeight.w400,
-                                                                                              fontSize: 13,
-                                                                                            ),),],);
-                                                                                  }, separatorBuilder: (context, index) => const SizedBox(height: 10,), itemCount: homeController.categoryFirstItem.length)
                                                                             ],
                                                                           ),
                                                                         ),
                                                                       ),
-                                                                    );
-                                                                  },);
-                                                                  }else{
-                                                                    ScaffoldMessenger.of(context).showSnackBar(
-                                                                      SnackBar(
-                                                                        content: const Text(
-                                                                          'No Data Available',
-                                                                          style: TextStyle(color: Colors.white),
-                                                                        ),
-                                                                        backgroundColor: Colors.black.withOpacity(0.5),
-                                                                        shape: RoundedRectangleBorder(
-                                                                          borderRadius: BorderRadius.circular(10),
-                                                                        ),
-                                                                        behavior: SnackBarBehavior.floating, // Makes it float above content
-                                                                        action: SnackBarAction(
-                                                                          label: 'DISMISS',
-                                                                          onPressed: () {},
-                                                                          textColor: Colors.white,
-                                                                        ),
-                                                                      ),
-                                                                    );
+                                                                    ),
 
-                                                                  }
-                                                                },
-                                                                splashColor: Colors.transparent,
-                                                                borderRadius: BorderRadius.circular(10),
-                                                                child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: 12,fontWeight: FontWeight.w600),)))
-                                                        // Obx(() => Icon(Icons.favorite,color: homeController.favorite.value == false?Color(0xff5D646C):Colors.redAccent,),),
+                                                                    Text("₹ ${homeController.categoryFirstItem[index].vendorProductRate?.toString()??""}",
+                                                                      textAlign:TextAlign.end,
+                                                                      style: TextStyle(
+                                                                        color: ConstHelper.darkBlueColor,
+                                                                        fontWeight: FontWeight.w400,
+                                                                        fontSize: 13,
+                                                                      ),),],);
+                                                              }, separatorBuilder: (context, index) => const SizedBox(height: 10,), itemCount: homeController.categoryFirstItem.length)
                                                       ],
-                                                    )
-                                                  ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },);
+                                          }else{
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: const Text(
+                                                  'No Data Available',
+                                                  style: TextStyle(color: Colors.white),
+                                                ),
+                                                backgroundColor: Colors.black.withOpacity(0.5),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),
+                                                behavior: SnackBarBehavior.floating, // Makes it float above content
+                                                action: SnackBarAction(
+                                                  label: 'DISMISS',
+                                                  onPressed: () {},
+                                                  textColor: Colors.white,
                                                 ),
                                               ),
+                                            );
+
+                                          }
+                                        },
+                                        splashColor: Colors.transparent,
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Ink(
+                                          decoration: BoxDecoration(
+                                            color: ConstHelper.whiteColor,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: ConstHelper.cementColor
+                                                    .withOpacity(0.6),
+                                                blurRadius: 1,
+                                                offset: const Offset(0, 2),
+                                              ),
                                             ],
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                SizedBox(
+                                                  height: Get.width / 6,
+                                                  width: Get.width / 6,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                    BorderRadius.circular(6),
+                                                    child: CachedNetworkImage(
+                                                      imageUrl:  ConstHelper.subCategoryImagePath+(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categoriesSubImages??"") ,
+                                                      fit: BoxFit.cover,
+                                                      placeholder: (context, url) =>
+                                                          Container(
+                                                            decoration: BoxDecoration(
+                                                              borderRadius:
+                                                              BorderRadius.circular(
+                                                                  6),
+                                                              color: ConstHelper
+                                                                  .whiteColor,
+                                                            ),
+                                                            alignment: Alignment.center,
+                                                            child: SizedBox(
+                                                              height: Get.width / 20,
+                                                              width: Get.width / 20,
+                                                              child:
+                                                              CircularProgressIndicator(
+                                                                color: ConstHelper
+                                                                    .orangeColor,
+                                                                strokeWidth: 2,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                      errorWidget:
+                                                          (context, url, error) =>
+                                                          Container(
+                                                            decoration: BoxDecoration(
+                                                              borderRadius:
+                                                              BorderRadius.circular(
+                                                                  6),
+                                                              color: ConstHelper
+                                                                  .whiteColor,
+                                                            ),
+                                                            child: Image.asset(
+                                                              'assets/image/imageNotFound.png',
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                SizedBox(
+                                                  width: Get.width / 60,
+                                                ),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    children: [
+                                                      Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Expanded(
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  homeController.allLiveDataList[index].vendorName ==
+                                                                              null ||
+                                                                          homeController
+                                                                              .allLiveDataList[
+                                                                                  index]
+                                                                              .vendorName!
+                                                                              .trim()
+                                                                              .isEmpty
+                                                                      ? 'Name N/A'
+                                                                      : homeController
+                                                                          .allLiveDataList[
+                                                                              index]
+                                                                          .vendorName!,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    color: ConstHelper
+                                                                        .blackColor,
+                                                                    fontSize: 14,
+                                                                  ),
+                                                                ), Text(
+                                                                  homeController.allLiveDataList[index].vendorProduct ==
+                                                                              null ||
+                                                                          homeController
+                                                                              .allLiveDataList[
+                                                                                  index]
+                                                                              .vendorProduct!
+                                                                              .trim()
+                                                                              .isEmpty
+                                                                      ? 'Name N/A'
+                                                                      : homeController
+                                                                          .allLiveDataList[
+                                                                              index]
+                                                                          .vendorProduct!,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    color: ConstHelper
+                                                                        .blackColor,
+                                                                    fontSize: 15,
+                                                                  ),
+                                                                ),
+
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                                            children: [
+                                                              Container(
+                                                                // height: Get.width/15,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: ConstHelper
+                                                                      .blackColor,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              3),
+                                                                ),
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                  horizontal:
+                                                                      Get.width / 75,
+                                                                ),
+                                                                child: Row(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
+                                                                      "₹ ${homeController.allLiveDataList[index].vendorProductRate == null ? 'Price N/A' : homeController.allLiveDataList[index].vendorProductRate!}",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: ConstHelper
+                                                                            .whiteColor,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        fontSize: 15,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width:
+                                                                          Get.width /
+                                                                              60,
+                                                                    ),
+                                                                    Text(
+                                                                      homeController.allLiveDataList[index].oldVendorProductRate != null && homeController.allLiveDataList[index].oldVendorProductRate!= 0?"+(${(homeController.allLiveDataList[index].vendorProductRate??0) -(homeController.allLiveDataList[index].oldVendorProductRate??0)})":"(+0)",
+
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: ConstHelper
+                                                                            .lightGreenColor,
+                                                                        fontSize: 10,
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                width: Get.width*0.2,
+                                                                child: Text(
+                                                                  homeController.allLiveDataList[index].vendorProductSize ==
+                                                                      null ||
+                                                                      homeController
+                                                                          .allLiveDataList[
+                                                                      index]
+                                                                          .vendorProductSize!
+                                                                          .trim()
+                                                                          .isEmpty
+                                                                      ? 'Size N/A'
+                                                                      : homeController
+                                                                      .allLiveDataList[
+                                                                  index]
+                                                                      .vendorProductSize!,
+                                                                  textAlign: TextAlign.end,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                  style:
+                                                                  TextStyle(
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                    color: ConstHelper
+                                                                        .blackColor
+                                                                        .withOpacity(
+                                                                        0.6),
+                                                                    fontSize: 13,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.end,
+
+                                                        children: [
+                                                        /*  Expanded(
+                                                            child: Text.rich(
+                                                              TextSpan(
+                                                                children: [
+                                                                  TextSpan(
+                                                                    text: homeController.allLiveDataList[index].vendorProductCreatedDate ==
+                                                                                null ||
+                                                                            homeController.allLiveDataList[index].vendorProductCreatedDate!.year <=
+                                                                                0
+                                                                        ? 'Date N/A'
+                                                                        : DateFormat('dd/MMM/yyyy').format(homeController
+                                                                            .allLiveDataList[
+                                                                                index]
+                                                                            .vendorProductCreatedDate!),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: ConstHelper
+                                                                          .blackColor
+                                                                          .withOpacity(
+                                                                              0.6),
+                                                                    ),
+                                                                  ),
+                                                                  const TextSpan(
+                                                                      text: '  '),
+                                                                  TextSpan(
+                                                                    text: homeController.allLiveDataList[index].vendorProductCreatedTime ==
+                                                                                null ||
+                                                                            homeController
+                                                                                .allLiveDataList[
+                                                                                    index]
+                                                                                .vendorProductCreatedTime!
+                                                                                .trim()
+                                                                                .isEmpty
+                                                                        ? 'Time N/A'
+                                                                        : DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
+                                                                            .allLiveDataList[
+                                                                                index]
+                                                                            .vendorProductCreatedTime!)),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: ConstHelper
+                                                                          .blackColor
+                                                                          .withOpacity(
+                                                                              0.6),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),*/
+                                                          Align(
+                                                              alignment: Alignment.centerRight,
+                                                              child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: 12,fontWeight: FontWeight.w600),))
+                                                          // Obx(() => Icon(Icons.favorite,color: homeController.favorite.value == false?Color(0xff5D646C):Colors.redAccent,),),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -1266,7 +1285,7 @@ class _LivePageState extends State<LivePage> {
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
                 ),),),
-                Expanded(child:  Text("₹"+(amount??""), style: TextStyle(
+                Expanded(child:  Text("₹${amount??""}", style: TextStyle(
                   color: ConstHelper.darkBlueColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 16,

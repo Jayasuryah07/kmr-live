@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             )
-          ],*/actions: [
+          ],*//*actions: [
             Padding(
               padding: const EdgeInsets.only(right: 10),
               child: Row(
@@ -125,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             )
-          ],
+          ],*/
         ),
         backgroundColor: ConstHelper.whiteColor,
         body: Column(

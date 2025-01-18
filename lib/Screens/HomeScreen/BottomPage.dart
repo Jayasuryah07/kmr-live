@@ -1,3 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -506,7 +509,106 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
                   //     )),
                 ),
           backgroundColor: ConstHelper.whiteColor,
-          body: homeController.screens[homeController.selectedIndex.value],
+          body:Column(children: [
+            Visibility(
+                visible: homeController.selectedIndex.value != 1,
+                child: Column(
+              children: [
+                CarouselSlider(
+                  items: [
+                    1,
+                    2,
+                    3,
+                  ].map((i) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 1,
+                      ),
+                      child: SizedBox(
+                        width: Get.width,
+                        child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl:
+                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUPIfiGgUML8G3ZqsNLHfaCnZK3I5g4tJabQ&s",
+                          placeholder: (context, url) => Center(
+                            child: CircularProgressIndicator(
+                              color: ConstHelper.darkBlueColor,
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => Center(
+                            child: Image.asset(
+                              'assets/image/imageNotFound.png',
+                              color: ConstHelper.blackColor,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  options: CarouselOptions(
+                    height: Get.width / 3,
+                    // aspectRatio: 1,
+                    viewportFraction: 1,
+                   // autoPlay: imageUrls.length > 1,
+                   // enableInfiniteScroll: imageUrls.length > 1,
+                   // enlargeCenterPage: true,
+                    initialPage: 0,
+                    enableInfiniteScroll: true,
+                    reverse: false,
+                    autoPlay: true,
+                    autoPlayInterval: const Duration(seconds: 3),
+                    autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    scrollDirection: Axis.horizontal,
+                    onPageChanged: (index, reason) =>
+                    homeController.sliderIndex.value = index,
+                  ),
+                ),
+                SizedBox(
+                  height: Get.width / 90,
+                ),
+                Obx(
+                      () => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      1,
+                      2,
+                      3,
+                    ]
+                        .asMap()
+                        .entries
+                        .map(
+                          (e) => Container(
+                        margin: EdgeInsets.only(
+                          left: e.key == 0 ? 0 : Get.width / 150,
+                        ),
+                        height: e.key == homeController.sliderIndex.value
+                            ? Get.width / 45
+                            : Get.width / 80,
+                        width: e.key == homeController.sliderIndex.value
+                            ? Get.width / 45
+                            : Get.width / 80,
+                        decoration: BoxDecoration(
+                          color: e.key == homeController.sliderIndex.value
+                              ? ConstHelper.darkBlueColor
+                              : ConstHelper.cementColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    )
+                        .toList(),
+                  ),
+                ),
+                SizedBox(
+                  height: Get.width / 20,
+                ),
+              ],
+            ),),
+
+            Expanded(child:  homeController.screens[homeController.selectedIndex.value])
+
+          ],),
           bottomNavigationBar: NavigationBar(
             backgroundColor: ConstHelper.whiteColor,
             destinations: [

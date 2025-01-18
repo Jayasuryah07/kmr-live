@@ -5,6 +5,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:in_app_update/in_app_update.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Controllers/HomeController.dart';
 import '../../Models/UserDataModel.dart';
@@ -26,14 +28,39 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
 
   HomeController homeController = Get.put(HomeController());
-
+  Map<dynamic, dynamic> data = {};
+  bool isSkip = false;
+  AppUpdateInfo? _updateInfo;
+  bool _flexibleUpdateAvailable = false;
   @override
   void initState() {
     // TODO: implement initState
+
     Timer(const Duration(seconds: 1,), () async => await checkLogin(),);
     super.initState();
   }
+  Future<void> checkForUpdate() async {
+    try {
+      _updateInfo = await InAppUpdate.checkForUpdate();
+      if (_updateInfo?.updateAvailability ==
+          UpdateAvailability.updateAvailable) {
+        startFlexibleUpdate();
+      }
+    } catch (e) {
+      print("Error checking for updates: $e");
+    }
+  }
 
+  // Start a flexible update
+  Future<void> startFlexibleUpdate() async {
+    try {
+      await InAppUpdate.startFlexibleUpdate();
+      await InAppUpdate.completeFlexibleUpdate();
+      print("Update installed successfully.");
+    } catch (e) {
+      print("Error during update: $e");
+    }
+  }
   Future<void> checkLogin() async {
     bool login = false;
     try {
@@ -56,6 +83,7 @@ class _SplashPageState extends State<SplashPage> {
           password: homeController.userData.value.cpassword ?? '',
           deviceId: homeController.firebaseFCMToken.trim(),
         ).then((userData) async {
+          log(userData.toString());
           if(userData['code'] == 200)
           {
             UserDataModel userDataModel = UserDataModel.fromJson(userData['data'] ?? {});
@@ -64,27 +92,52 @@ class _SplashPageState extends State<SplashPage> {
             log(userData.toString());
             EasyLoading.dismiss();
             // homeController.bottomIndex.value = 0;
-            Get.offAll(
-              const HomePage(),
-            );
+            if (homeController.userData.value.status !=
+                null &&
+                homeController.userData.value.status ==
+                    "Active"){
+              Get.offAll(
+                const HomePage(),
+              );
+            }else if (homeController.userData.value.status !=
+                null &&
+                homeController.userData.value.status !=
+                    "Active"){
+              final SharedPreferences prefs =
+              await SharedPreferences.getInstance();
+              prefs.clear();
+              Get.offAll(
+                const LoginPage(),
+              );
+            }
           }
           else
           {
-            await homeController.getUserData();
+            final SharedPreferences prefs =
+            await SharedPreferences.getInstance();
+            prefs.clear();
             EasyLoading.dismiss();
-            // homeController.bottomIndex.value = 0;
             Get.offAll(
-              const HomePage(),
-            );
+                const LoginPage(),
+              );
           }
-        });
+        },);
       } catch(error) {
         await homeController.getUserData();
         EasyLoading.dismiss();
         // homeController.bottomIndex.value = 0;
-        Get.offAll(
-          const HomePage(),
-        );
+        if (homeController.userData.value.status !=
+            null &&
+            homeController.userData.value.status ==
+                "Active"){
+          Get.offAll(
+            const HomePage(),
+          );
+        }else{
+          Get.offAll(
+            const LoginPage(),
+          );
+        }
       }
     }
     else
@@ -93,6 +146,8 @@ class _SplashPageState extends State<SplashPage> {
       Get.offAll(const LoginPage(),transition: Transition.fadeIn,);
       EasyLoading.dismiss();
     }
+
+    checkForUpdate();
   }
 
   @override
@@ -101,8 +156,9 @@ class _SplashPageState extends State<SplashPage> {
       child: Scaffold(
         backgroundColor: ConstHelper.whiteColor,
         body: Center(
-          child: FlutterLogo(
-            size: Get.width/2,
+          child: Image.asset(
+            "assets/image/kmr_logo.jpg",
+            width: Get.width/2,
           ),
         ),
       ),
