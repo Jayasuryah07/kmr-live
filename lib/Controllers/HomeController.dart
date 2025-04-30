@@ -29,6 +29,8 @@ class HomeController extends GetxController {
   TextEditingController txtSearch = TextEditingController();
   RxInt selectedTabIndex = 0.obs;
   RxList<LiveDataModel> allLiveDataList = <LiveDataModel>[].obs;
+  GlobalKey<ScaffoldState> drawerKey = GlobalKey<ScaffoldState>();
+
   RxList<VendorRateDataModel> allRatesDataList = <VendorRateDataModel>[].obs;
   RxList<SubCatg> allSubCtgList = <SubCatg>[].obs;
   var allSpotRateDataList =

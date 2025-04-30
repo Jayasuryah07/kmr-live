@@ -33,7 +33,7 @@ class User {
   String? name;
   String? mobile;
   String? email;
-  String? vendorId;
+  dynamic vendorId;
   int? userType;
   String? status;
   DateTime? emailVerifiedAt;

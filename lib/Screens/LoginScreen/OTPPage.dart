@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:another_telephony/telephony.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,7 +41,7 @@ class _OTPPageState extends State<OTPPage> {
   FocusNode otp6FocusNode = FocusNode();
   // OtpController controller = Get.put(OtpController());
   int backspaceCount = 0;
-  final telephony = Telephony.instance;
+  //final telephony = Telephony.instance;
   RxBool checkTermsCondition = false.obs;
 
   //final controller = WebViewController();
@@ -554,10 +553,12 @@ class _OTPPageState extends State<OTPPage> {
                             homeController.firebaseFCMToken.value =
                             await FirebaseHelper.firebaseHelper
                                 .getFirebaseToken();
+
+                            print( homeController.firebaseFCMToken.value);
                             await ApiHelper.apiHelper
                                 .loginUser(
                               mobileNo: homeController.mobileNo.trim(),
-                              password: homeController.password.trim(),
+                              password: "123456",
                               deviceId: homeController.firebaseFCMToken.trim(),
 
                               // mobileNo: '9972837003',

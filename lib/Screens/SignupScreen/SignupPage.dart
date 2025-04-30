@@ -91,8 +91,8 @@ class _SignupPageState extends State<SignupPage> {
                   controller: remarkCon,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(horizontal: Get.width/30,vertical: Get.width/30,),
-                    prefixIcon: Icon(Icons.edit_rounded,color: ConstHelper.darkBlueColor,),
-                    hintText: "Remark",
+                    prefixIcon: Icon(Icons.location_on,color: ConstHelper.darkBlueColor,),
+                    hintText: "City",
                     hintStyle: TextStyle(color: ConstHelper.greyColor,),
                   ),
                 ),
@@ -124,21 +124,34 @@ class _SignupPageState extends State<SignupPage> {
                       mobileNo: mobileCon.value.text,
                       name: nameCon.value.text,
                       email:emailCon.value.text,
-                      remarks: remarkCon.value.text,
+                      city: remarkCon.value.text,
                     );
 
                     if (response.isNotEmpty &&response['code'] == 200) {
-                    Get.back();
-                    _showSuccess(response['msg'] ??
-                    'Your profile is created successfully.');
+                      EasyLoading.dismiss();
+                    ConstHelper.successDialog(
+                      text: response['msg'] ??
+                          "Your profile is created successfully.",
+                      seconds: 10,
+                    );
+                      Get.back();
                     } else {
-                    _showError(response['msg'] ??
-                    ConstHelper.somethingErrorMsg);
+                      EasyLoading.dismiss();
+
+                      ConstHelper.errorDialog(
+                        text: response['msg'] ??
+                            ConstHelper.somethingErrorMsg,
+                        seconds: 10,
+                      );
                     }
                     } catch (error) {
-                    _showError(ConstHelper.somethingErrorMsg);
+                      EasyLoading.dismiss();
+                      ConstHelper.errorDialog(
+                        text:
+                            ConstHelper.somethingErrorMsg,
+                        seconds: 10,
+                      );
                     }
-                    Get.back();
                   },
                   child: Container(
                     width: Get.width,

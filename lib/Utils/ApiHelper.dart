@@ -1,17 +1,24 @@
 
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 import 'package:get/get.dart' as getX;
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:kmr_flutter_application/Models/about_us_model.dart';
+import 'package:kmr_flutter_application/Models/notification_model.dart';
 
 import '../Controllers/HomeController.dart';
 import '../Models/CategoryDataModel.dart';
 import '../Models/LiveDataModel.dart';
 import '../Models/NewsDataModel.dart';
 import '../Models/SubCategoryModel.dart';
+import '../Models/UserDataModel.dart';
 import '../Models/VendorRateDataModel.dart';
 import '../Models/VendorSpotRateDataModel.dart';
+import '../Models/user_model.dart';
 import 'API.dart';
 import '../Models/CategoryItemModel.dart';
 
@@ -59,7 +66,7 @@ class ApiHelper {
     required String password,
     required String deviceId,
   }) async {
-    try {
+
       getAuthorizationToken();
       var data = FormData.fromMap({
         'mobile': mobileNo,
@@ -81,14 +88,12 @@ class ApiHelper {
       } else {
         return {};
       }
-    } catch (error) {
-      return {};
-    }
+
   }  Future<Map> signUpUser({
     required String mobileNo,
     required String name,
     required String email,
-    required String remarks,
+    required String city,
   }) async {
     try {
       getAuthorizationToken();
@@ -96,18 +101,51 @@ class ApiHelper {
         'name': name ,
         'mobile': mobileNo,
         'email': email,
-        'remarks': remarks,
+        'city': city,
       });
       print({
         'name': name ,
         'mobile': mobileNo,
         'email': email,
-        'remarks': remarks,
+        'city': city,
       }.toString());
       Response response = await api.dio.post(
         'panel-create-vendor-user-signup',
         data: data,
       );
+      if (response.statusCode == 200) {
+        var data = response.data;
+        return data;
+      } else {
+        return {};
+      }
+    } catch (error) {
+      return {};
+    }
+  }
+
+  Future<Map> postFeedBackApi({
+    required String sub,
+    required String des,
+  }) async {
+    try {
+      getAuthorizationToken();
+      var data = FormData.fromMap({
+        'feedback_subject': sub,
+        'feedback_description': des
+      });
+      print({
+        'feedback_subject': sub,
+        'feedback_description': des
+      }.toString());
+      var headers = {'Authorization': 'Bearer $authorizationToken'};
+
+      Response response = await api.dio.post(
+        'create-feedback',
+        data: data,
+          options: Options(
+            headers: headers,
+          ),);
       if (response.statusCode == 200) {
         var data = response.data;
         return data;
@@ -379,6 +417,125 @@ class ApiHelper {
     } catch (error) {
       print('Error $error');
       return [];
+    }
+  }
+
+  Future<UserModel> fetchUserApiUrl({
+    required RxBool loading,
+  }) async {
+    UserModel userModel = UserModel();
+    try {
+      getAuthorizationToken();
+      var headers = {'Authorization': 'Bearer $authorizationToken'};
+      loading.value = true;
+      Response response = await api.dio.post('fetch-profile',
+          options: Options(
+            headers: headers,
+          ));
+
+      debugPrint("fetchUserApiUrl statusCode:- ${response.statusCode}");
+      if (response.statusCode == 200) {
+        debugPrint("fetchUserApiUrl response:- ${response.data}");
+
+          userModel = userModelFromJson(jsonEncode(response.data));
+          loading.value = false;
+
+      } else {
+        loading.value = false;
+      }
+    } catch (error) {        loading.value = false;
+
+    debugPrint(error.toString());
+      return userModel;
+    }
+    return userModel;
+  }
+
+  Future<AboutUsModel> fetchAboutUsApiUrl({
+    required RxBool loading,
+  }) async {
+    AboutUsModel aboutUsModel = AboutUsModel();
+    try {
+      getAuthorizationToken();
+      var headers = {'Authorization': 'Bearer $authorizationToken'};
+      loading.value = true;
+      Response response = await api.dio.post('fetch-aboutus',
+          options: Options(
+            headers: headers,
+          ));
+
+      debugPrint("fetchAboutUsApiUrl statusCode:- ${response.statusCode}");
+      if (response.statusCode == 200) {
+        debugPrint("fetchAboutUsApiUrl response:- ${response.data}");
+
+        aboutUsModel = aboutUsModelFromJson(jsonEncode(response.data));
+          loading.value = false;
+
+      } else {
+        loading.value = false;
+      }
+    } catch (error) {        loading.value = false;
+
+    debugPrint(error.toString());
+      return aboutUsModel;
+    }
+    return aboutUsModel;
+  }
+  Future<List<NotificationData>> fetchNotificationApiUrl({
+    required RxBool loading,
+  }) async {
+    try {
+      getAuthorizationToken();
+      var headers = {'Authorization': 'Bearer $authorizationToken'};
+      loading.value = true;
+      Response response = await api.dio.post('fetch-notification',
+          options: Options(
+            headers: headers,
+          ));
+
+      debugPrint("fetchNotificationApiUrl statusCode:- ${response.statusCode}");
+      if (response.statusCode == 200) {
+        debugPrint("fetchNotificationApiUrl response:- ${response.data}");
+        loading.value = false;
+
+        return notificationModelFromJson(jsonEncode(response.data)).data??[];
+
+      } else {
+        loading.value = false;
+      }
+    } catch (error) {
+      loading.value = false;
+
+      debugPrint(error.toString());
+      return [];
+    }
+    return [];
+  }
+
+  Future postDeleteProfileApi() async {
+    try {
+      var headers = {
+        'Authorization': 'Bearer $authorizationToken',
+      };
+      Response response = await api.dio.post(
+        'delete-profile',
+        options: Options(
+          headers: headers,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        debugPrint(data.toString());
+        print('asdadasd ${data.runtimeType} ${data['data'].runtimeType}');
+
+        return data;
+      } else {
+        return {};
+      }
+    } catch (error) {
+      debugPrint(error.toString());
+      return {};
     }
   }
 }

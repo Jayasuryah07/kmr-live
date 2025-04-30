@@ -1,10 +1,6 @@
-import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -109,7 +105,10 @@ class _LivePageState extends State<LivePage> {
                                       child:InkWell(
                                         onTap: () async {
                                           await homeController.getCategoryItemData(id: homeController.searchedLiveDataList[index].id?.toString()??"");
-                                          if(homeController.categoryFirstItem.isNotEmpty) {
+                                          if(homeController.categoryFirstItem.isNotEmpty &&  homeController.searchedLiveDataList[index].vendorProductUpdatedDate !=
+                                              null &&
+                                              homeController.searchedLiveDataList[index].vendorProductUpdatedDate!.year >=
+                                                  0) {
                                             showDialog(context: context, builder: (context) {
                                               return Dialog(
                                                 backgroundColor: ConstHelper.whiteColor,
@@ -586,20 +585,23 @@ class _LivePageState extends State<LivePage> {
                                                       Row(
                                                         mainAxisAlignment: MainAxisAlignment.end,
                                                         children: [
-                                                       /*   Expanded(
+                                                          Expanded(
                                                             child: Text.rich(
                                                               TextSpan(
                                                                 children: [
                                                                   TextSpan(
-                                                                    text: homeController.searchedLiveDataList[index].vendorProductCreatedDate ==
+                                                                    text: homeController.searchedLiveDataList[index].vendorProductUpdatedDate ==
                                                                                 null ||
-                                                                            homeController.searchedLiveDataList[index].vendorProductCreatedDate!.year <=
+                                                                            homeController.searchedLiveDataList[index].vendorProductUpdatedDate!.year <=
                                                                                 0
-                                                                        ? 'Date N/A'
+                                                                        ? DateFormat('dd/MMM/yyyy').format(homeController
+                                                                        .searchedLiveDataList[
+                                                                    index]
+                                                                        .vendorProductCreatedDate!)
                                                                         : DateFormat('dd/MMM/yyyy').format(homeController
                                                                             .searchedLiveDataList[
                                                                                 index]
-                                                                            .vendorProductCreatedDate!),
+                                                                            .vendorProductUpdatedDate!),
                                                                     style:
                                                                         TextStyle(
                                                                       fontSize:
@@ -613,19 +615,22 @@ class _LivePageState extends State<LivePage> {
                                                                   const TextSpan(
                                                                       text: '  '),
                                                                   TextSpan(
-                                                                    text: homeController.searchedLiveDataList[index].vendorProductCreatedTime ==
+                                                                    text: homeController.searchedLiveDataList[index].vendorProductUpdatedTime ==
                                                                                 null ||
                                                                             homeController
                                                                                 .searchedLiveDataList[
                                                                                     index]
-                                                                                .vendorProductCreatedTime!
+                                                                                .vendorProductUpdatedTime!
                                                                                 .trim()
                                                                                 .isEmpty
-                                                                        ? 'Time N/A'
+                                                                        ? DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
+                                                                        .searchedLiveDataList[
+                                                                    index]
+                                                                        .vendorProductCreatedTime!))
                                                                         : DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
                                                                             .searchedLiveDataList[
                                                                                 index]
-                                                                            .vendorProductCreatedTime!)),
+                                                                            .vendorProductUpdatedTime!)),
                                                                     style:
                                                                         TextStyle(
                                                                       fontSize:
@@ -639,8 +644,12 @@ class _LivePageState extends State<LivePage> {
                                                                 ],
                                                               ),
                                                             ),
-                                                          ),*/
-                                                          Align(
+                                                          ),
+                                                          homeController.searchedLiveDataList[index].vendorProductUpdatedDate ==
+                                                              null ||
+                                                              homeController.searchedLiveDataList[index].vendorProductUpdatedDate!.year <=
+                                                                  0
+                                                              ?SizedBox():  Align(
                                                               alignment: Alignment.centerRight,
                                                               child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: 12,fontWeight: FontWeight.w600),))
                                                           // Obx(() => Icon(Icons.favorite,color: homeController.favorite.value == false?Color(0xff5D646C):Colors.redAccent,),),
@@ -713,7 +722,11 @@ class _LivePageState extends State<LivePage> {
                                       child:InkWell(
                                         onTap: () async {
                                           await homeController.getCategoryItemData(id: homeController.allLiveDataList[index].id?.toString()??"");
-                                          if(homeController.categoryFirstItem.isNotEmpty) {
+                                          if(homeController.categoryFirstItem.isNotEmpty &&  homeController.allLiveDataList[index].vendorProductUpdatedDate !=
+                                              null ||
+                                              homeController.allLiveDataList[index].vendorProductUpdatedDate!.year >=
+                                                  0
+                                              ) {
                                             showDialog(context: context, builder: (context) {
                                               return Dialog(
                                                 backgroundColor: ConstHelper.whiteColor,
@@ -1188,20 +1201,23 @@ class _LivePageState extends State<LivePage> {
                                                         mainAxisAlignment: MainAxisAlignment.end,
 
                                                         children: [
-                                                        /*  Expanded(
+                                                          Expanded(
                                                             child: Text.rich(
                                                               TextSpan(
                                                                 children: [
                                                                   TextSpan(
-                                                                    text: homeController.allLiveDataList[index].vendorProductCreatedDate ==
+                                                                    text: homeController.allLiveDataList[index].vendorProductUpdatedDate ==
                                                                                 null ||
-                                                                            homeController.allLiveDataList[index].vendorProductCreatedDate!.year <=
+                                                                            homeController.allLiveDataList[index].vendorProductUpdatedDate!.year <=
                                                                                 0
-                                                                        ? 'Date N/A'
+                                                                        ? DateFormat('dd/MMM/yyyy').format(homeController
+                                                                  .allLiveDataList[
+                                                              index]
+                                                                  .vendorProductCreatedDate!)
                                                                         : DateFormat('dd/MMM/yyyy').format(homeController
                                                                             .allLiveDataList[
                                                                                 index]
-                                                                            .vendorProductCreatedDate!),
+                                                                            .vendorProductUpdatedDate!),
                                                                     style:
                                                                         TextStyle(
                                                                       fontSize:
@@ -1215,19 +1231,22 @@ class _LivePageState extends State<LivePage> {
                                                                   const TextSpan(
                                                                       text: '  '),
                                                                   TextSpan(
-                                                                    text: homeController.allLiveDataList[index].vendorProductCreatedTime ==
+                                                                    text: homeController.allLiveDataList[index].vendorProductUpdatedTime ==
                                                                                 null ||
                                                                             homeController
                                                                                 .allLiveDataList[
                                                                                     index]
-                                                                                .vendorProductCreatedTime!
+                                                                                .vendorProductUpdatedTime!
                                                                                 .trim()
                                                                                 .isEmpty
-                                                                        ? 'Time N/A'
+                                                                        ? DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
+                                                                        .allLiveDataList[
+                                                                    index]
+                                                                        .vendorProductCreatedTime!))
                                                                         : DateFormat('hh:mm a').format(DateFormat("HH:mm:ss").parse(homeController
                                                                             .allLiveDataList[
                                                                                 index]
-                                                                            .vendorProductCreatedTime!)),
+                                                                            .vendorProductUpdatedTime!)),
                                                                     style:
                                                                         TextStyle(
                                                                       fontSize:
@@ -1241,8 +1260,12 @@ class _LivePageState extends State<LivePage> {
                                                                 ],
                                                               ),
                                                             ),
-                                                          ),*/
-                                                          Align(
+                                                          ),
+                                                          homeController.allLiveDataList[index].vendorProductUpdatedDate ==
+                                                              null ||
+                                                              homeController.allLiveDataList[index].vendorProductUpdatedDate!.year <=
+                                                                  0
+                                                              ?SizedBox():  Align(
                                                               alignment: Alignment.centerRight,
                                                               child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: 12,fontWeight: FontWeight.w600),))
                                                           // Obx(() => Icon(Icons.favorite,color: homeController.favorite.value == false?Color(0xff5D646C):Colors.redAccent,),),

@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -7,6 +9,10 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ntp/ntp.dart';
+
+import '../Screens/LoginScreen/LoginPage.dart';
+import 'ApiHelper.dart';
+import 'SharedPrefHelper.dart';
 
 class ConstHelper {
   ConstHelper._();
@@ -57,6 +63,7 @@ class ConstHelper {
   static String spotImagePath = "https://kmrlive.in/storage/app/public/Spot/";
   static String sliderImagePath = "https://kmrlive.in/storage/app/public/slider_images/";
   static String subCategoryImagePath = "https://kmrlive.in/storage/app/public/sub_categories_images/";
+  static String notificationImagePath = "https://kmrlive.in/storage/app/public/notification_images/";
 
 
   /// Internet Connection Checking
@@ -151,6 +158,8 @@ class ConstHelper {
         return BackdropFilter(
           filter: filter,
           child: AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(Get.height*0.01),),),
+            surfaceTintColor: Colors.white,
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -160,27 +169,106 @@ class ConstHelper {
               ],
             ),
             actions: [
-              ElevatedButton(
-                onPressed: (){
-                  Get.back();
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: whiteColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)
-                    )
-                ),
-                child: Text(noMsg,style: TextStyle(color: darkBlueColor,),),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: (){
+                      Get.back();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: whiteColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)
+                        )
+                    ),
+                    child: Text(noMsg,style: TextStyle(color: darkBlueColor,),),
+                  ),
+                  SizedBox(width: Get.width*0.02,),
+                  ElevatedButton(
+                    onPressed: onPressed,
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: darkBlueColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)
+                        )
+                    ),
+                    child: Text(yesMsg,style: TextStyle(color: whiteColor,),),
+                  ),
+                ],
               ),
-              ElevatedButton(
-                onPressed: onPressed,
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: darkBlueColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)
-                    )
-                ),
-                child: Text(yesMsg,style: TextStyle(color: whiteColor,),),
+              SizedBox(height: Get.height*0.01,),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: Text(
+                      "Delete My Account ?? ",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: ConstHelper.greyColor,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      var value = await ApiHelper.apiHelper
+                          .postDeleteProfileApi()
+                          .then((value) async {
+                        try {
+                          if (value.isNotEmpty) {
+                            if (value['code'] == 200) {
+                              final responseData = json.decode(value.body);
+                              print(responseData);
+                              if (responseData['code'] == 200) {
+                                SharedPrefHelper.sharedPreferences.setBool(
+                                  'login',
+                                  false,
+                                );
+                                Get.offAll(
+                                  const LoginPage(),
+                                );
+                                ConstHelper.successDialog(
+                                  text: jsonDecode(value)['msg'] ??
+                                      "User Deleted Successfully",
+                                  seconds: 10,
+                                );
+                              } else {
+                                ConstHelper.errorDialog(
+                                  text: jsonDecode(value)['msg'] ??
+                                      "Something went wrong",
+                                  seconds: 10,
+                                );
+                              }
+                            } else {
+                              ConstHelper.errorDialog(
+                                text: jsonDecode(value)['msg'] ??
+                                    "Something went wrong",
+                                seconds: 10,
+                              );
+                            }
+                          }
+                        } on TimeoutException catch (e) {
+                          ConstHelper.errorDialog(
+                            text: e.message.toString(),
+                            seconds: 10,
+                          );
+                        }
+                      });
+                    },
+                    child: Text(
+                      "Click Here",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: ConstHelper.greyColor,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

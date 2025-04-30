@@ -1,9 +1,21 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:in_app_update/in_app_update.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../Controllers/HomeController.dart';
+import '../../Models/UserDataModel.dart';
+import '../../Utils/ApiHelper.dart';
+import '../../Utils/FirebaseHelper.dart';
+import '../../Utils/SharedPrefHelper.dart';
+import '../HomeScreen/HomePage.dart';
+import '../LoginScreen/LoginPage.dart';
 import 'SplashPage.dart';
 
 class SplashCommonPage extends StatefulWidget {
@@ -14,15 +26,128 @@ class SplashCommonPage extends StatefulWidget {
 }
 
 class _SplashCommonPageState extends State<SplashCommonPage> {
+
+  HomeController homeController = Get.put(HomeController());
+  Map<dynamic, dynamic> data = {};
+  bool isSkip = false;
+  AppUpdateInfo? _updateInfo;
+  bool _flexibleUpdateAvailable = false;
   @override
   void initState() {
+    // TODO: implement initState
+
+    Timer(const Duration(seconds: 1,), () async => await checkLogin(),);
     super.initState();
-    // Set the timer for 2 seconds before navigating to the next screen
-    Timer(const Duration(seconds: 1), () {
-      Get.offAll(
-        () => const SplashPage(),
-      );
-    });
+  }
+  Future<void> checkForUpdate() async {
+    try {
+      _updateInfo = await InAppUpdate.checkForUpdate();
+      if (_updateInfo?.updateAvailability ==
+          UpdateAvailability.updateAvailable) {
+        startFlexibleUpdate();
+      }
+    } catch (e) {
+      print("Error checking for updates: $e");
+    }
+  }
+
+  // Start a flexible update
+  Future<void> startFlexibleUpdate() async {
+    try {
+      await InAppUpdate.startFlexibleUpdate();
+      await InAppUpdate.completeFlexibleUpdate();
+      print("Update installed successfully.");
+    } catch (e) {
+      print("Error during update: $e");
+    }
+  }
+  Future<void> checkLogin() async {
+    bool login = false;
+    try {
+      login = SharedPrefHelper.sharedPreferences.getBool('login') ?? false;
+    } catch(error) {
+      login = false;
+    }
+
+    if(login)
+    {
+      try {
+        await homeController.getUserData();
+        homeController.firebaseFCMToken.value =
+        await FirebaseHelper.firebaseHelper
+            .getFirebaseToken();
+        await ApiHelper.apiHelper
+            .loginUser(
+
+          mobileNo: homeController.userData.value.mobile ?? '',
+          password: homeController.userData.value.cpassword ?? '',
+          deviceId: homeController.firebaseFCMToken.trim(),
+        ).then((userData) async {
+          log(userData.toString());
+          if(userData['code'] == 200)
+          {
+            UserDataModel userDataModel = UserDataModel.fromJson(userData['data'] ?? {});
+            SharedPrefHelper.sharedPreferences.setString('userData', jsonEncode(userDataModel),);
+            await homeController.getUserData();
+            log(userData.toString());
+            EasyLoading.dismiss();
+            // homeController.bottomIndex.value = 0;
+            if (homeController.userData.value.status !=
+                null &&
+                homeController.userData.value.status ==
+                    "Active"){
+              Get.offAll(
+                const HomePage(),
+              );
+            }else if (homeController.userData.value.status !=
+                null &&
+                homeController.userData.value.status !=
+                    "Active"){
+              final SharedPreferences prefs =
+              await SharedPreferences.getInstance();
+              prefs.clear();
+              Get.offAll(
+                const LoginPage(),
+              );
+            }
+          }
+          else
+          {
+            final SharedPreferences prefs =
+            await SharedPreferences.getInstance();
+            prefs.clear();
+            EasyLoading.dismiss();
+            Get.offAll(
+              const LoginPage(),
+            );
+          }
+        },);
+      } catch(error) {
+        await homeController.getUserData();
+        EasyLoading.dismiss();
+        // homeController.bottomIndex.value = 0;
+        if (homeController.userData.value.status !=
+            null &&
+            homeController.userData.value.status ==
+                "Active"){
+          Get.offAll(
+            const HomePage(),
+          );
+        }else{
+          Get.offAll(
+            const LoginPage(),
+          );
+        }
+      }
+    }
+    else
+    {
+      homeController.check.value = false;
+      Get.offAll(const LoginPage(),transition: Transition.fadeIn,);
+      EasyLoading.dismiss();
+    }
+
+    checkForUpdate();
   }
 
   @override
