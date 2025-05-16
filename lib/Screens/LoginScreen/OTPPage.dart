@@ -104,11 +104,11 @@ class _OTPPageState extends State<OTPPage> {
                   fit: BoxFit.fitWidth,
                 ),
                 SizedBox(height: Get.width/7,),
-                Text(
+               /* Text(
                   'Verification',
                   style: TextStyle(
                     color: ConstHelper.orangeColor,
-                    fontSize: 25,
+                    fontSize: Get.width*0.05,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -120,7 +120,7 @@ class _OTPPageState extends State<OTPPage> {
                     fontSize: 30,
                     fontWeight: FontWeight.w900,
                   ),
-                ),
+                ),*/
                 SizedBox(height: Get.width/10,),
                 Center(
                   child: Row(
@@ -382,7 +382,7 @@ class _OTPPageState extends State<OTPPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Not received OTP -",style: TextStyle(color: ConstHelper.greyColor,fontSize: 14,),),
+                    Text("OTP not received?",style: TextStyle(color: ConstHelper.blackColor.withOpacity(0.8),fontSize: Get.width*0.04,),),
                     GestureDetector(
                       onTap: () async {
                         await Future.delayed(const Duration(milliseconds: 200,),);
@@ -451,7 +451,11 @@ class _OTPPageState extends State<OTPPage> {
                           ConstHelper.errorDialog(text: ConstHelper.somethingErrorMsg, seconds: 10,);
                         }
                       },
-                      child: Text(" RESEND OTP",style: TextStyle(color: ConstHelper.darkBlueColor,fontSize: 14,),),
+                      child: Text(" RESEND!",style: TextStyle(decoration:TextDecoration.underline,
+                          color: ConstHelper.darkBlueColor,
+                          fontSize: Get.width*0.045,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1),),
                     ),
                   ],
                 ),
@@ -633,16 +637,16 @@ class _OTPPageState extends State<OTPPage> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: Get.width/30,),
                     child: Text(
-                      'Next',
+                      'Verify OTP',
                       style: TextStyle(
                         color: ConstHelper.whiteColor,
                         fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                        fontSize: Get.width*0.045,
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: Get.width/10,),
+               /* SizedBox(height: Get.width/10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -654,7 +658,7 @@ class _OTPPageState extends State<OTPPage> {
                       child: Text("   Sign up",style: TextStyle(color: ConstHelper.darkBlueColor,fontSize: 14,fontWeight: FontWeight.w600,),),
                     ),
                   ],
-                ),
+                ),*/
                 SizedBox(height: Get.width/15,),
               ],
             ),

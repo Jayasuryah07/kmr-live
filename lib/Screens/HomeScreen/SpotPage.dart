@@ -62,7 +62,8 @@ class _SpotPageState extends State<SpotPage> {
                                     style: TextStyle(
                                       color: ConstHelper.darkBlueColor,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 16,
+                                        fontSize: Get.width*0.04,
+                                        letterSpacing: 1
                                     ),
                                   ),
                                 ),
@@ -188,7 +189,8 @@ class _SpotPageState extends State<SpotPage> {
                                                 style: TextStyle(
                                                   color: ConstHelper.blackColor,
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 15,
+                                                    fontSize: Get.width*0.04,
+                                                    letterSpacing: 1
                                                 ),
                                               ),
                                               Text(
@@ -213,7 +215,8 @@ class _SpotPageState extends State<SpotPage> {
                                                   color: ConstHelper.blackColor
                                                       .withOpacity(0.6),
                                                   fontWeight: FontWeight.w500,
-                                                  fontSize: 13,
+                                                    fontSize: Get.width*0.04,
+                                                    letterSpacing: 1
                                                 ),
                                               ),
                                               const Divider(),
@@ -242,7 +245,8 @@ class _SpotPageState extends State<SpotPage> {
                                                                           index]
                                                                       .vendorSpotCreatedDate!),
                                                           style: TextStyle(
-                                                            fontSize: 12,
+                                                              fontSize: Get.width*0.035,
+                                                              letterSpacing: 1,
                                                             color: ConstHelper
                                                                 .blackColor
                                                                 .withOpacity(0.6),
@@ -271,7 +275,8 @@ class _SpotPageState extends State<SpotPage> {
                                                                               index]
                                                                           .vendorSpotCreatedTime!)),
                                                           style: TextStyle(
-                                                            fontSize: 12,
+                                                            fontSize: Get.width*0.035,
+                                                            letterSpacing: 1,
                                                             color: ConstHelper
                                                                 .blackColor
                                                                 .withOpacity(0.6),
@@ -321,7 +326,8 @@ class _SpotPageState extends State<SpotPage> {
                                                                           style: TextStyle(
                                                                             color: ConstHelper.blackColor,
                                                                             fontWeight: FontWeight.w600,
-                                                                            fontSize: 18,
+                                                                            fontSize: Get.width*0.05,
+                                                                            letterSpacing: 1,
                                                                           ),
                                                                         ),
                                                                         Divider(),
@@ -346,7 +352,8 @@ class _SpotPageState extends State<SpotPage> {
                                                                             color: ConstHelper.blackColor
                                                                                 .withOpacity(0.6),
                                                                             fontWeight: FontWeight.w500,
-                                                                            fontSize: 14,
+                                                                            fontSize: Get.width*0.04,
+                                                                            letterSpacing: 1,
                                                                           ),
                                                                         ),
                                                                       ],
@@ -358,7 +365,8 @@ class _SpotPageState extends State<SpotPage> {
                                                           },
                                                           splashColor: Colors.transparent,
                                                           borderRadius: BorderRadius.circular(10),
-                                                          child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: 12,fontWeight: FontWeight.w600),)),
+                                                          child: Text("View More",style: TextStyle(color: ConstHelper.darkBlueColor, decoration:TextDecoration.underline,fontSize: Get.width*0.035,
+                                                              letterSpacing: 1,fontWeight: FontWeight.w600),)),
                                                     ),
                                                   ),
                                                 ],
@@ -393,7 +401,8 @@ class _SpotPageState extends State<SpotPage> {
                                     style: TextStyle(
                                       color: ConstHelper.darkBlueColor,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 16,
+                                        fontSize: Get.width*0.04,
+                                        letterSpacing: 1
                                     ),
                                   ),
                                 ),
@@ -523,7 +532,8 @@ class _SpotPageState extends State<SpotPage> {
                                                 style: TextStyle(
                                                   color: ConstHelper.blackColor,
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 15,
+                                                    fontSize: Get.width*0.045,
+                                                    letterSpacing: 1
                                                 ),
                                               ),
                                               Text(
@@ -548,7 +558,8 @@ class _SpotPageState extends State<SpotPage> {
                                                   color: ConstHelper.blackColor
                                                       .withOpacity(0.6),
                                                   fontWeight: FontWeight.w500,
-                                                  fontSize: 13,
+                                                    fontSize: Get.width*0.035,
+                                                    letterSpacing: 1
                                                 ),
                                               ),
                                               const Divider(),
@@ -578,7 +589,8 @@ class _SpotPageState extends State<SpotPage> {
                                                           index]
                                                               .vendorSpotCreatedDate!),
                                                           style: TextStyle(
-                                                            fontSize: 12,
+                                                              fontSize: Get.width*0.035,
+                                                              letterSpacing: 1,
                                                             color: ConstHelper
                                                                 .blackColor
                                                                 .withOpacity(0.6),
@@ -608,7 +620,8 @@ class _SpotPageState extends State<SpotPage> {
                                                           index]
                                                               .vendorSpotCreatedTime!)),
                                                           style: TextStyle(
-                                                            fontSize: 12,
+                                                              fontSize: Get.width*0.035,
+                                                              letterSpacing: 1,
                                                             color: ConstHelper
                                                                 .blackColor
                                                                 .withOpacity(0.6),
@@ -658,7 +671,8 @@ class _SpotPageState extends State<SpotPage> {
                                                                           style: TextStyle(
                                                                             color: ConstHelper.blackColor,
                                                                             fontWeight: FontWeight.w600,
-                                                                            fontSize: 18,
+                                                                              fontSize: Get.width*0.05,
+                                                                              letterSpacing: 1
                                                                           ),
                                                                         ),
                                                                        Divider(),
@@ -683,7 +697,8 @@ class _SpotPageState extends State<SpotPage> {
                                                                             color: ConstHelper.blackColor
                                                                                 .withOpacity(0.6),
                                                                             fontWeight: FontWeight.w500,
-                                                                            fontSize: 14,
+                                                                              fontSize: Get.width*0.04,
+                                                                              letterSpacing: 1
                                                                           ),
                                                                         ),
                                                                       ],
@@ -695,7 +710,8 @@ class _SpotPageState extends State<SpotPage> {
                                                           },
                                                           splashColor: Colors.transparent,
                                                           borderRadius: BorderRadius.circular(10),
-                                                          child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: 12,fontWeight: FontWeight.w600),)),
+                                                          child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,  fontSize: Get.width*0.03,
+                                                              letterSpacing: 1,fontWeight: FontWeight.w600),)),
                                                     ),
                                                   ),
                                                 ],

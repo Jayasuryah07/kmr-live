@@ -256,7 +256,8 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
                             style: TextStyle(
                               color: ConstHelper.whiteColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 18,
+                              fontSize: Get.width * 0.05,
+letterSpacing: 1,
                             ),
                           ),
                   ),
@@ -462,7 +463,8 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
                             style: TextStyle(
                               color: ConstHelper.whiteColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 18,
+                              fontSize: Get.width * 0.05,
+letterSpacing: 1,
                             ),
                           ),
                   ),

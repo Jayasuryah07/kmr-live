@@ -22,7 +22,7 @@ class ConstHelper {
 
   static TextStyle appBarTextStyle = TextStyle(
     color: ConstHelper.whiteColor,
-    fontSize: 16,
+    fontSize: Get.width * 0.045,letterSpacing: 1,
     fontWeight: FontWeight.bold,
   );
   static Color whiteColor = Colors.white;
@@ -37,7 +37,7 @@ class ConstHelper {
 
   static String pleaseWaitMsg = "Please wait...";
   static String internetMsg = "Please check your internet";
-  static String somethingErrorMsg = "Sorry, Something has error\nPlease try again later...";
+  static String somethingErrorMsg = "Oops! An error occurred. Try again!";
   static String nameNotAvailableMsg = "Name not available";
   static String fatherNameNotAvailableMsg = "Father name not available";
   static String emailNotAvailableMsg = "Email not available";
@@ -47,23 +47,24 @@ class ConstHelper {
   static String invalidPhoneNumberErrorMsg =
       "Sorry, Your phone number is invalid\nPlease enter the valid phone number...";
   static String invalidOTPErrorMsg =
-      "Sorry, OTP is invalid\nPlease enter the valid otp...";
+      "Oops! That OTP is incorrect. Retry!";
   static String manyRequestErrorMsg =
-      "Sorry, You are many requested\nPlease try again later...";
+      "Request limit exceeded. Please wait and try again";
   static String unknownErrorMsg =
       "Sorry, Internal error has occurred\nPlease try again later...";
   static String unauthorizedMsg = "Unauthorized...";
   static String otpSentMsg = "OTP sent your mobile number...";
   static String dataNotAvailableMsg = "Sorry, Data Not Available";
   // static String userImagesPath = "https://ppmilan.in/public/app_images/user_images/";
-  static String noImageFoundPath = "https://kmrlive.in/storage/app/public/no_image.jpg";
-  static String categoryImagePath = "https://kmrlive.in/storage/app/public/categories_images/";
-  static String developerImagePath = "https://kmrlive.in/storage/app/public/developer_images/";
-  static String newsImagePath = "https://kmrlive.in/storage/app/public/News/";
-  static String spotImagePath = "https://kmrlive.in/storage/app/public/Spot/";
-  static String sliderImagePath = "https://kmrlive.in/storage/app/public/slider_images/";
-  static String subCategoryImagePath = "https://kmrlive.in/storage/app/public/sub_categories_images/";
-  static String notificationImagePath = "https://kmrlive.in/storage/app/public/notification_images/";
+  static String imageBaseUrlPath = "https://kmrlive.in/storage/app/public/";
+  static String noImageFoundPath = "${imageBaseUrlPath}no_image.jpg";
+  static String categoryImagePath = "${imageBaseUrlPath}categories_images/";
+  static String developerImagePath = "${imageBaseUrlPath}developer_images/";
+  static String newsImagePath = "${imageBaseUrlPath}News/";
+  static String spotImagePath = "${imageBaseUrlPath}Spot/";
+  static String sliderImagePath = "${imageBaseUrlPath}slider_images/";
+  static String subCategoryImagePath = "${imageBaseUrlPath}sub_categories_images/";
+  static String notificationImagePath = "${imageBaseUrlPath}notification_images/";
 
 
   /// Internet Connection Checking
@@ -149,8 +150,11 @@ class ConstHelper {
       return "";
     }
   }
-
-  void areYouSureWantAlertDialog({required String title,required String description, required void Function() onPressed,}) {
+  void areYouSureWantAlertDialog({
+    required String title,
+    required String description,
+    required void Function() onPressed,
+  }) {
     showDialog(
       context: navigatorKey.currentContext!,
       barrierDismissible: false,
@@ -158,48 +162,92 @@ class ConstHelper {
         return BackdropFilter(
           filter: filter,
           child: AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(Get.height*0.01),),),
-            surfaceTintColor: Colors.white,
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(title,style: TextStyle(color: darkBlueColor,fontSize: 16,fontWeight: FontWeight.w600,),),
-                Text(description,style: TextStyle(color: darkBlueColor.withOpacity(0.6),fontSize: 13,),),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        title.toUpperCase(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ConstHelper.darkBlueColor,
+                            fontSize: Get.width * 0.05,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: Get.height * 0.015,
+                ),
+                Text(
+                  description,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: ConstHelper.blackColor,
+                      fontSize: Get.width * 0.04,
+                      letterSpacing: 1
+                  ),
+                ),
               ],
             ),
             actions: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  ElevatedButton(
-                    onPressed: (){
-                      Get.back();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: whiteColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)
-                        )
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: whiteColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6))),
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(
+                            color: ConstHelper.darkBlueColor,
+                            letterSpacing: 1
+                        ),
+                      ),
                     ),
-                    child: Text(noMsg,style: TextStyle(color: darkBlueColor,),),
                   ),
-                  SizedBox(width: Get.width*0.02,),
-                  ElevatedButton(
-                    onPressed: onPressed,
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: darkBlueColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)
-                        )
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: onPressed,
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor:  ConstHelper.darkBlueColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6))),
+                      child: Text(
+                        "Confirm",
+                        style: TextStyle(
+                            color: whiteColor,
+                            letterSpacing: 1
+                        ),
+                      ),
                     ),
-                    child: Text(yesMsg,style: TextStyle(color: whiteColor,),),
                   ),
                 ],
               ),
-              SizedBox(height: Get.height*0.01,),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
 
-              Row(
+
+/*Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -269,11 +317,4 @@ class ConstHelper {
                     ),
                   ),
                 ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
+              ),*/

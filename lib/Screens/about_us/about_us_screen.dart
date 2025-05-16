@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kmr_flutter_application/Controllers/about_us_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../Utils/ConstHelper.dart';
 
@@ -18,6 +19,8 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   AboutUsController controller =Get.put(AboutUsController());
   @override
   Widget build(BuildContext context) {
+
+  //  print(controller.aboutUsModel.value.data?.companyMobile??"");
     return Obx(() => Scaffold(
       appBar: AppBar(
         backgroundColor: ConstHelper.darkBlueColor,
@@ -35,7 +38,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
         title: Text(
           "About Us",
           style: TextStyle(
-            fontSize: 18,
+            fontSize: Get.width*0.05,
             fontWeight: FontWeight.w600,
             color: ConstHelper.whiteColor,
           ),
@@ -87,9 +90,10 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               controller.aboutUsModel.value.data?.companyName??"",
               textAlign: TextAlign.start,
               style: GoogleFonts.roboto(
-                color:ConstHelper.blackColor ,
-                fontSize: Get.height / 55,
-                fontWeight: FontWeight. w700,
+                color:ConstHelper.blackColor,
+                letterSpacing:1,
+                fontSize: Get.width*0.05,
+                fontWeight: FontWeight.w700,
               ),
             ),
             SizedBox(
@@ -97,11 +101,13 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
             ),
             Text(
               controller.aboutUsModel.value.data?.companyDes??"",
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.justify,
               style: GoogleFonts.roboto(
-                color:ConstHelper.greyColor ,
-                fontSize: Get.height / 70,
+                color:ConstHelper.blackColor.withOpacity(0.8) ,
+                fontSize: Get.width*0.04,
+                letterSpacing:1,
                 fontWeight: FontWeight.w400,
+                height:1.5,
               ),
             ),
             SizedBox(
@@ -112,20 +118,33 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               imageIconData: Icons.call_rounded,
               isIcon: true,
               context: context,
+              onTap: () {
+                final firstLine = (controller.aboutUsModel.value.data?.companyMobile??"").split('\n').first;
+                final firstNumber = firstLine.replaceAll(RegExp(r'\s+'), '');
+                _launchURL(
+                    "tel:$firstNumber");
+              },
             ),
             commonAboutUsWidget(
               title: controller.aboutUsModel.value.data?.companyEmail??"",
               imageIconData: Icons.email_outlined,
               isIcon: true,
               context: context,
+              onTap: () {
+                _launchURL(
+                    "mailto:${controller.aboutUsModel.value.data?.companyEmail??""}");
+              },
             ),
             commonAboutUsWidget(
               title: controller.aboutUsModel.value.data?.companyWebsite??"",
               imageIconData: Icons.public,
               isIcon: true,
               context: context,
+              onTap: () {
+                _launchURL(
+                    controller.aboutUsModel.value.data?.companyWebsite??"");
+              },
             ),
-
           ],
         ),
       ) : Row(
@@ -147,49 +166,59 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
       ),
     ));
   }
-
+  void _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
+      throw 'Could not launch $url';
+    }
+  }
   Widget commonAboutUsWidget(
       {bool isIcon = false,
         String? title,
         dynamic imageIconData,
+        void Function()? onTap,
         BuildContext? context}) {
-    return Padding(
-      padding:
-      EdgeInsets.symmetric(vertical: Get.height * 0.01),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                !isIcon
-                    ? Image.asset(imageIconData)
-                    : Icon(
-                  imageIconData,
-                  color: ConstHelper.darkBlueColor,
-                  size: Get.height * 0.03,
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            width: Get.width * 0.04,
-          ),
-          Expanded(
-            flex: 4,
-            child: Text(
-              title ?? "",
-              textAlign: TextAlign.start,
-              style: GoogleFonts.roboto(
-                color: ConstHelper.blackColor,
-                fontSize: Get.height / 55,
-                fontWeight: FontWeight.w500,
+    return InkWell(
+      onTap:onTap,
+      child: Padding(
+        padding:
+        EdgeInsets.symmetric(vertical: Get.height * 0.01),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  !isIcon
+                      ? Image.asset(imageIconData)
+                      : Icon(
+                    imageIconData,
+                    color: ConstHelper.darkBlueColor,
+                    size: Get.height * 0.03,
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+            SizedBox(
+              width: Get.width * 0.04,
+            ),
+            Expanded(
+              flex: 4,
+              child: Text(
+                title ?? "",
+                textAlign: TextAlign.start,
+                style: GoogleFonts.roboto(
+                  letterSpacing:1,
+                  color: ConstHelper.darkBlueColor,
+                  fontSize: Get.height / 55,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

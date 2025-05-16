@@ -39,7 +39,7 @@ List drawerList = [
    1:  "Home",
     2:Icons.home_filled
   }, {
-   1:  "Profile",
+   1:  "My Profile",
     2:Icons.person
   }, {
    1:  "Share app",
@@ -91,11 +91,12 @@ List drawerList = [
 
   Future<String> getAppVersion() async {
     final packageInfo = await PackageInfo.fromPlatform();
-    version = packageInfo.version; // App Version
+    version = "Version ${packageInfo.version}";
     String buildNumber = packageInfo.buildNumber; // Build Number
 
     return 'Version: $version+$buildNumber';
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -151,8 +152,8 @@ List drawerList = [
                         break;
                       case 6:
                       ConstHelper.constHelper.areYouSureWantAlertDialog(
-                        title: 'Logout?',
-                        description: 'Are you sure you want to logout?',
+                        title: 'Confirm Logout?',
+                        description: 'You are about to log out. Do you wish to continue?',
                         onPressed: () {
                           Get.back();
                           SharedPrefHelper.sharedPreferences.setBool(
@@ -178,7 +179,8 @@ List drawerList = [
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: ConstHelper.blackColor,
-                            fontSize: 16,
+                            fontSize: Get.width * 0.045,
+                            letterSpacing: 1,
                             fontWeight: FontWeight.w600),
                       ),
                     ],
@@ -186,10 +188,9 @@ List drawerList = [
                 );
               }, separatorBuilder:(context, index) => SizedBox(height: Get.height*0.03,),itemCount: drawerList.length,
 
-
               ),
               SizedBox(height: Get.height * 0.02),
-              Row(
+             /* Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
@@ -197,19 +198,21 @@ List drawerList = [
                     style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                     child:  Text(
                       "Delete Account",
-                      style: TextStyle(color: ConstHelper.whiteColor),
+                      style: TextStyle(color: ConstHelper.whiteColor, fontSize: Get.width * 0.04,
+                        letterSpacing: 1,),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: Get.height * 0.04),
+              SizedBox(height: Get.height * 0.04),*/
               Spacer(),
               Text(
-                "Version $version",
+                "$version",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: ConstHelper.blackColor,
-                    fontSize: 16,
+                    fontSize: Get.width * 0.045,
+                    letterSpacing: 1,
                     fontWeight: FontWeight.w600),
               ),
               SizedBox(height: Get.height*0.03,),
@@ -234,7 +237,7 @@ List drawerList = [
             style: TextStyle(
                 color: ConstHelper.whiteColor,
                 fontWeight: FontWeight.w600,
-                fontSize: 18),
+                fontSize: Get.width * 0.05,letterSpacing: 1,),
           ),
           actions: [
             IconButton(
@@ -311,10 +314,11 @@ List drawerList = [
             Padding(
               padding: const EdgeInsets.only(right: 10, left: 10),
               child: Text(
-                "Categories",
+                "Categories".toUpperCase(),
                 style: TextStyle(
-                    color: ConstHelper.blackColor,
-                    fontSize: 16,
+                    color: ConstHelper.darkBlueColor,
+                    fontSize: Get.width*0.045,
+                    letterSpacing: 1,
                     fontWeight: FontWeight.w600),
               ),
             ),
@@ -419,7 +423,11 @@ List drawerList = [
                           height: Get.width / 30,
                         ),
                         Text(
-                            "${homeController.allCategoryDataList[index].categoryName}")
+                            "${homeController.allCategoryDataList[index].categoryName}", style: TextStyle(
+                                color: ConstHelper.darkBlueColor,
+                                fontSize: Get.width*0.04,
+                                letterSpacing: 1,
+                                fontWeight: FontWeight.w600),)
                       ],
                     ),
                   );
@@ -481,7 +489,7 @@ List drawerList = [
                                                     .toString(),
                                         style: TextStyle(
                                             color: ConstHelper.blackColor,
-                                            fontSize: 25,
+                                            fontSize: Get.width*0.06,
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ),
@@ -490,7 +498,7 @@ List drawerList = [
                                     "Days Remaining",
                                     style: TextStyle(
                                         color: ConstHelper.blackColor,
-                                        fontSize: 8),
+                                      fontSize: Get.width*0.03,),
                                   )
                                 ],
                               ),
@@ -506,14 +514,15 @@ List drawerList = [
                                         ? "Plan Getting Expire":"Trial Period",
                                     style: TextStyle(
                                         color: Colors.blue.shade600,
-                                        fontSize: 16,
+                                        fontSize: Get.width*0.045,
+                                        letterSpacing: 1,
                                         fontWeight: FontWeight.w600),
                                   ),
                                   Text(
                                     "call us to activate.",
                                     style: TextStyle(
                                         color: ConstHelper.blackColor,
-                                        fontSize: 12),
+                                      fontSize: Get.width*0.035,),
                                   ),
                                 ],
                               ),
@@ -539,6 +548,7 @@ List drawerList = [
                                   }
                                 },
                                 child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: Get.width*0.02),
                                   decoration: BoxDecoration(
                                       color: ConstHelper.blackColor,
                                       borderRadius: BorderRadius.circular(20)),
@@ -559,7 +569,9 @@ List drawerList = [
                                           style: TextStyle(
                                               color: ConstHelper.whiteColor,
                                               fontWeight: FontWeight.w600,
-                                              fontSize: 16),
+                                            fontSize: Get.width * 0.045,
+                                            letterSpacing: 1,
+                                          ),
                                         )
                                       ],
                                     ),
@@ -571,7 +583,7 @@ List drawerList = [
                                     .format(DateTime.now()),
                                 style: TextStyle(
                                     color: ConstHelper.blackColor,
-                                    fontSize: 10),
+                                    fontSize: Get.width*0.03),
                               )
                             ],
                           )
@@ -585,7 +597,7 @@ List drawerList = [
                   Text (
                     "Validity Ends on  : ${homeController.userData.value.validityDate == null || homeController.userData.value.validityDate!.year <= 0 ? ConstHelper.naMsg : DateFormat('dd - MMMM - yyyy').format(homeController.userData.value.validityDate!)}",
                     style:
-                        TextStyle(fontSize: 14, color: ConstHelper.greyColor),
+                        TextStyle( fontSize: Get.width*0.035, color: ConstHelper.blackColor.withOpacity(0.8)),
                   ),
                 ],
               ),
@@ -605,6 +617,7 @@ deleteDialog(context, double height, double width) {
       surfaceTintColor: ConstHelper.whiteColor,
       insetPadding: const EdgeInsets.symmetric(horizontal: 20),
       child: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: Get.width*0.04,vertical: Get.height*0.01),
         child: Container(
           padding: const EdgeInsets.all(10),
           child: Column(
@@ -625,8 +638,10 @@ deleteDialog(context, double height, double width) {
                 "Are you sure you want to delete your account? This will permanently erase your account.",
                 style: TextStyle(
                   fontSize: Get.width * 0.04,
+                  letterSpacing: 1,
                   fontWeight: FontWeight.w600,
                   color: ConstHelper.blackColor,
+                  height: 1.5
                 ),
               ),
               SizedBox(height: height * 0.03),
@@ -641,8 +656,7 @@ deleteDialog(context, double height, double width) {
                           try {
                             if (value.isNotEmpty) {
                               if (value['code'] == 200) {
-                                final responseData = json.decode(value.body);
-                                print(responseData);
+                                final responseData = value.body;
                                 if (responseData['code'] == 200) {
                                   SharedPrefHelper.sharedPreferences.setBool(
                                     'login',
@@ -652,20 +666,20 @@ deleteDialog(context, double height, double width) {
                                     const LoginPage(),
                                   );
                                   ConstHelper.successDialog(
-                                    text: jsonDecode(value)['msg'] ??
+                                    text: value['msg'] ??
                                         "User Deleted Successfully",
                                     seconds: 10,
                                   );
                                 } else {
                                   ConstHelper.errorDialog(
-                                    text: jsonDecode(value)['msg'] ??
+                                    text: value['msg'] ??
                                         "Something went wrong",
                                     seconds: 10,
                                   );
                                 }
                               } else {
                                 ConstHelper.errorDialog(
-                                  text: jsonDecode(value)['msg'] ??
+                                  text: value['msg'] ??
                                       "Something went wrong",
                                   seconds: 10,
                                 );

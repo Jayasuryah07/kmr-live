@@ -51,6 +51,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle( SystemUiOverlayStyle(
+      statusBarColor: ConstHelper.darkBlueColor,
+      // Background color of status bar
+      statusBarIconBrightness: Brightness.light,
+      // Color of icons (light = white icons)
+      statusBarBrightness: Brightness.dark,
+      // For iOS
+
+      systemNavigationBarColor: ConstHelper.whiteColor,
+      // Navigation bar background
+      systemNavigationBarIconBrightness: Brightness.dark,
+      // Icons color in navigation bar
+      systemNavigationBarDividerColor: ConstHelper.whiteColor,
+    ));
     return GetMaterialApp(
       title: 'KMR',
       debugShowCheckedModeBanner: false,

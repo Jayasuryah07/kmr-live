@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,7 @@ import '../HomeScreen/HomePage.dart';
 import '../SignupScreen/SignupPage.dart';
 import 'OTPPage.dart';
 
+import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -30,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController txtUsername = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   FocusNode usernameFocusNode = FocusNode();
+  final controller = WebViewController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,24 +56,24 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: Get.height *0.07,
+                          height: Get.height *0.05,
                         ),
                         Image.asset(
                           'assets/image/kmrLive.png',
                           width: Get.width,
-                          height: Get.width / 4,
+                          height: Get.width / 4.5,
                           fit: BoxFit.fitWidth,
                         ),
 
 
                         SizedBox(
-                          height: Get.height *0.07,
+                          height: Get.height *0.05,
                         ),
                         Text(
-                          'Welcome',
+                          'Welcome!',
                           style: TextStyle(
                             color: ConstHelper.orangeColor,
-                            fontSize: 25,
+                            fontSize: Get.width*0.065,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -78,10 +81,10 @@ class _LoginPageState extends State<LoginPage> {
                           height: Get.width / 30,
                         ),
                         Text(
-                          'Login to your account',
+                          'Log in to your account',
                           style: TextStyle(
                             color: ConstHelper.blackColor,
-                            fontSize: 30,
+                            fontSize: Get.width*0.07,
                             fontWeight: FontWeight.w900,
                           ),
                         ),
@@ -94,13 +97,25 @@ class _LoginPageState extends State<LoginPage> {
                             child: TextFormField(
                               controller: txtUsername,
                               focusNode: usernameFocusNode,
+                              keyboardType: TextInputType.number,
+                              maxLength: 10,
+                              style:TextStyle(
+                                fontSize: Get.width*0.045,
+                                fontWeight: FontWeight.bold,
+                                color: ConstHelper.blackColor,
+                                letterSpacing: 1
+                              ),
+
                               decoration: InputDecoration(
+                                counterText: "",
                                   // border: OutlineInputBorder(),
                                   contentPadding: EdgeInsets.symmetric(
                                       horizontal: Get.width / 30,
                                       vertical: Get.width / 60),
-                                  hintText: "User Name",
+                                  hintText: "Enter User Id here...",
                                   hintStyle: TextStyle(
+                                    fontSize: Get.width*0.035,
+                                    fontWeight: FontWeight.normal,
                                     color: ConstHelper.greyColor,
                                   ),
                                   prefixIcon: Icon(
@@ -109,7 +124,9 @@ class _LoginPageState extends State<LoginPage> {
                                   )),
                               validator: (value) {
                                 if (value!.trim().isEmpty) {
-                                  return 'Please enter the username';
+                                  return 'User Id cannot be empty.';
+                                } else if (value!.trim().isNotEmpty && value.length != 10) {
+                                  return 'Enter valid user id.';
                                 }
                                 return null;
                               },
@@ -119,51 +136,94 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: Get.height *0.02,
                         ),
-                        GestureDetector(
-                          onTap: () => homeController.check.value =
-                              !homeController.check.value,
-                          child: Obx(
-                            () => Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                      color: homeController.check.value
-                                          ? ConstHelper.darkBlueColor
-                                          : ConstHelper.greyColor,
-                                      width: 1,
-                                    ),
+                        Obx(
+                          () => Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
                                     color: homeController.check.value
                                         ? ConstHelper.darkBlueColor
-                                        : ConstHelper.whiteColor,
+                                        : ConstHelper.greyColor,
+                                    width: 1,
                                   ),
-                                  child: Icon(
-                                    Icons.check_rounded,
-                                    color: ConstHelper.whiteColor,
-                                    size: Get.width / 18,
-                                  ),
+                                  color: homeController.check.value
+                                      ? ConstHelper.darkBlueColor
+                                      : ConstHelper.whiteColor,
                                 ),
-                                SizedBox(
-                                  width: Get.width / 30,
+                                child: Icon(
+                                  Icons.check_rounded,
+                                  color: ConstHelper.whiteColor,
+                                  size: Get.width / 18,
                                 ),
-                                Text(
-                                  "I agree with ",
+                              ),
+                              SizedBox(
+                                width: Get.width / 30,
+                              ),
+                              GestureDetector(
+                                onTap: () => homeController.check.value =
+                                !homeController.check.value,
+
+                                child: Text(
+                                  "I agree to the ",
                                   style: TextStyle(
                                     color: ConstHelper.greyColor,
-                                    fontSize: 14,
-                                  ),
-                                ),Text(
-                                  "Terms & condition",
-                                  style: TextStyle(
-                                    color: ConstHelper.darkBlueColor,
-                                    fontSize: 14,
-
+                                    fontSize: Get.width*0.04,
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  controller
+                                    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+                                    ..loadRequest(Uri.parse("http://kmrlive.in/privacypolicy.html"));
+                                  showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        insetPadding: EdgeInsets.symmetric(horizontal: Get.width * 0.025), // 95% width
+                                        titlePadding: EdgeInsets.only(top: 10,right: 10,bottom: 0),
+                                        title: Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: (){
+                                                Navigator.pop(context);
+                                              },
+                                              child: Container(
+                                                  padding: EdgeInsets.all(3),
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: ConstHelper.greyColor.withOpacity(0.5)
+                                                  ),
+                                                  child: Icon(Icons.close,color: ConstHelper.blackColor,)),
+                                            ),
+                                          ],
+                                        ),
+                                        contentPadding: EdgeInsets.all(0),
+                                        content: Container(
+                                          width: Get.width*0.9, // Adjust the width here
+                                          height: Get.height * 0.9, // Optional: control height
+                                          child: WebViewWidget(controller: controller),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Text(
+                                  "Terms & Conditions",
+                                  style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: ConstHelper.darkBlueColor,
+                                    fontSize: Get.width*0.045,
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(
@@ -382,6 +442,14 @@ class _LoginPageState extends State<LoginPage> {
                                                   const OTPPage(),
                                                   transition: Transition.fadeIn,
                                                 );
+                                                Get.snackbar(
+                                                  'Otp sent',
+                                                  value['msg'] ?? 'Otp sent successfully.',
+                                                  snackPosition: SnackPosition.BOTTOM,
+                                                  colorText: ConstHelper.whiteColor,
+                                                  backgroundColor: ConstHelper.darkBlueColor,
+                                                );
+
                                                 EasyLoading.dismiss();
                                               },
                                               codeAutoRetrievalTimeout:
@@ -393,10 +461,13 @@ class _LoginPageState extends State<LoginPage> {
                                             );
                                           } else {
                                             EasyLoading.dismiss();
-                                            ConstHelper.errorDialog(
-                                              text: value['msg'] ??
+                                            Get.snackbar(
+                                              'Error!',
+                                              value['msg'] ??
                                                   ConstHelper.unauthorizedMsg,
-                                              seconds: 10,
+                                              snackPosition: SnackPosition.BOTTOM,
+                                              colorText: ConstHelper.whiteColor,
+                                              backgroundColor: ConstHelper.darkBlueColor,
                                             );
                                           }
                                         } else {
@@ -418,10 +489,14 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                               } else {
                                 EasyLoading.dismiss();
-                                ConstHelper.errorDialog(
-                                    text:
-                                        'Please click terms of use and Privacy Policy',
-                                    seconds: 10);
+                                Get.snackbar(
+                                  'Terms & Privacy Policy',
+                                  'Please review and accept the Terms of Use and Privacy Policy.',
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  colorText: ConstHelper.whiteColor,
+                                  backgroundColor: ConstHelper.darkBlueColor,
+                                );
+
                               }
                             }
                             EasyLoading.dismiss();
@@ -437,11 +512,11 @@ class _LoginPageState extends State<LoginPage> {
                               vertical: Get.width / 30,
                             ),
                             child: Text(
-                              'Login',
+                              'Send OTP',
                               style: TextStyle(
                                 color: ConstHelper.whiteColor,
                                 fontWeight: FontWeight.w600,
-                                fontSize: 16,
+                                fontSize: Get.width*0.045,
                               ),
                             ),
                           ),
@@ -453,10 +528,10 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Do not have account",
+                              "Do not have account?",
                               style: TextStyle(
                                 color: ConstHelper.greyColor,
-                                fontSize: 14,
+                                fontSize: Get.width*0.04,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -468,11 +543,13 @@ class _LoginPageState extends State<LoginPage> {
                                 );
                               },
                               child: Text(
-                                "   Sign up",
+                                " Sign up",
                                 style: TextStyle(
+                                  decoration:TextDecoration.underline,
                                   color: ConstHelper.darkBlueColor,
-                                  fontSize: 14,
+                                  fontSize: Get.width*0.045,
                                   fontWeight: FontWeight.w600,
+                                  letterSpacing: 1
                                 ),
                               ),
                             ),

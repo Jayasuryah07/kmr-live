@@ -1,10 +1,17 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../Controllers/profile_controller.dart';
+import '../../Utils/ApiHelper.dart';
 import '../../Utils/ConstHelper.dart';
+import '../../Utils/SharedPrefHelper.dart';
+import '../LoginScreen/LoginPage.dart';
 
 
 class ProfileScreen extends StatefulWidget {
@@ -33,9 +40,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         title: Text(
-          "Profile",
+          "Account Profile",
           style: TextStyle(
-            fontSize: 18,
+            fontSize: Get.width * 0.05,
+letterSpacing: 1,
             fontWeight: FontWeight.w600,
             color: ConstHelper.whiteColor,
           ),
@@ -111,16 +119,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 context: context,
                               ),
                                commonProfileTextWidget(
-                                title: "Validity Date",
+                                title: "Account Expiration",
                                 subTitle:
                                 DateFormat("dd-MM-yyyy").format(controller.useDataModel.value.data?.validityDate??DateTime.now()) ?? "",
                                 context: context,
                               ),
-
+                              SizedBox(height: Get.height * 0.03),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () =>deleteDialog(context, Get.height, Get.width),
+                                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                                    child:  Padding(
+                                      padding:  EdgeInsets.symmetric(vertical: Get.height*0.015),
+                                      child: Text("Delete Account" ,style: GoogleFonts.ptSans(
+                                      color: ConstHelper.whiteColor,
+                                        fontSize: Get.width *0.045,
+                                        letterSpacing:1,
+                                        fontWeight: FontWeight.w600,
+                                      ),),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: Get.height * 0.04),
                             ],
                           ),
                         ),
-
                       ],
                     ),
                   )
@@ -141,6 +167,132 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ],
                   ),
+      ),
+    );
+  }
+  deleteDialog(context, double height, double width) {
+    return showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: ConstHelper.whiteColor,
+        surfaceTintColor: ConstHelper.whiteColor,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: Get.width*0.04,vertical: Get.height*0.01),
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Icon(CupertinoIcons.clear_circled_solid))
+                  ],
+                ),
+                SizedBox(height: height * 0.02),
+                Text(
+                  "Are you sure you want to delete your account? This will permanently erase your account.",
+                  style: TextStyle(
+                      fontSize: Get.width * 0.045,
+                      letterSpacing: 1,
+                      fontWeight: FontWeight.w600,
+                      color: ConstHelper.blackColor,
+                      height: 1.5
+                  ),
+                ),
+                SizedBox(height: height * 0.03),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          var value = await ApiHelper.apiHelper
+                              .postDeleteProfileApi()
+                              .then((value) async {
+                            try {
+                              if (value.isNotEmpty) {
+                                if (value['code'] == 200) {
+                                  final responseData = value.body;
+                                  if (responseData['code'] == 200) {
+                                    SharedPrefHelper.sharedPreferences.setBool(
+                                      'login',
+                                      false,
+                                    );
+                                    Get.offAll(
+                                      const LoginPage(),
+                                    );
+                                    ConstHelper.successDialog(
+                                      text: value['msg'] ??
+                                          "User Deleted Successfully",
+                                      seconds: 10,
+                                    );
+                                  } else {
+                                    ConstHelper.errorDialog(
+                                      text: value['msg'] ??
+                                          "Something went wrong",
+                                      seconds: 10,
+                                    );
+                                  }
+                                } else {
+                                  ConstHelper.errorDialog(
+                                    text: value['msg'] ??
+                                        "Something went wrong",
+                                    seconds: 10,
+                                  );
+                                }
+                              }
+                            } on TimeoutException catch (e) {
+                              ConstHelper.errorDialog(
+                                text: e.message.toString(),
+                                seconds: 10,
+                              );
+                            }
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red),
+                        child:  Text(
+                          "Delete",
+                          style: TextStyle(
+                              fontSize: Get.width * 0.04,
+                              letterSpacing: 1,
+                              fontWeight: FontWeight.w600,
+                              color: ConstHelper.whiteColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: Get.width * 0.04,
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => Get.back(),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white),
+                        child:  Text(
+                          "Cancel",
+                          style: TextStyle(
+                            fontSize: Get.width * 0.04,
+                            letterSpacing: 1,
+                            fontWeight: FontWeight.w600,
+                            color: ConstHelper.blackColor,
+                        ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: height * 0.01),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

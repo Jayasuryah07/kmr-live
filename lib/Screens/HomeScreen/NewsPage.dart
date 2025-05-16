@@ -38,8 +38,7 @@ class _NewsPageState extends State<NewsPage> {
             onRefresh: () async {
               await homeController.getNewsData();
             },
-            backgroundColor: ConstHelper.whiteColor,
-            color: ConstHelper.darkBlueColor,
+            backgroundColor: ConstHelper.whiteColor, color: ConstHelper.darkBlueColor,
             child: ListView(
               children: [
                 Padding(
@@ -50,7 +49,7 @@ class _NewsPageState extends State<NewsPage> {
                       style: TextStyle(
                         color: ConstHelper.darkBlueColor,
                         fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                        fontSize: Get.width * 0.045,letterSpacing: 1,
                       ),
                     ),
                   ),
@@ -119,8 +118,10 @@ class _NewsPageState extends State<NewsPage> {
                                 children: [
                                   Text(homeController.searchedNewsDataList[index].newsHeadlines == null || homeController.searchedNewsDataList[index].newsHeadlines!.trim().isEmpty ? 'Headline N/A' : homeController.searchedNewsDataList[index].newsHeadlines!,
                                     maxLines: 2,
-                                    style: TextStyle(color: ConstHelper.blackColor,fontWeight: FontWeight.w600,fontSize: 15,),),
-                                  Text(homeController.searchedNewsDataList[index].newsContent == null || homeController.searchedNewsDataList[index].newsContent!.trim().isEmpty ? 'Details N/A' : homeController.searchedNewsDataList[index].newsContent!,style: TextStyle(color: ConstHelper.blackColor.withOpacity(0.6),fontWeight: FontWeight.w500,fontSize: 13,),maxLines: 3,),
+                                    style: TextStyle(color: ConstHelper.blackColor,fontWeight: FontWeight.w600,fontSize: Get.width * 0.045,
+                                      letterSpacing: 1,),),
+                                  Text(homeController.searchedNewsDataList[index].newsContent == null || homeController.searchedNewsDataList[index].newsContent!.trim().isEmpty ? 'Details N/A' : homeController.searchedNewsDataList[index].newsContent!,style: TextStyle(color: ConstHelper.blackColor.withOpacity(0.6),fontWeight: FontWeight.w500,fontSize: Get.width * 0.04,
+                                    letterSpacing: 1,),maxLines: 3,),
                                   const Divider(),
                                   Row(
                                     children: [
@@ -129,7 +130,8 @@ class _NewsPageState extends State<NewsPage> {
                                           children: [
                                             TextSpan(
                                               text:homeController.searchedNewsDataList[index].newsCreatedDate == null || homeController.searchedNewsDataList[index].newsCreatedDate!.year <= 0 ? 'Date N/A' : DateFormat('dd/MMM/yyyy').format(homeController.searchedNewsDataList[index].newsCreatedDate!),
-                                              style: TextStyle(fontSize: 12,color: ConstHelper.blackColor.withOpacity(0.6),),
+                                              style: TextStyle(fontSize: Get.width * 0.035,
+                                                letterSpacing: 1,color: ConstHelper.blackColor.withOpacity(0.6),),
                                             ),
                                             // const TextSpan(text: '  '),
                                             // TextSpan(
@@ -149,7 +151,8 @@ class _NewsPageState extends State<NewsPage> {
                                                 Get.to(const NewsDataPage(),transition: Transition.fadeIn);
                                               },
                                               borderRadius: BorderRadius.circular(10),
-                                              child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: 12,fontWeight: FontWeight.w600),)),
+                                              child: Text("View More",style: TextStyle(color: ConstHelper.darkBlueColor,decoration:TextDecoration.underline,fontSize: Get.width * 0.035,
+                                                  letterSpacing: 1,fontWeight: FontWeight.w600),)),
                                         ),
                                       ),
                                     ],
@@ -181,7 +184,7 @@ class _NewsPageState extends State<NewsPage> {
                       style: TextStyle(
                         color: ConstHelper.darkBlueColor,
                         fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                        fontSize: Get.width * 0.045,letterSpacing: 1,
                       ),
                     ),
                   ),
@@ -254,8 +257,8 @@ class _NewsPageState extends State<NewsPage> {
                                       children: [
                                         Text(homeController.allNewsDataList[index].newsHeadlines == null || homeController.allNewsDataList[index].newsHeadlines!.trim().isEmpty ? 'Headline N/A' : homeController.allNewsDataList[index].newsHeadlines!,
                                           maxLines: 2,
-                                          style: TextStyle(color: ConstHelper.blackColor,fontWeight: FontWeight.w600,fontSize: 15,),),
-                                        Text(homeController.allNewsDataList[index].newsContent == null || homeController.allNewsDataList[index].newsContent!.trim().isEmpty ? 'Details N/A' : homeController.allNewsDataList[index].newsContent!,style: TextStyle(color: ConstHelper.blackColor.withOpacity(0.6),fontWeight: FontWeight.w500,fontSize: 13,),maxLines: 3,),
+                                          style: TextStyle(color: ConstHelper.darkBlueColor,letterSpacing:1,fontWeight: FontWeight.w600,fontSize: Get.width*0.04,),),
+                                        Text(homeController.allNewsDataList[index].newsContent == null || homeController.allNewsDataList[index].newsContent!.trim().isEmpty ? 'Details N/A' : homeController.allNewsDataList[index].newsContent!,style: TextStyle(color: ConstHelper.blackColor.withOpacity(0.6),fontWeight: FontWeight.w500,letterSpacing:1,fontSize: Get.width*0.035,),maxLines: 3,),
 
                                       ],
                                     ),
@@ -270,7 +273,7 @@ class _NewsPageState extends State<NewsPage> {
                                       children: [
                                         TextSpan(
                                           text:homeController.allNewsDataList[index].newsCreatedDate == null || homeController.allNewsDataList[index].newsCreatedDate!.year <= 0 ? 'Date N/A' : DateFormat('dd/MMM/yyyy').format(homeController.allNewsDataList[index].newsCreatedDate!),
-                                          style: TextStyle(fontSize: 12,color: ConstHelper.blackColor.withOpacity(0.6),),
+                                          style: TextStyle(fontSize: Get.width*0.03,color: ConstHelper.blackColor.withOpacity(0.8),),
                                         ),
                                         // const TextSpan(text: '  '),
                                         // TextSpan(
@@ -290,7 +293,7 @@ class _NewsPageState extends State<NewsPage> {
                                             Get.to(const NewsDataPage(),transition: Transition.fadeIn);
                                           },
                                           borderRadius: BorderRadius.circular(10),
-                                          child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: 12,fontWeight: FontWeight.w600),)),
+                                          child: Text("View More",style: TextStyle(color: ConstHelper.darkBlueColor,letterSpacing:1,decoration:TextDecoration.underline,fontSize: Get.width*0.03,fontWeight: FontWeight.w600),)),
                                     ),
                                   ),
                                 ],

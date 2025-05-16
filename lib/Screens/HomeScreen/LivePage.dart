@@ -1,5 +1,6 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -60,21 +61,27 @@ class _LivePageState extends State<LivePage> {
                                 },
                                 backgroundColor: ConstHelper.whiteColor,
                                 color: ConstHelper.darkBlueColor,
-                                child: ListView(
+                                child:ListView(
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.only(
                                         top: Get.height / 3.8,
                                       ),
-                                      child: Center(
-                                        child: Text(
-                                          ConstHelper.dataNotAvailableMsg,
-                                          style: TextStyle(
-                                            color: ConstHelper.darkBlueColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "Error: No information available for this category.",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: ConstHelper.darkBlueColor,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: Get.width*0.045,
+                                                  letterSpacing: 1
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                       ),
                                     ),
                                   ],
@@ -114,7 +121,7 @@ class _LivePageState extends State<LivePage> {
                                                 backgroundColor: ConstHelper.whiteColor,
                                                 child: Container(
                                                   padding: EdgeInsets.symmetric(horizontal:  MediaQuery.of(context).size.width*0.07,vertical:  MediaQuery.of(context).size.height*0.03),
-                                                  decoration: BoxDecoration(
+                                                    decoration: BoxDecoration(
                                                     color: ConstHelper.whiteColor,
                                                     border: Border.all(color: ConstHelper.darkBlueColor),
                                                     borderRadius:
@@ -134,7 +141,8 @@ class _LivePageState extends State<LivePage> {
                                                                 style: TextStyle(
                                                                   color: ConstHelper.blackColor,
                                                                   fontWeight: FontWeight.w400,
-                                                                  fontSize: 16,
+                                                                    fontSize: Get.width*0.045,
+                                                                    letterSpacing: 1
                                                                 ),
                                                               ),
                                                             ),
@@ -145,7 +153,8 @@ class _LivePageState extends State<LivePage> {
                                                                 color: ConstHelper.blackColor
                                                                     .withOpacity(0.6),
                                                                 fontWeight: FontWeight.w500,
-                                                                fontSize: 14,
+                                                                  fontSize: Get.width*0.04,
+                                                                  letterSpacing: 1
                                                               ),
                                                             ),
                                                             Text(
@@ -154,7 +163,8 @@ class _LivePageState extends State<LivePage> {
                                                               TextStyle(
                                                                   color:Color(
                                                                       0xff507503),
-                                                                  fontSize: 10,
+                                                                  fontSize: Get.width*0.03,
+                                                                  letterSpacing: 1,
                                                                   fontWeight: FontWeight.w600
                                                               ),
                                                             )
@@ -165,7 +175,8 @@ class _LivePageState extends State<LivePage> {
                                                           style: TextStyle(
                                                             color: ConstHelper.blackColor,
                                                             fontWeight: FontWeight.w600,
-                                                            fontSize: 18,
+                                                            fontSize: Get.width*0.05,
+                                                            letterSpacing: 1,
                                                           ),
                                                         ),
                                                         Row(
@@ -177,7 +188,8 @@ class _LivePageState extends State<LivePage> {
                                                                   color: ConstHelper.blackColor
                                                                       .withOpacity(0.6),
                                                                   fontWeight: FontWeight.w500,
-                                                                  fontSize: 14,
+                                                                  fontSize: Get.width*0.04,
+                                                                  letterSpacing: 1,
                                                                 ),
                                                               ),
                                                             ),
@@ -197,8 +209,8 @@ class _LivePageState extends State<LivePage> {
 
                                                                         style:
                                                                         TextStyle(
-                                                                          fontSize:
-                                                                          12,
+                                                                          fontSize: Get.width*0.035,
+                                                                          letterSpacing: 1,
                                                                           color: ConstHelper
                                                                               .blackColor
                                                                               .withOpacity(
@@ -223,8 +235,8 @@ class _LivePageState extends State<LivePage> {
                                                                             .vendorProductCreatedTime!)),
                                                                         style:
                                                                         TextStyle(
-                                                                          fontSize:
-                                                                          12,
+                                                                          fontSize: Get.width*0.035,
+                                                                          letterSpacing: 1,
                                                                           color: ConstHelper
                                                                               .blackColor
                                                                               .withOpacity(
@@ -245,7 +257,8 @@ class _LivePageState extends State<LivePage> {
                                                             style: TextStyle(
                                                               color: ConstHelper.darkBlueColor,
                                                               fontWeight: FontWeight. w600,
-                                                              fontSize: 16,
+                                                              fontSize: Get.width*0.045,
+                                                              letterSpacing: 1,
                                                             ),).paddingOnly(bottom: Get.height/60),
                                                         if(homeController.categoryFirstItem.isNotEmpty)
                                                           ListView.separated(
@@ -269,8 +282,8 @@ class _LivePageState extends State<LivePage> {
 
                                                                                 style:
                                                                                 TextStyle(
-                                                                                  fontSize:
-                                                                                  13,
+                                                                                  fontSize: Get.width*0.04,
+                                                                                  letterSpacing: 1,
                                                                                   color: ConstHelper
                                                                                       .blackColor
                                                                                       .withOpacity(
@@ -295,8 +308,8 @@ class _LivePageState extends State<LivePage> {
                                                                                     .vendorProductUpdatedTime!)),
                                                                                 style:
                                                                                 TextStyle(
-                                                                                  fontSize:
-                                                                                  13,
+                                                                                  fontSize: Get.width*0.04,
+                                                                                  letterSpacing: 1,
                                                                                   color: ConstHelper
                                                                                       .blackColor
                                                                                       .withOpacity(
@@ -313,7 +326,8 @@ class _LivePageState extends State<LivePage> {
                                                                       style: TextStyle(
                                                                         color: ConstHelper.darkBlueColor,
                                                                         fontWeight: FontWeight.w400,
-                                                                        fontSize: 13,
+                                                                        fontSize: Get.width*0.04,
+                                                                        letterSpacing: 1,
                                                                       ),),],);
                                                               }, separatorBuilder: (context, index) => const SizedBox(height: 10,), itemCount: homeController.categoryFirstItem.length)
                                                       ],
@@ -457,7 +471,8 @@ class _LivePageState extends State<LivePage> {
                                                                             .w400,
                                                                     color: ConstHelper
                                                                         .blackColor,
-                                                                    fontSize: 14,
+                                                                        fontSize: Get.width*0.05,
+                                                                        letterSpacing: 1,
                                                                   ),
                                                                 ),
                                                                 Text(
@@ -481,7 +496,8 @@ class _LivePageState extends State<LivePage> {
                                                                         .w600,
                                                                     color: ConstHelper
                                                                         .blackColor,
-                                                                    fontSize: 15,
+                                                                    fontSize: Get.width*0.045,
+                                                                    letterSpacing: 1,
                                                                   ),
                                                                 ),
 
@@ -523,7 +539,8 @@ class _LivePageState extends State<LivePage> {
                                                                             fontWeight:
                                                                                 FontWeight
                                                                                     .w500,
-                                                                            fontSize: 15,
+                                                                                fontSize: Get.width*0.045,
+                                                                                letterSpacing: 1,
                                                                           ),
                                                                         ),
 
@@ -540,7 +557,8 @@ class _LivePageState extends State<LivePage> {
                                                                           TextStyle(
                                                                         color: ConstHelper
                                                                             .lightGreenColor,
-                                                                        fontSize: 10,
+                                                                            fontSize: Get.width*0.03,
+                                                                            letterSpacing: 1,
                                                                       ),
                                                                     )
                                                                   ],
@@ -573,7 +591,8 @@ class _LivePageState extends State<LivePage> {
                                                                         .blackColor
                                                                         .withOpacity(
                                                                         0.6),
-                                                                    fontSize: 13,
+                                                                    fontSize: Get.width*0.04,
+                                                                    letterSpacing: 1,
                                                                   ),
                                                                 ),
                                                               ),
@@ -604,8 +623,8 @@ class _LivePageState extends State<LivePage> {
                                                                             .vendorProductUpdatedDate!),
                                                                     style:
                                                                         TextStyle(
-                                                                      fontSize:
-                                                                          12,
+                                                                          fontSize: Get.width*0.035,
+                                                                          letterSpacing: 1,
                                                                       color: ConstHelper
                                                                           .blackColor
                                                                           .withOpacity(
@@ -633,8 +652,8 @@ class _LivePageState extends State<LivePage> {
                                                                             .vendorProductUpdatedTime!)),
                                                                     style:
                                                                         TextStyle(
-                                                                      fontSize:
-                                                                          12,
+                                                                          fontSize: Get.width*0.035,
+                                                                          letterSpacing: 1,
                                                                       color: ConstHelper
                                                                           .blackColor
                                                                           .withOpacity(
@@ -651,7 +670,8 @@ class _LivePageState extends State<LivePage> {
                                                                   0
                                                               ?SizedBox():  Align(
                                                               alignment: Alignment.centerRight,
-                                                              child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: 12,fontWeight: FontWeight.w600),))
+                                                              child: Text("View More",style: TextStyle(color: ConstHelper.darkBlueColor,decoration: TextDecoration.underline, fontSize: Get.width*0.035,
+                                                                  letterSpacing: 1,fontWeight: FontWeight.w600),))
                                                           // Obx(() => Icon(Icons.favorite,color: homeController.favorite.value == false?Color(0xff5D646C):Colors.redAccent,),),
                                                         ],
                                                       )
@@ -683,15 +703,21 @@ class _LivePageState extends State<LivePage> {
                                       padding: EdgeInsets.only(
                                         top: Get.height / 3.8,
                                       ),
-                                      child: Center(
-                                        child: Text(
-                                          ConstHelper.dataNotAvailableMsg,
-                                          style: TextStyle(
-                                            color: ConstHelper.darkBlueColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "Error: No information available for this category.",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: ConstHelper.darkBlueColor,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: Get.width*0.045,
+                                                letterSpacing: 1
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                       ),
                                     ),
                                   ],
@@ -749,9 +775,13 @@ class _LivePageState extends State<LivePage> {
                                                               child: Text(
                                                                 homeController.allLiveDataList[index].vendorName?.toString()??"".toUpperCase(),
                                                                 style: TextStyle(
-                                                                  color: ConstHelper.blackColor,
-                                                                  fontWeight: FontWeight.w400,
-                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                                  color: ConstHelper
+                                                                      .blackColor,
+                                                                  fontSize: Get.width*0.05,
+                                                                  letterSpacing: 1,
                                                                 ),
                                                               ),
                                                             ),
@@ -762,7 +792,8 @@ class _LivePageState extends State<LivePage> {
                                                                 color: ConstHelper.blackColor
                                                                     .withOpacity(0.6),
                                                                 fontWeight: FontWeight.w500,
-                                                                fontSize: 14,
+                                                                fontSize: Get.width*0.04,
+                                                                letterSpacing: 1,
                                                               ),
                                                             ),
                                                              Text(
@@ -771,7 +802,8 @@ class _LivePageState extends State<LivePage> {
                                                               TextStyle(
                                                                   color:Color(
                                                                       0xff507503),
-                                                                  fontSize: 10,
+                                                                  fontSize: Get.width*0.03,
+                                                                  letterSpacing: 1,
                                                                   fontWeight: FontWeight.w600
                                                               ),
                                                             )
@@ -782,7 +814,8 @@ class _LivePageState extends State<LivePage> {
                                                           style: TextStyle(
                                                             color: ConstHelper.blackColor,
                                                             fontWeight: FontWeight.w600,
-                                                            fontSize: 18,
+                                                            fontSize: Get.width*0.05,
+                                                            letterSpacing: 1,
                                                           ),
                                                         ),
 
@@ -796,7 +829,8 @@ class _LivePageState extends State<LivePage> {
                                                                 color: ConstHelper.blackColor
                                                                     .withOpacity(0.6),
                                                                 fontWeight: FontWeight.w500,
-                                                                fontSize: 14,
+                                                                fontSize: Get.width*0.04,
+                                                                letterSpacing: 1,
                                                               ),
                                                             ),
                                                             Expanded(
@@ -816,8 +850,8 @@ class _LivePageState extends State<LivePage> {
 
                                                                         style:
                                                                         TextStyle(
-                                                                          fontSize:
-                                                                          12,
+                                                                          fontSize: Get.width*0.035,
+                                                                          letterSpacing: 1,
                                                                           color: ConstHelper
                                                                               .blackColor
                                                                               .withOpacity(
@@ -842,8 +876,8 @@ class _LivePageState extends State<LivePage> {
                                                                             .vendorProductCreatedTime!)),
                                                                         style:
                                                                         TextStyle(
-                                                                          fontSize:
-                                                                          12,
+                                                                          fontSize: Get.width*0.035,
+                                                                          letterSpacing: 1,
                                                                           color: ConstHelper
                                                                               .blackColor
                                                                               .withOpacity(
@@ -864,7 +898,8 @@ class _LivePageState extends State<LivePage> {
                                                             style: TextStyle(
                                                               color: ConstHelper.darkBlueColor,
                                                               fontWeight: FontWeight. w600,
-                                                              fontSize: 16,
+                                                              fontSize: Get.width*0.045,
+                                                              letterSpacing: 1,
                                                             ),).paddingOnly(bottom: Get.height/60),
                                                         if(homeController.categoryFirstItem.isNotEmpty)
                                                           ListView.separated(
@@ -888,8 +923,8 @@ class _LivePageState extends State<LivePage> {
 
                                                                                 style:
                                                                                 TextStyle(
-                                                                                  fontSize:
-                                                                                  13,
+                                                                                  fontSize: Get.width*0.04,
+                                                                                  letterSpacing: 1,
                                                                                   color: ConstHelper
                                                                                       .blackColor
                                                                                       .withOpacity(
@@ -914,8 +949,8 @@ class _LivePageState extends State<LivePage> {
                                                                                     .vendorProductUpdatedTime!)),
                                                                                 style:
                                                                                 TextStyle(
-                                                                                  fontSize:
-                                                                                  13,
+                                                                                  fontSize: Get.width*0.04,
+                                                                                  letterSpacing: 1,
                                                                                   color: ConstHelper
                                                                                       .blackColor
                                                                                       .withOpacity(
@@ -933,7 +968,8 @@ class _LivePageState extends State<LivePage> {
                                                                       style: TextStyle(
                                                                         color: ConstHelper.darkBlueColor,
                                                                         fontWeight: FontWeight.w400,
-                                                                        fontSize: 13,
+                                                                        fontSize: Get.width*0.04,
+                                                                        letterSpacing: 1,
                                                                       ),),],);
                                                               }, separatorBuilder: (context, index) => const SizedBox(height: 10,), itemCount: homeController.categoryFirstItem.length)
                                                       ],
@@ -1078,7 +1114,7 @@ class _LivePageState extends State<LivePage> {
                                                                             .w400,
                                                                     color: ConstHelper
                                                                         .blackColor,
-                                                                    fontSize: 14,
+                                                                    fontSize: Get.width*0.04,
                                                                   ),
                                                                 ), Text(
                                                                   homeController.allLiveDataList[index].vendorProduct ==
@@ -1101,7 +1137,8 @@ class _LivePageState extends State<LivePage> {
                                                                             .w600,
                                                                     color: ConstHelper
                                                                         .blackColor,
-                                                                    fontSize: 15,
+                                                                        fontSize: Get.width*0.045,
+                                                                        letterSpacing: 1,
                                                                   ),
                                                                 ),
 
@@ -1141,7 +1178,8 @@ class _LivePageState extends State<LivePage> {
                                                                         fontWeight:
                                                                             FontWeight
                                                                                 .w500,
-                                                                        fontSize: 15,
+                                                                            fontSize: Get.width*0.045,
+                                                                            letterSpacing: 1,
                                                                       ),
                                                                     ),
                                                                     SizedBox(
@@ -1156,7 +1194,8 @@ class _LivePageState extends State<LivePage> {
                                                                           TextStyle(
                                                                         color: ConstHelper
                                                                             .lightGreenColor,
-                                                                        fontSize: 10,
+                                                                            fontSize: Get.width*0.03,
+                                                                            letterSpacing: 1,
                                                                       ),
                                                                     )
                                                                   ],
@@ -1189,7 +1228,8 @@ class _LivePageState extends State<LivePage> {
                                                                         .blackColor
                                                                         .withOpacity(
                                                                         0.6),
-                                                                    fontSize: 13,
+                                                                    fontSize: Get.width*0.04,
+                                                                    letterSpacing: 1,
                                                                   ),
                                                                 ),
                                                               ),
@@ -1220,8 +1260,8 @@ class _LivePageState extends State<LivePage> {
                                                                             .vendorProductUpdatedDate!),
                                                                     style:
                                                                         TextStyle(
-                                                                      fontSize:
-                                                                          12,
+                                                                          fontSize: Get.width*0.035,
+                                                                          letterSpacing: 1,
                                                                       color: ConstHelper
                                                                           .blackColor
                                                                           .withOpacity(
@@ -1249,8 +1289,8 @@ class _LivePageState extends State<LivePage> {
                                                                             .vendorProductUpdatedTime!)),
                                                                     style:
                                                                         TextStyle(
-                                                                      fontSize:
-                                                                          12,
+                                                                          fontSize: Get.width*0.035,
+                                                                          letterSpacing: 1,
                                                                       color: ConstHelper
                                                                           .blackColor
                                                                           .withOpacity(
@@ -1267,7 +1307,8 @@ class _LivePageState extends State<LivePage> {
                                                                   0
                                                               ?SizedBox():  Align(
                                                               alignment: Alignment.centerRight,
-                                                              child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: 12,fontWeight: FontWeight.w600),))
+                                                              child: Text("View More",style: TextStyle(color: ConstHelper.darkBlueColor,decoration: TextDecoration.underline, fontSize: Get.width*0.035,
+                                                                  letterSpacing: 1,fontWeight: FontWeight.w600),))
                                                           // Obx(() => Icon(Icons.favorite,color: homeController.favorite.value == false?Color(0xff5D646C):Colors.redAccent,),),
                                                         ],
                                                       )
@@ -1306,12 +1347,14 @@ class _LivePageState extends State<LivePage> {
                 Expanded(child:Text((title??"").toUpperCase(), style: TextStyle(
                   color: ConstHelper.blackColor,
                   fontWeight: FontWeight.w600,
-                  fontSize: 16,
+                  fontSize: Get.width*0.045,
+                  letterSpacing: 1,
                 ),),),
                 Expanded(child:  Text("₹${amount??""}", style: TextStyle(
                   color: ConstHelper.darkBlueColor,
                   fontWeight: FontWeight.w600,
-                  fontSize: 16,
+                  fontSize: Get.width*0.045,
+                  letterSpacing: 1,
                 ),),),
 
               ],
@@ -1325,14 +1368,16 @@ class _LivePageState extends State<LivePage> {
               itemList[index].vendorProductUpdatedDate?.toString()??"" , style: TextStyle(
               color: ConstHelper.blackColor,
               fontWeight: FontWeight.w400,
-              fontSize: 16,
+              fontSize: Get.width*0.045,
+                  letterSpacing: 1,
               ),),
               Expanded(child:  Text(itemList[index].vendorProductRate?.toString()??"",
                 textAlign:TextAlign.end,
                 style: TextStyle(
               color: ConstHelper.darkBlueColor,
               fontWeight: FontWeight.w400,
-              fontSize: 16,
+              fontSize: Get.width*0.045,
+                  letterSpacing: 1,
               ),),)]);
             }, separatorBuilder: (context, index) => const SizedBox(height: 10,), itemCount: itemList!.length)
           ],

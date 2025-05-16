@@ -37,7 +37,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         title: Text(
           "Feedback",
           style: TextStyle(
-            fontSize: 18,
+            fontSize: Get.width*0.05,
             fontWeight: FontWeight.w600,
             color: ConstHelper.whiteColor,
           ),
@@ -65,8 +65,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                       controller: feedBackController.subjectController.value,
                       onChanged: (value) {},
                       textInputAction: TextInputAction.newline,
+                      maxLength: 50,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: Get.width * 0.045,letterSpacing: 1,
                         color: ConstHelper.blackColor,
                         fontWeight: FontWeight.w500,
                       ),
@@ -76,12 +77,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         fillColor: ConstHelper.whiteColor,
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 15),
-                        hintText: "Subject",
+                        hintText: "Feedback Topic",
                         hintStyle: TextStyle(
-                            fontSize: 16,
+                            fontSize: Get.width * 0.045,letterSpacing: 1,
                             color: ConstHelper.greyColor,
                             fontWeight: FontWeight.w400),
                         filled: true,
+                        counterText: "",
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(7.0),
                             borderSide: const BorderSide(
@@ -113,8 +115,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         onChanged: (value) {},
                         textInputAction: TextInputAction.newline,
                         maxLines: 5,
+                        maxLength: 250,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: Get.width * 0.045,letterSpacing: 1,
                           color: ConstHelper.blackColor,
                           fontWeight: FontWeight.w500,
                         ),
@@ -124,9 +127,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           fillColor: ConstHelper.whiteColor,
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 15),
-                          hintText: "Description",
+                          hintText: "Details of Your Feedback",
                           hintStyle: TextStyle(
-                              fontSize: 16,
+                              fontSize: Get.width * 0.045,letterSpacing: 1,
                               color: ConstHelper.greyColor,
                               fontWeight: FontWeight.w400),
                           filled: true,
@@ -195,11 +198,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           vertical: Get.width / 30,
                         ),
                         child: Text(
-                          'Submit',
+                          'Submit Feedback',
                           style: TextStyle(
                             color: ConstHelper.whiteColor,
                             fontWeight: FontWeight.w600,
-                            fontSize: 16,
+                            fontSize: Get.width*0.045,
                           ),
                         ),
                       ),

@@ -26,7 +26,8 @@ class _NewsDataPageState extends State<NewsDataPage> {
               style: TextStyle(
                 color: ConstHelper.whiteColor,
                 fontWeight: FontWeight.w600,
-                fontSize: 18,
+                fontSize: Get.width * 0.05,
+                letterSpacing: 1,
               ),
             ),
           ),
@@ -96,10 +97,10 @@ class _NewsDataPageState extends State<NewsDataPage> {
                   // child: Image.asset('assets/image/imageNotFound.png',fit: BoxFit.cover,),
                   child: Column(
                     children: [
-                      Center(child: Text(homeController.selectNewsData.value.newsHeadlines == null || homeController.selectNewsData.value.newsHeadlines!.trim().isEmpty ? 'Headline N/A' : homeController.selectNewsData.value.newsHeadlines!.toUpperCase(),textAlign: TextAlign.center,style: TextStyle(color: ConstHelper.blackColor,fontWeight: FontWeight.w700,fontSize: 18,),)),
+                      Center(child: Text(homeController.selectNewsData.value.newsHeadlines == null || homeController.selectNewsData.value.newsHeadlines!.trim().isEmpty ? 'Headline N/A' : homeController.selectNewsData.value.newsHeadlines!.toUpperCase(),textAlign: TextAlign.center,style: TextStyle(color: ConstHelper.darkBlueColor,letterSpacing:1,fontWeight: FontWeight.w600,fontSize: Get.width*0.05,),)),
                       Divider(thickness: 0.9,),
                       SizedBox(height: Get.width/40,),
-                      Center(child: Text(homeController.selectNewsData.value.newsContent == null || homeController.selectNewsData.value.newsContent!.trim().isEmpty ? 'Details N/A' : homeController.selectNewsData.value.newsContent!,textAlign:TextAlign.center,style: TextStyle(color: ConstHelper.blackColor.withOpacity(0.6),fontWeight: FontWeight.w500,fontSize: 14,),),),
+                      Center(child: Text(homeController.selectNewsData.value.newsContent == null || homeController.selectNewsData.value.newsContent!.trim().isEmpty ? 'Details N/A' : homeController.selectNewsData.value.newsContent!,textAlign:TextAlign.center,style: TextStyle(color: ConstHelper.blackColor.withOpacity(0.6),letterSpacing:1,fontWeight: FontWeight.w500,fontSize: Get.width*0.04,),),),
 
                     ],
                   ),

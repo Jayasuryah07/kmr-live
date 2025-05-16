@@ -51,6 +51,7 @@ class ApiHelper {
       );
       if (response.statusCode == 200) {
         var data = response.data;
+        print("login response ::::::::::::::::::: ${data}");
         return data;
       } else {
         return {};
@@ -89,7 +90,7 @@ class ApiHelper {
         return {};
       }
 
-  }  Future<Map> signUpUser({
+  }  Future signUpUser({
     required String mobileNo,
     required String name,
     required String email,
@@ -113,11 +114,12 @@ class ApiHelper {
         'panel-create-vendor-user-signup',
         data: data,
       );
+      var body = response.data;
+      print(body);
       if (response.statusCode == 200) {
-        var data = response.data;
-        return data;
+        return body;
       } else {
-        return {};
+        return body;
       }
     } catch (error) {
       return {};

@@ -71,7 +71,8 @@ class _RatesPageState extends State<RatesPage> {
                                     style: TextStyle(
                                       color: ConstHelper.darkBlueColor,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 16,
+                                        fontSize: Get.width*0.045,
+                                        letterSpacing: 1
                                     ),
                                   ),
                                 ),
@@ -200,7 +201,7 @@ class _RatesPageState extends State<RatesPage> {
                                                           .blackColor,
                                                       fontWeight:
                                                           FontWeight.w600,
-                                                      fontSize: 15,
+                                                      fontSize: Get.width*0.045,
                                                     ),
                                                   ),
                                                   Text(
@@ -226,7 +227,7 @@ class _RatesPageState extends State<RatesPage> {
                                                           .withOpacity(0.6),
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      fontSize: 13,
+                                                      fontSize: Get.width*0.04,
                                                     ),
                                                   ),
                                                   Text.rich(
@@ -252,7 +253,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                           index]
                                                                       .vendorCreatedDate!),
                                                           style: TextStyle(
-                                                            fontSize: 12,
+                                                            fontSize: Get.width*0.035,
                                                             color: ConstHelper
                                                                 .blackColor
                                                                 .withOpacity(
@@ -281,7 +282,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                           index]
                                                                       .vendorCreatedTime!)),
                                                           style: TextStyle(
-                                                            fontSize: 12,
+                                                            fontSize: Get.width*0.035,
                                                             color: ConstHelper
                                                                 .blackColor
                                                                 .withOpacity(
@@ -331,7 +332,7 @@ class _RatesPageState extends State<RatesPage> {
                                                           "BRAND",
                                                           style: TextStyle(
                                                               color: Color(0xff001417),
-                                                              fontSize: 12,
+                                                              fontSize: Get.width*0.035,
                                                               fontWeight:
                                                               FontWeight.w500),
                                                         ))),
@@ -341,7 +342,7 @@ class _RatesPageState extends State<RatesPage> {
                                                           "QUANTITY",
                                                           style: TextStyle(
                                                               color: Color(0xff001417),
-                                                              fontSize: 12,
+                                                              fontSize: Get.width*0.035,
                                                               fontWeight:
                                                               FontWeight.w500),
                                                         ))),
@@ -351,7 +352,7 @@ class _RatesPageState extends State<RatesPage> {
                                                           "Min/Maz (+/-)",
                                                           style: TextStyle(
                                                               color: Color(0xff001417),
-                                                              fontSize: 12,
+                                                              fontSize: Get.width*0.035,
                                                               fontWeight:
                                                               FontWeight.w500),
                                                         ))),
@@ -389,7 +390,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                 0xff5D646C),
                                                             fontWeight:
                                                             FontWeight.w500,
-                                                            fontSize: 12),
+                                                            fontSize: Get.width*0.035,),
                                                       ),
                                                     ),
                                                     DataCell(
@@ -421,7 +422,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                 0xff5D646C),
                                                             fontWeight:
                                                             FontWeight.w500,
-                                                            fontSize: 12),
+                                                            fontSize: Get.width*0.035,),
                                                       ),
                                                     ),
                                                     DataCell(
@@ -447,7 +448,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                 0xff5D646C),
                                                             fontWeight:
                                                             FontWeight.w500,
-                                                            fontSize: 12),
+                                                            fontSize: Get.width*0.035,),
                                                       ),
                                                     ),
                                                   ]),
@@ -481,7 +482,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                             "BRAND",
                                                                             style: TextStyle(
                                                                                 color: Color(0xff001417),
-                                                                                fontSize: 12,
+                                                                                fontSize: Get.width*0.035,
                                                                                 fontWeight:
                                                                                 FontWeight.w500),
                                                                           ))),
@@ -491,7 +492,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                             "QUANTITY",
                                                                             style: TextStyle(
                                                                                 color: Color(0xff001417),
-                                                                                fontSize: 12,
+                                                                                fontSize: Get.width*0.035,
                                                                                 fontWeight:
                                                                                 FontWeight.w500),
                                                                           ))),
@@ -501,7 +502,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                             "Min/Maz (+/-)",
                                                                             style: TextStyle(
                                                                                 color: Color(0xff001417),
-                                                                                fontSize: 12,
+                                                                                fontSize: Get.width*0.035,
                                                                                 fontWeight:
                                                                                 FontWeight.w500),
                                                                           ))),
@@ -539,7 +540,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                                   0xff5D646C),
                                                                               fontWeight:
                                                                               FontWeight.w500,
-                                                                              fontSize: 12),
+                                                                              fontSize: Get.width*0.035,),
                                                                         ),
                                                                       ),
                                                                       DataCell(
@@ -571,7 +572,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                                   0xff5D646C),
                                                                               fontWeight:
                                                                               FontWeight.w500,
-                                                                              fontSize: 12),
+                                                                              fontSize: Get.width*0.035,),
                                                                         ),
                                                                       ),
                                                                       DataCell(
@@ -597,7 +598,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                                   0xff5D646C),
                                                                               fontWeight:
                                                                               FontWeight.w500,
-                                                                              fontSize: 12),
+                                                                              fontSize: Get.width*0.035,),
                                                                         ),
                                                                       ),
                                                                     ]),
@@ -610,7 +611,7 @@ class _RatesPageState extends State<RatesPage> {
                                                 },
                                                 splashColor: Colors.transparent,
                                                 borderRadius: BorderRadius.circular(10),
-                                                child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: 12,fontWeight: FontWeight.w600),)))
+                                                child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: Get.width*0.035,fontWeight: FontWeight.w600),)))
                                       ],
                                     ),
                                   ),
@@ -644,7 +645,8 @@ class _RatesPageState extends State<RatesPage> {
                                     style: TextStyle(
                                       color: ConstHelper.darkBlueColor,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 16,
+                                      fontSize: Get.width*0.045,
+                                      letterSpacing: 1
                                     ),
                                   ),
                                 ),
@@ -772,7 +774,7 @@ class _RatesPageState extends State<RatesPage> {
                                                           .blackColor,
                                                       fontWeight:
                                                           FontWeight.w600,
-                                                      fontSize: 15,
+                                                      fontSize: Get.width*0.045,
                                                     ),
                                                   ),
                                                   Text(
@@ -798,7 +800,7 @@ class _RatesPageState extends State<RatesPage> {
                                                           .withOpacity(0.6),
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      fontSize: 13,
+                                                      fontSize: Get.width*0.04,
                                                     ),
                                                   ),
                                                   Text.rich(
@@ -824,7 +826,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                           index]
                                                                       .vendorCreatedDate!),
                                                           style: TextStyle(
-                                                            fontSize: 12,
+                                                            fontSize: Get.width*0.035,
                                                             color: ConstHelper
                                                                 .blackColor
                                                                 .withOpacity(
@@ -853,7 +855,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                           index]
                                                                       .vendorCreatedTime!)),
                                                           style: TextStyle(
-                                                            fontSize: 12,
+                                                            fontSize: Get.width*0.035,
                                                             color: ConstHelper
                                                                 .blackColor
                                                                 .withOpacity(
@@ -903,7 +905,7 @@ class _RatesPageState extends State<RatesPage> {
                                                   "BRAND",
                                                   style: TextStyle(
                                                       color: Color(0xff001417),
-                                                      fontSize: 12,
+                                                      fontSize: Get.width*0.035,
                                                       fontWeight:
                                                           FontWeight.w500),
                                                 ))),
@@ -913,7 +915,7 @@ class _RatesPageState extends State<RatesPage> {
                                                   "QUANTITY",
                                                   style: TextStyle(
                                                       color: Color(0xff001417),
-                                                      fontSize: 12,
+                                                      fontSize: Get.width*0.035,
                                                       fontWeight:
                                                           FontWeight.w500),
                                                 ))),
@@ -923,7 +925,7 @@ class _RatesPageState extends State<RatesPage> {
                                                   "Min/Maz (+/-)",
                                                   style: TextStyle(
                                                       color: Color(0xff001417),
-                                                      fontSize: 12,
+                                                      fontSize: Get.width*0.035,
                                                       fontWeight:
                                                           FontWeight.w500),
                                                 ))),
@@ -961,7 +963,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                 0xff5D646C),
                                                             fontWeight:
                                                                 FontWeight.w500,
-                                                            fontSize: 12),
+                                                            fontSize: Get.width*0.035,),
                                                       ),
                                                     ),
                                                     DataCell(
@@ -993,7 +995,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                 0xff5D646C),
                                                             fontWeight:
                                                                 FontWeight.w500,
-                                                            fontSize: 12),
+                                                            fontSize: Get.width*0.035,),
                                                       ),
                                                     ),
                                                     DataCell(
@@ -1019,7 +1021,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                 0xff5D646C),
                                                             fontWeight:
                                                                 FontWeight.w500,
-                                                            fontSize: 12),
+                                                            fontSize: Get.width*0.035,),
                                                       ),
                                                     ),
                                                   ]),
@@ -1055,7 +1057,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                               "BRAND",
                                                                               style: TextStyle(
                                                                                   color: Color(0xff001417),
-                                                                                  fontSize: 12,
+                                                                                  fontSize: Get.width*0.035,
                                                                                   fontWeight:
                                                                                   FontWeight.w500),
                                                                             ))),
@@ -1065,7 +1067,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                               "QUANTITY",
                                                                               style: TextStyle(
                                                                                   color: Color(0xff001417),
-                                                                                  fontSize: 12,
+                                                                                  fontSize: Get.width*0.035,
                                                                                   fontWeight:
                                                                                   FontWeight.w500),
                                                                             ))),
@@ -1075,7 +1077,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                               "Min/Maz (+/-)",
                                                                               style: TextStyle(
                                                                                   color: Color(0xff001417),
-                                                                                  fontSize: 12,
+                                                                                  fontSize: Get.width*0.035,
                                                                                   fontWeight:
                                                                                   FontWeight.w500),
                                                                             ))),
@@ -1113,7 +1115,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                                     0xff5D646C),
                                                                                 fontWeight:
                                                                                 FontWeight.w500,
-                                                                                fontSize: 12),
+                                                                                fontSize: Get.width*0.035),
                                                                           ),
                                                                         ),
                                                                         DataCell(
@@ -1145,7 +1147,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                                     0xff5D646C),
                                                                                 fontWeight:
                                                                                 FontWeight.w500,
-                                                                                fontSize: 12),
+                                                                                fontSize: Get.width*0.035),
                                                                           ),
                                                                         ),
                                                                         DataCell(
@@ -1171,7 +1173,7 @@ class _RatesPageState extends State<RatesPage> {
                                                                                     0xff5D646C),
                                                                                 fontWeight:
                                                                                 FontWeight.w500,
-                                                                                fontSize: 12),
+                                                                                fontSize: Get.width*0.035),
                                                                           ),
                                                                         ),
                                                                       ]),
@@ -1185,7 +1187,7 @@ class _RatesPageState extends State<RatesPage> {
                                                 },
                                                 splashColor: Colors.transparent,
                                                 borderRadius: BorderRadius.circular(10),
-                                                child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,fontSize: 12,fontWeight: FontWeight.w600),)))
+                                                child: Text("View More",style: TextStyle(color: ConstHelper.darkBlueColor,decoration:TextDecoration.underline,fontSize: Get.width*0.035,fontWeight: FontWeight.w600),)))
                                       ],
                                     ),
                                   ),
