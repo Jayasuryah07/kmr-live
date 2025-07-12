@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Controllers/HomeController.dart';
 import '../../Models/UserDataModel.dart';
 import '../../Utils/ApiHelper.dart';
+import '../../Utils/ConstHelper.dart';
 import '../../Utils/FirebaseHelper.dart';
 import '../../Utils/SharedPrefHelper.dart';
 import '../HomeScreen/HomePage.dart';
@@ -36,7 +39,7 @@ class _SplashCommonPageState extends State<SplashCommonPage> {
   void initState() {
     // TODO: implement initState
 
-    Timer(const Duration(seconds: 1,), () async => await checkLogin(),);
+    Timer(const Duration(milliseconds: 500,), () async => await checkLogin(),);
     super.initState();
   }
   Future<void> checkForUpdate() async {
@@ -63,6 +66,17 @@ class _SplashCommonPageState extends State<SplashCommonPage> {
   }
   Future<void> checkLogin() async {
     bool login = false;
+    if (!(await ConstHelper.checkInternet())) {
+      EasyLoading.dismiss();
+      Get.snackbar(
+        "No Internet",
+        'Please check your internet connection',
+        snackPosition: SnackPosition
+            .BOTTOM, // Position: TOP or BOTTOM
+      );
+      Timer(const Duration(seconds: 1,), () async => Get.back(),);
+      return;
+    }
     try {
       login = SharedPrefHelper.sharedPreferences.getBool('login') ?? false;
     } catch(error) {
@@ -73,9 +87,18 @@ class _SplashCommonPageState extends State<SplashCommonPage> {
     {
       try {
         await homeController.getUserData();
-        homeController.firebaseFCMToken.value =
-        await FirebaseHelper.firebaseHelper
-            .getFirebaseToken();
+        var token;
+        if (Platform.isIOS) {
+          token = await FirebaseMessaging.instance
+              .getAPNSToken();
+          debugPrint('APNS Token: $token');
+        } else {
+          FirebaseMessaging messaging =
+              FirebaseMessaging.instance;
+          token = await messaging.getToken();
+          debugPrint('APNS Token: $token');
+        }
+        homeController.firebaseFCMToken.value =  token;
         await ApiHelper.apiHelper
             .loginUser(
 
@@ -142,7 +165,6 @@ class _SplashCommonPageState extends State<SplashCommonPage> {
     }
     else
     {
-      homeController.check.value = false;
       Get.offAll(const LoginPage(),transition: Transition.fadeIn,);
       EasyLoading.dismiss();
     }
@@ -152,7 +174,7 @@ class _SplashCommonPageState extends State<SplashCommonPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(child:  Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -210,6 +232,6 @@ class _SplashCommonPageState extends State<SplashCommonPage> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

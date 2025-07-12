@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -14,6 +16,7 @@ import '../../Utils/ApiHelper.dart';
 import '../../Utils/ConstHelper.dart';
 import '../../Utils/FirebaseHelper.dart';
 import '../../Utils/SharedPrefHelper.dart';
+import '../../Utils/network_connectivity_class.dart';
 import '../HomeScreen/HomePage.dart';
 import '../LoginScreen/LoginPage.dart';
 
@@ -63,22 +66,34 @@ class _SplashPageState extends State<SplashPage> {
   }
   Future<void> checkLogin() async {
     bool login = false;
+    if (!(await NetworkConnectivity.checkInternet())) {
+      //  networkDialog(context);
+      Get.to(const NoInternetScreen());
+      return;
+    }
     try {
       login = SharedPrefHelper.sharedPreferences.getBool('login') ?? false;
     } catch(error) {
       login = false;
     }
-
     if(login)
     {
       try {
         await homeController.getUserData();
-        homeController.firebaseFCMToken.value =
-        await FirebaseHelper.firebaseHelper
-            .getFirebaseToken();
+        var token;
+        if (Platform.isIOS) {
+          token = await FirebaseMessaging.instance
+              .getAPNSToken();
+          debugPrint('APNS Token: $token');
+        } else {
+          FirebaseMessaging messaging =
+              FirebaseMessaging.instance;
+          token = await messaging.getToken();
+          debugPrint('APNS Token: $token');
+        }
+        homeController.firebaseFCMToken.value = token;
         await ApiHelper.apiHelper
             .loginUser(
-
           mobileNo: homeController.userData.value.mobile ?? '',
           password: homeController.userData.value.cpassword ?? '',
           deviceId: homeController.firebaseFCMToken.trim(),
@@ -142,7 +157,6 @@ class _SplashPageState extends State<SplashPage> {
     }
     else
     {
-      homeController.check.value = false;
       Get.offAll(const LoginPage(),transition: Transition.fadeIn,);
       EasyLoading.dismiss();
     }

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../Models/user_model.dart';
 import '../Utils/ApiHelper.dart';
+import '../Utils/ConstHelper.dart';
 
 class ProfileController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -24,6 +25,15 @@ class ProfileController extends GetxController
   }
 
   void getProfileData() async {
+    if (!(await ConstHelper.checkInternet())) {
+      Get.snackbar(
+        "No Internet",
+        'Please check your internet connection',
+        snackPosition: SnackPosition
+            .BOTTOM, // Position: TOP or BOTTOM
+      );
+      return;
+    }
     useDataModel.value = await ApiHelper.apiHelper.fetchUserApiUrl(
       loading: isLoading,
     );

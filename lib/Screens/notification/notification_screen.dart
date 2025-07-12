@@ -23,9 +23,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
+    return Obx(() => SafeArea(child:  Scaffold(
       appBar: AppBar(
-        backgroundColor: ConstHelper.darkBlueColor,
+        backgroundColor: ConstHelper.lightBlueColor,
         leading: GestureDetector(
           onTap: () {
             Get.back();
@@ -37,6 +37,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ),
           ),
         ),
+        titleSpacing: 0,
         title: Text(
           "Notifications",
           style: TextStyle(
@@ -51,7 +52,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         child: controller.isLoading.value ? Center(child: CircularProgressIndicator(color: ConstHelper.darkBlueColor,),): controller.notificationList.isEmpty ?  Center(
           child: Text("No Notifications Available",style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: Get.width*0.06
+              fontSize: Get.width*0.045
           ),),
         ) :ListView.builder(
           itemCount: controller.notificationList.length,
@@ -130,7 +131,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         Row(
                         children: [
                           Expanded(
-                            child: Text("Date : ${DateFormat('dd-MMM-yyyy').format(controller.notificationList[index].notificationCreateDate!)}",
+                            child: Text("🗓️ ${DateFormat('dd MMM, yyyy').format(controller.notificationList[index].notificationCreateDate!)}",
                                 textAlign: TextAlign.end,
                                 style: TextStyle(fontSize: Get.width * 0.035,
                                 letterSpacing: 1,color: ConstHelper.blackColor.withOpacity(0.8))),
@@ -146,6 +147,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
           },
         ),
       ),
-    ));
+    )));
   }
 }

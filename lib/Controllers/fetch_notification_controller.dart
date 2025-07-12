@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:kmr_flutter_application/Models/notification_model.dart';
 import '../Utils/ApiHelper.dart';
+import '../Utils/ConstHelper.dart';
 
 class NotificationController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -24,6 +25,15 @@ class NotificationController extends GetxController
   }
 
   void getNotificationData() async {
+    if (!(await ConstHelper.checkInternet())) {
+      Get.snackbar(
+        "No Internet",
+        'Please check your internet connection',
+        snackPosition: SnackPosition
+            .BOTTOM, // Position: TOP or BOTTOM
+      );
+      return;
+    }
     notificationList.value = await ApiHelper.apiHelper.fetchNotificationApiUrl(
       loading: isLoading,
     );

@@ -59,6 +59,7 @@ class LiveDataModel {
   String? vendorProductCreatedTime;
   DateTime? vendorProductUpdatedDate;
   String? vendorProductUpdatedTime;
+  String? categoriesSubImages;
 
   LiveDataModel({
     this.id,
@@ -74,6 +75,8 @@ class LiveDataModel {
     this.vendorProductCreatedTime,
     this.vendorProductUpdatedDate,
     this.vendorProductUpdatedTime,
+    this.categoriesSubImages,
+
   });
 
   LiveDataModel copyWith({
@@ -90,6 +93,7 @@ class LiveDataModel {
     String? vendorProductCreatedTime,
     DateTime? vendorProductUpdatedDate,
     String? vendorProductUpdatedTime,
+    String? categoriesSubImages,
   }) =>
       LiveDataModel(
         id: id ?? this.id,
@@ -105,6 +109,7 @@ class LiveDataModel {
         vendorProductCreatedTime: vendorProductCreatedTime ?? this.vendorProductCreatedTime,
         vendorProductUpdatedDate: vendorProductUpdatedDate ?? this.vendorProductUpdatedDate,
         vendorProductUpdatedTime: vendorProductUpdatedTime ?? this.vendorProductUpdatedTime,
+        categoriesSubImages: categoriesSubImages ?? this.categoriesSubImages,
       );
 
   factory LiveDataModel.fromJson(Map<String, dynamic> json) => LiveDataModel(
@@ -121,6 +126,7 @@ class LiveDataModel {
     vendorProductCreatedTime: json["vendor_product_created_time"],
     vendorProductUpdatedDate: json["vendor_product_updated_date"] == null ? null : DateTime.parse(json["vendor_product_updated_date"]),
     vendorProductUpdatedTime: json["vendor_product_updated_time"],
+    categoriesSubImages: json["categories_sub_images"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -137,6 +143,7 @@ class LiveDataModel {
     "vendor_product_created_time": vendorProductCreatedTime,
     "vendor_product_updated_date": "${vendorProductUpdatedDate!.year.toString().padLeft(4, '0')}-${vendorProductUpdatedDate!.month.toString().padLeft(2, '0')}-${vendorProductUpdatedDate!.day.toString().padLeft(2, '0')}",
     "vendor_product_updated_time": vendorProductUpdatedTime,
+    "categories_sub_images": categoriesSubImages,
   };
 }
 

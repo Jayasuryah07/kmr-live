@@ -141,6 +141,7 @@ class VendorProduct {
   String? vendorProduct;
   String? vendorProductSize;
   dynamic vendorProductRate;
+  String? categoriesSubImages;
 
   VendorProduct({
     this.id,
@@ -149,6 +150,7 @@ class VendorProduct {
     this.vendorProduct,
     this.vendorProductSize,
     this.vendorProductRate,
+    this.categoriesSubImages,
   });
 
   VendorProduct copyWith({
@@ -157,6 +159,7 @@ class VendorProduct {
     VendorProductCategorySub? vendorProductCategorySub,
     String? vendorProduct,
     String? vendorProductSize,
+    String? categoriesSubImages,
     int? vendorProductRate,
   }) =>
       VendorProduct(
@@ -166,6 +169,7 @@ class VendorProduct {
         vendorProduct: vendorProduct ?? this.vendorProduct,
         vendorProductSize: vendorProductSize ?? this.vendorProductSize,
         vendorProductRate: vendorProductRate ?? this.vendorProductRate,
+        categoriesSubImages: categoriesSubImages ?? this.categoriesSubImages,
       );
 
   factory VendorProduct.fromJson(Map<String, dynamic> json) => VendorProduct(
@@ -175,6 +179,7 @@ class VendorProduct {
     vendorProduct: json["vendor_product"],
     vendorProductSize: json["vendor_product_size"],
     vendorProductRate: json["vendor_product_rate"],
+    categoriesSubImages: json["categories_sub_images"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -184,6 +189,7 @@ class VendorProduct {
     "vendor_product": vendorProduct,
     "vendor_product_size": vendorProductSize,
     "vendor_product_rate": vendorProductRate,
+    "categories_sub_images": categoriesSubImages,
   };
 }
 

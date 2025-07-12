@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../Models/about_us_model.dart';
 import '../Utils/ApiHelper.dart';
+import '../Utils/ConstHelper.dart';
 
 class AboutUsController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -24,8 +25,20 @@ class AboutUsController extends GetxController
   }
 
   void getAboutUsData() async {
-    aboutUsModel.value = await ApiHelper.apiHelper.fetchAboutUsApiUrl(
-      loading: isLoading,
-    );
+    if (!(await ConstHelper.checkInternet())) {
+      Get.snackbar(
+        "No Internet",
+        'Please check your internet connection',
+        snackPosition: SnackPosition
+            .BOTTOM, // Position: TOP or BOTTOM
+      );
+      return;
+    }
+    else
+    {
+      aboutUsModel.value = await ApiHelper.apiHelper.fetchAboutUsApiUrl(
+        loading: isLoading,
+      );
+    }
   }
 }

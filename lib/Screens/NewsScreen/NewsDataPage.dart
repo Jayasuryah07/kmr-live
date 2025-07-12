@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../Controllers/HomeController.dart';
 import '../../Utils/ConstHelper.dart';
@@ -20,9 +21,10 @@ class _NewsDataPageState extends State<NewsDataPage> {
         child: Scaffold(
           appBar: AppBar(
             iconTheme: IconThemeData(color: ConstHelper.whiteColor),
-            backgroundColor: ConstHelper.darkBlueColor,
+            backgroundColor: ConstHelper.lightBlueColor,
+            titleSpacing: 0,
             title: Text(
-              'KMR LIVE',
+             "${homeController.selectCategoryData.value.categoryName?? ''} (News)",
               style: TextStyle(
                 color: ConstHelper.whiteColor,
                 fontWeight: FontWeight.w600,
@@ -35,7 +37,7 @@ class _NewsDataPageState extends State<NewsDataPage> {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height*0.04,),
+                SizedBox(height: MediaQuery.of(context).size.height*0.02,),
                 Center(
                   child: Container(
                     height: Get.width/2.5,
@@ -80,9 +82,24 @@ class _NewsDataPageState extends State<NewsDataPage> {
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: Get.width*0.04),
+                  child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "🗓️ " + (homeController.selectNewsData.value.newsCreatedDate == null || homeController.selectNewsData.value.newsCreatedDate!.year <= 0 ? 'Date N/A' : DateFormat('dd MMM,yyyy').format(homeController.selectNewsData.value.newsCreatedDate !)),
+                        textAlign: TextAlign.end,
+                        style: TextStyle(color: ConstHelper.blackColor,letterSpacing:1,fontWeight: FontWeight.w400,fontSize: Get.width*0.04,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),),
+
                 Container(
                   padding: EdgeInsets.all( Get.width/40),
-                  margin: EdgeInsets.all( Get.width/30),
+                  margin: EdgeInsets.symmetric(horizontal:  Get.width/30),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
@@ -100,7 +117,9 @@ class _NewsDataPageState extends State<NewsDataPage> {
                       Center(child: Text(homeController.selectNewsData.value.newsHeadlines == null || homeController.selectNewsData.value.newsHeadlines!.trim().isEmpty ? 'Headline N/A' : homeController.selectNewsData.value.newsHeadlines!.toUpperCase(),textAlign: TextAlign.center,style: TextStyle(color: ConstHelper.darkBlueColor,letterSpacing:1,fontWeight: FontWeight.w600,fontSize: Get.width*0.05,),)),
                       Divider(thickness: 0.9,),
                       SizedBox(height: Get.width/40,),
-                      Center(child: Text(homeController.selectNewsData.value.newsContent == null || homeController.selectNewsData.value.newsContent!.trim().isEmpty ? 'Details N/A' : homeController.selectNewsData.value.newsContent!,textAlign:TextAlign.center,style: TextStyle(color: ConstHelper.blackColor.withOpacity(0.6),letterSpacing:1,fontWeight: FontWeight.w500,fontSize: Get.width*0.04,),),),
+                      Center(child: Text(homeController.selectNewsData.value.newsContent == null || homeController.selectNewsData.value.newsContent!.trim().isEmpty ? 'Details N/A' : homeController.selectNewsData.value.newsContent!,
+                        textAlign:TextAlign.justify,
+                        style: TextStyle(color: ConstHelper.blackColor.withOpacity(0.9),letterSpacing:1,fontWeight: FontWeight.w500,fontSize: Get.width*0.04,),),),
 
                     ],
                   ),

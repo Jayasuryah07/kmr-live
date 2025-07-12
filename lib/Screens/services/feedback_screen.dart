@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -20,9 +22,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    return Scaffold(
+    return SafeArea(child:Scaffold(
       appBar: AppBar(
-        backgroundColor: ConstHelper.darkBlueColor,
+        backgroundColor: ConstHelper.lightBlueColor,
         leading: GestureDetector(
           onTap: () {
             Get.back();
@@ -34,6 +36,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             ),
           ),
         ),
+        titleSpacing: 0,
         title: Text(
           "Feedback",
           style: TextStyle(
@@ -64,7 +67,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     TextFormField(
                       controller: feedBackController.subjectController.value,
                       onChanged: (value) {},
-                      textInputAction: TextInputAction.newline,
+                      textInputAction: TextInputAction.next,
+                      textCapitalization: TextCapitalization.words,
                       maxLength: 50,
                       style: TextStyle(
                         fontSize: Get.width * 0.045,letterSpacing: 1,
@@ -79,7 +83,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                             vertical: 10, horizontal: 15),
                         hintText: "Feedback Topic",
                         hintStyle: TextStyle(
-                            fontSize: Get.width * 0.045,letterSpacing: 1,
+                            fontSize: Get.width * 0.04,letterSpacing: 1,
                             color: ConstHelper.greyColor,
                             fontWeight: FontWeight.w400),
                         filled: true,
@@ -113,7 +117,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         controller:
                         feedBackController.descriptionController.value,
                         onChanged: (value) {},
-                        textInputAction: TextInputAction.newline,
+                        textInputAction: TextInputAction.done,
+                        textCapitalization: TextCapitalization.sentences,
                         maxLines: 5,
                         maxLength: 250,
                         style: TextStyle(
@@ -129,7 +134,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                               vertical: 10, horizontal: 15),
                           hintText: "Details of Your Feedback",
                           hintStyle: TextStyle(
-                              fontSize: Get.width * 0.045,letterSpacing: 1,
+                              fontSize: Get.width * 0.04,letterSpacing: 1,
                               color: ConstHelper.greyColor,
                               fontWeight: FontWeight.w400),
                           filled: true,
@@ -159,32 +164,60 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     SizedBox(height: height * 0.03),
                     GestureDetector(
                       onTap: () async {
-
+                        FocusScope.of(context).unfocus();
                         if (feedBackController.subjectController.value.text
                             .trim()
                             .isEmpty) {
-                          ConstHelper.errorDialog(
-                            text: "Please Enter subject",
-                            seconds: 10,
+                          Get.snackbar(
+                            "Subject",
+                            "Please Enter subject",
+                            snackPosition: SnackPosition
+                                .BOTTOM, // Position: TOP or BOTTOM
                           );
+
                         } else if (feedBackController
                             .descriptionController.value.text
                             .trim()
                             .isEmpty) {
-                          ConstHelper.errorDialog(
-                            text: 'Please Enter Description',
-                            seconds: 10,
+                          Get.snackbar(
+                            "Description",
+                            'Please Enter Description',
+                            snackPosition: SnackPosition
+                                .BOTTOM, // Position: TOP or BOTTOM
                           );
+
                         } else {
+                          if (!(await ConstHelper.checkInternet())) {
+                            Get.snackbar(
+                              "No Internet",
+                              'Please check your internet connection',
+                              snackPosition: SnackPosition
+                                  .BOTTOM, // Position: TOP or BOTTOM
+                            );
+                            return;
+                          }
                           EasyLoading.show(
                             status: ConstHelper.pleaseWaitMsg,
                           );
                         var val =  await ApiHelper.apiHelper.postFeedBackApi(sub: feedBackController.subjectController.value.text, des:feedBackController.descriptionController.value.text);
                           EasyLoading.dismiss();
-                          ConstHelper.successDialog(
-                            text: val["msg"],
-                            seconds: 10,
+                          print(val);
+                          if(val.isNotEmpty){ Get.snackbar(
+                            "Success",
+                            val["msg"]??"Something went wrong",
+                            snackPosition: SnackPosition
+                                .BOTTOM, // Position: TOP or BOTTOM
                           );
+                          await Future.delayed(const Duration(seconds: 1));
+                          Navigator.pop(context);
+                          }else{
+                            Get.snackbar(
+                              "Error!",
+                              "Something went wrong",
+                              snackPosition: SnackPosition
+                                  .BOTTOM, // Position: TOP or BOTTOM
+                            );
+                          }
                         }
                       },
                       child: Container(
@@ -213,6 +246,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 ),
               ),
       ),
-    );
+    ));
   }
 }

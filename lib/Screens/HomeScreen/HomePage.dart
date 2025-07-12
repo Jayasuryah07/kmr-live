@@ -15,6 +15,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../Controllers/HomeController.dart';
+import '../../Models/SubCategoryModel.dart';
 import '../../Utils/ApiHelper.dart';
 import '../../Utils/ConstHelper.dart';
 import '../../Utils/SharedPrefHelper.dart';
@@ -41,10 +42,10 @@ List drawerList = [
   }, {
    1:  "My Profile",
     2:Icons.person
-  }, {
+  }, /*{
    1:  "Share app",
     2:Icons.send_rounded
-  },{
+  },*/{
     1:  "Feedback",
     2:Icons.feedback
   },{
@@ -113,6 +114,8 @@ List drawerList = [
         key: homeController.drawerKey,
         drawer: Drawer(
           surfaceTintColor: Colors.white,
+          elevation: 0,
+          shadowColor: Colors.transparent,
           width: Get.width/1.5,
           child: Column(
             children: [
@@ -133,6 +136,7 @@ List drawerList = [
                 itemBuilder: (BuildContext context, int index) {
                 return InkWell(
                   onTap: () {
+                    homeController.drawerKey.currentState?.closeDrawer();
                     switch(index){
                       case 0:
                         Get.back();
@@ -140,17 +144,17 @@ List drawerList = [
                       case 1:
                         Get.to(const ProfileScreen());
                         break;
+                      /*case 2:
+                        break;*/
                       case 2:
-                        break;
-                      case 3:
                         Get.to(const FeedbackScreen());
                         break;
-                      case 4:
+                      case 3:
                         Get.to(const AboutUsScreen());
-                        break; case 5:
+                        break; case 4:
                         Get.to(const NotificationScreen());
                         break;
-                      case 6:
+                      case 5:
                       ConstHelper.constHelper.areYouSureWantAlertDialog(
                         title: 'Confirm Logout?',
                         description: 'You are about to log out. Do you wish to continue?',
@@ -166,12 +170,11 @@ List drawerList = [
                         },
                       );
                       break;
-
                     }
                   },
                   child: Row(
                     children: [
-                      SizedBox(width: Get.width*0.07,),
+                      SizedBox(width: Get.width*0.03,),
                       Icon(drawerList[index][2]),
                       SizedBox(width: Get.width*0.02,),
                       Text(
@@ -221,7 +224,7 @@ List drawerList = [
           ),
         ),
         appBar: AppBar(
-          backgroundColor: ConstHelper.darkBlueColor,
+          backgroundColor: ConstHelper.lightBlueColor,
           leading: IconButton(
             onPressed: () {
               homeController.drawerKey.currentState
@@ -232,6 +235,7 @@ List drawerList = [
               color: ConstHelper.whiteColor,
             ),
           ),
+          titleSpacing: 0,
           title: Text(
             "Home",
             style: TextStyle(
@@ -356,8 +360,15 @@ List drawerList = [
 
                                     .then(
                                       (allSubCategoryDataList) {
-                                    homeController.allSubCategoryDataList.value =
-                                        allSubCategoryDataList;
+                                        homeController.allSubCategoryDataList.clear();
+                                        if(allSubCategoryDataList.isNotEmpty){
+                                          if(allSubCategoryDataList.length == 1){
+                                            homeController.allSubCategoryDataList.value =allSubCategoryDataList;
+                                          }else{
+                                            homeController.allSubCategoryDataList.add(SubCategoryDataModel(vendorProductCategorySub: "All",categoriesSubImages: ""));
+                                            homeController.allSubCategoryDataList.addAll(allSubCategoryDataList);
+                                          }
+                                        }
                                     homeController.selectedIndex.value = 0;
                                     Get.to(const BottomPage(),
                                         transition: Transition.fadeIn);
@@ -398,8 +409,8 @@ List drawerList = [
                                       image: NetworkImage(
                                         homeController.allCategoryDataList[index].categoriesImages == null ||
                                             homeController.allCategoryDataList[index].categoriesImages!.isEmpty
-                                            ? "https://kmrlive.in/api/storage/app/public/no_image.jpg"
-                                            : "https://kmrlive.in/storage/app/public/categories_images/${homeController.allCategoryDataList[index].categoriesImages}",
+                                            ? ConstHelper.noImageFoundPath
+                                            : "${ConstHelper.categoryImagePath}${homeController.allCategoryDataList[index].categoriesImages}",
                                       ),
                                       fit: BoxFit.cover, // Scales the image to cover the circle
                                       colorFilter: (DateFormat('yyyy-MM-dd')
@@ -441,7 +452,7 @@ List drawerList = [
           .difference(DateTime.now())
           .inDays <=
           10) Padding(
-              padding: const EdgeInsets.only(right: 10, bottom: 20, left: 10),
+              padding:  EdgeInsets.only(right: 10, bottom: Get.height *0.01, left: 10),
               child: Column(
                 children: [
                   Container(
@@ -454,148 +465,156 @@ List drawerList = [
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              Column(
-                                children: [
-                                  Container(
-                                    color: ConstHelper.whiteColor,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4),
-                                      child: Text(
-                                        homeController.userData.value.validityDate ==
-                                                    null ||
-                                                homeController.userData.value
-                                                        .validityDate!.year <=
-                                                    0
-                                            ? '0'
-                                            : DateFormat('yyyy-MM-dd')
-                                                        .parse(homeController
-                                                            .userData
-                                                            .value
-                                                            .validityDate!
-                                                            .toString())
-                                                        .difference(DateFormat(
-                                                                'yyyy-MM-dd')
-                                                            .parse(DateTime.now()
-                                                                .toString()))
-                                                        .inDays <
-                                                    0
-                                                ? '0'
-                                                : DateFormat('yyyy-MM-dd')
-                                                    .parse(homeController.userData.value.validityDate!.toString())
-                                                    .difference(DateFormat('yyyy-MM-dd').parse(DateTime.now().toString()))
-                                                    .inDays
-                                                    .toString(),
-                                        style: TextStyle(
-                                            color: ConstHelper.blackColor,
-                                            fontSize: Get.width*0.06,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    "Days Remaining",
-                                    style: TextStyle(
+                           Column(
+                             children: [
+                               Container(
+                                 color: ConstHelper.whiteColor,
+                                 child: Padding(
+                                   padding: const EdgeInsets.all(4),
+                                   child: Text(
+                                     homeController.userData.value.validityDate ==
+                                         null ||
+                                         homeController.userData.value
+                                             .validityDate!.year <=
+                                             0
+                                         ? '0'
+                                         : DateFormat('yyyy-MM-dd')
+                                         .parse(homeController
+                                         .userData
+                                         .value
+                                         .validityDate!
+                                         .toString())
+                                         .difference(DateFormat(
+                                         'yyyy-MM-dd')
+                                         .parse(DateTime.now()
+                                         .toString()))
+                                         .inDays <
+                                         0
+                                         ? '0'
+                                         : DateFormat('yyyy-MM-dd')
+                                         .parse(homeController.userData.value.validityDate!.toString())
+                                         .difference(DateFormat('yyyy-MM-dd').parse(DateTime.now().toString()))
+                                         .inDays
+                                         .toString(),
+                                     style: TextStyle(
+                                         color: ConstHelper.blackColor,
+                                         fontSize: Get.width*0.06,
+                                         fontWeight: FontWeight.w600),
+                                   ),
+                                 ),
+                               ),
+                               Text(
+                                 "Days \nRemaining",
+                                 textAlign: TextAlign.center,
+                                 style: TextStyle(
+                                   color: ConstHelper.blackColor,
+                                   fontSize: Get.width*0.03,),
+                               )
+                             ],
+                           ),
+                           SizedBox(
+                             width: Get.width / 30,
+                           ),
+                          Expanded(
+                            child:  Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  (homeController.userData.value.trail != null &&
+                                      homeController.userData.value.trail!.trim().toLowerCase() == "no")
+                                      ? "Plan Getting Expire":"Trial Period",
+                                  style: TextStyle(
+                                      color: Colors.blue.shade600,
+                                      fontSize: Get.width*0.045,
+                                      letterSpacing: 1,
+                                      fontWeight: FontWeight.w600),
+                                ),Row(
+                                  children: [
+                                    Expanded(child: Text(
+                                      "Contact us to reactivate",
+                                      style: TextStyle(
                                         color: ConstHelper.blackColor,
-                                      fontSize: Get.width*0.03,),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                width: Get.width / 30,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    (homeController.userData.value.trail != null &&
-                                        homeController.userData.value.trail!.trim().toLowerCase() == "no")
-                                        ? "Plan Getting Expire":"Trial Period",
-                                    style: TextStyle(
-                                        color: Colors.blue.shade600,
-                                        fontSize: Get.width*0.045,
-                                        letterSpacing: 1,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  Text(
-                                    "call us to activate.",
-                                    style: TextStyle(
-                                        color: ConstHelper.blackColor,
-                                      fontSize: Get.width*0.035,),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                        fontSize: Get.width*0.035,),
+                                    ), ),
+
+                                  ],),
+
+
+                              ],
+                            ),
                           ),
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () async {
-                                  try {
-                                    var url = Uri.parse("tel: 8867171060");
+                          GestureDetector(
+                            onTap: () async {
+                              try {
+                                _launchURL("tel: 8867171060");
+                                /*var url = Uri.parse("tel: 8867171060");
                                     if (await canLaunchUrl(url)) {
                                       await launchUrl(url);
                                     } else {
                                       EasyLoading.showError(
                                         ConstHelper.somethingErrorMsg,
                                       );
-                                    }
-                                  } catch (error) {
-                                    EasyLoading.showError(
-                                      ConstHelper.somethingErrorMsg,
-                                    );
-                                  }
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(horizontal: Get.width*0.02),
-                                  decoration: BoxDecoration(
-                                      color: ConstHelper.blackColor,
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.call_rounded,
-                                          color: ConstHelper.greenColor,
-                                          size: 16,
-                                        ),
-                                        SizedBox(
-                                          width: Get.width / 50,
-                                        ),
-                                        Text(
-                                          "Call Us",
-                                          style: TextStyle(
-                                              color: ConstHelper.whiteColor,
-                                              fontWeight: FontWeight.w600,
-                                            fontSize: Get.width * 0.045,
-                                            letterSpacing: 1,
-                                          ),
-                                        )
-                                      ],
+                                    }*/
+                              } catch (error) {
+                                EasyLoading.showError(
+                                  ConstHelper.somethingErrorMsg,
+                                );
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: Get.width*0.02),
+                              decoration: BoxDecoration(
+                                  color: ConstHelper.blackColor,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.call_rounded,
+                                      color: ConstHelper.greenColor,
+                                      size: 16,
                                     ),
-                                  ),
+                                    SizedBox(
+                                      width: Get.width / 50,
+                                    ),
+                                    Text(
+                                      "Call Us",
+                                      style: TextStyle(
+                                        color: ConstHelper.whiteColor,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: Get.width * 0.045,
+                                        letterSpacing: 1,
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
-                              Text(
+                            ),
+                          ),
+                          /* Column(
+                             children: [
+
+                               *//* Text(
                                 DateFormat('dd/MMM/yyyy')
                                     .format(DateTime.now()),
                                 style: TextStyle(
                                     color: ConstHelper.blackColor,
                                     fontSize: Get.width*0.03),
-                              )
-                            ],
-                          )
+                              )*//*
+                             ],
+                           )*/
+
+
                         ],
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: Get.width / 50,
+                    height: Get.height *0.01,
                   ),
                   Text (
-                    "Validity Ends on  : ${homeController.userData.value.validityDate == null || homeController.userData.value.validityDate!.year <= 0 ? ConstHelper.naMsg : DateFormat('dd - MMMM - yyyy').format(homeController.userData.value.validityDate!)}",
+                    "Valid Until: ${homeController.userData.value.validityDate == null || homeController.userData.value.validityDate!.year <= 0 ? ConstHelper.naMsg : DateFormat('dd - MMMM - yyyy').format(homeController.userData.value.validityDate!)}",
                     style:
                         TextStyle( fontSize: Get.width*0.035, color: ConstHelper.blackColor.withOpacity(0.8)),
                   ),
@@ -728,4 +747,11 @@ deleteDialog(context, double height, double width) {
       ),
     ),
   );
+}
+
+void _launchURL(String url) async {
+  final Uri uri = Uri.parse(url);
+  if (!await launchUrl(uri)) {
+    throw 'Could not launch $url';
+  }
 }

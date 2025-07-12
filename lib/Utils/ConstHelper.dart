@@ -30,9 +30,13 @@ class ConstHelper {
   static Color greyColor = Colors.grey;
   static Color greenColor = Colors.green;
   static Color redColor = Colors.red;
+  //ec5300
+  static Color lightRedColor = const Color(0xFFFF654D);
+ // static Color redColor = const Color(0xFFFF004D);
   static Color orangeColor = const Color(0xFFFB7705);
   static Color cementColor = const Color(0xFFA7AEB5);
   static Color darkBlueColor = const Color(0xFF176289);
+  static Color lightBlueColor = const Color(0xFF2C7EA5);
   static Color lightGreenColor = const Color(0xffBBEA70);
 
   static String pleaseWaitMsg = "Please wait...";
@@ -56,7 +60,7 @@ class ConstHelper {
   static String otpSentMsg = "OTP sent your mobile number...";
   static String dataNotAvailableMsg = "Sorry, Data Not Available";
   // static String userImagesPath = "https://ppmilan.in/public/app_images/user_images/";
-  static String imageBaseUrlPath = "https://kmrlive.in/storage/app/public/";
+  static String imageBaseUrlPath = "https://kmrlive.in/public/assets/images/";
   static String noImageFoundPath = "${imageBaseUrlPath}no_image.jpg";
   static String categoryImagePath = "${imageBaseUrlPath}categories_images/";
   static String developerImagePath = "${imageBaseUrlPath}developer_images/";
@@ -162,7 +166,13 @@ class ConstHelper {
         return BackdropFilter(
           filter: filter,
           child: AlertDialog(
-            title: Column(
+            backgroundColor: ConstHelper.whiteColor,
+            surfaceTintColor: ConstHelper.whiteColor,
+            titlePadding: EdgeInsets.symmetric(horizontal: 10,vertical: Get.height*0.01),
+            insetPadding: EdgeInsets.symmetric(horizontal: 10,vertical: Get.height*0.01), // Reduce default constraints
+        title:Container(
+        width: Get.width * 0.8,
+         child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -194,51 +204,53 @@ class ConstHelper {
                       letterSpacing: 1
                   ),
                 ),
+                SizedBox(
+                  height: Get.height * 0.02,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: whiteColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6))),
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(
+                              color: ConstHelper.darkBlueColor,
+                              letterSpacing: 1
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: onPressed,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:  ConstHelper.darkBlueColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6))),
+                        child: Text(
+                          "Confirm",
+                          style: TextStyle(
+                              color: whiteColor,
+                              letterSpacing: 1
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
-            actions: [
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: whiteColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6))),
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(
-                            color: ConstHelper.darkBlueColor,
-                            letterSpacing: 1
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: onPressed,
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor:  ConstHelper.darkBlueColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6))),
-                      child: Text(
-                        "Confirm",
-                        style: TextStyle(
-                            color: whiteColor,
-                            letterSpacing: 1
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+        ),
           ),
         );
       },

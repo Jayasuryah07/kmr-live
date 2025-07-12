@@ -25,9 +25,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   ProfileController  controller = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(child:   Scaffold(
       appBar: AppBar(
-        backgroundColor: ConstHelper.darkBlueColor,
+        backgroundColor: ConstHelper.lightBlueColor,
         leading: GestureDetector(
           onTap: () {
             Get.back();
@@ -39,6 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
         ),
+        titleSpacing: 0,
         title: Text(
           "Account Profile",
           style: TextStyle(
@@ -168,7 +169,7 @@ letterSpacing: 1,
                     ],
                   ),
       ),
-    );
+    ));
   }
   deleteDialog(context, double height, double width) {
     return showDialog(
@@ -187,6 +188,20 @@ letterSpacing: 1,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    SizedBox(width: width * 0.04),
+
+                    Expanded(
+                      child:
+                      Text(
+                      "Account Delete?".toUpperCase(),
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.roboto(
+                        color: ConstHelper.blackColor,
+                        fontSize: Get.height / 40,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),),
+                    
                     GestureDetector(
                         onTap: () {
                           Get.back();
@@ -194,14 +209,15 @@ letterSpacing: 1,
                         child: Icon(CupertinoIcons.clear_circled_solid))
                   ],
                 ),
+               
                 SizedBox(height: height * 0.02),
                 Text(
                   "Are you sure you want to delete your account? This will permanently erase your account.",
                   style: TextStyle(
                       fontSize: Get.width * 0.045,
                       letterSpacing: 1,
-                      fontWeight: FontWeight.w600,
-                      color: ConstHelper.blackColor,
+                      fontWeight: FontWeight.w400,
+                      color: ConstHelper.blackColor.withOpacity(0.9),
                       height: 1.5
                   ),
                 ),
@@ -305,12 +321,12 @@ letterSpacing: 1,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Text(
                 "${title ?? ""} :",
                 textAlign: TextAlign.start,
                 style: GoogleFonts.roboto(
-                  color: ConstHelper.greyColor,
+                  color: ConstHelper.blackColor.withOpacity(0.8),
                   fontSize: Get.height / 55,
                   fontWeight: FontWeight.w400,
                 ),

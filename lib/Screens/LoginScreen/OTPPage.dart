@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -46,6 +49,9 @@ class _OTPPageState extends State<OTPPage> {
 
   //final controller = WebViewController();
 
+  
+  //final controller = WebViewController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -53,6 +59,11 @@ class _OTPPageState extends State<OTPPage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    homeController.timer.cancel();
+    super.dispose();
+  }
  /* void listenToIncomingSMS(BuildContext context) {
     txtOTP1.clear();
     txtOTP2.clear();
@@ -379,86 +390,222 @@ class _OTPPageState extends State<OTPPage> {
                 //   ],
                 // ),
                 SizedBox(height: Get.width/20,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Obx(
+                      () => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        homeController.start.value == 0
+                            ? "Didn't received OTP - "
+                            : "Resend OTP in ",
+                        style:  TextStyle(
+                          fontSize: 16,
+                          color: ConstHelper.blackColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      homeController.start.value != 0
+                          ? Text(
+                        "00:${ homeController.start.value.toString().length == 1 ? "0${ homeController.start.value}" :  homeController.start.value}",
+                        style:  TextStyle(
+                          fontSize: 16,
+                          color: ConstHelper.blackColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
+                          : GestureDetector(
+                        onTap: () async {
+                          await Future.delayed(const Duration(milliseconds: 200));
+                          EasyLoading.show(status: ConstHelper.pleaseWaitMsg);
+
+                          if (!(await ConstHelper.checkInternet())) {
+                            EasyLoading.dismiss();
+                            Get.snackbar(
+                              "No Internet",
+                              'Please check your internet connection',
+                              snackPosition: SnackPosition.BOTTOM,
+                            );
+                            return;
+                          }
+
+                          try {
+                            await FirebaseAuth.instance.verifyPhoneNumber(
+                              phoneNumber: '+91 ${homeController.mobileNo.value}',
+                              verificationCompleted: (PhoneAuthCredential credential) {
+                                print('Auto-verification complete');
+                                EasyLoading.dismiss();
+                              },
+                              verificationFailed: (FirebaseAuthException e) {
+                                EasyLoading.dismiss();
+                                if (e.code == 'invalid-phone-number') {
+                                  Get.snackbar(
+                                    "Verify Phone Number",
+                                    ConstHelper
+                                        .invalidPhoneNumberErrorMsg,
+                                    snackPosition: SnackPosition
+                                        .BOTTOM, // Position: TOP or BOTTOM
+                                  );
+                                } else if (e.code == 'too-many-requests') {
+                                  Get.snackbar(
+                                    "Error!",
+                                    ConstHelper
+                                        .manyRequestErrorMsg,
+                                    snackPosition: SnackPosition
+                                        .BOTTOM, // Position: TOP or BOTTOM
+                                  );
+                                } else {
+                                  Get.snackbar(
+                                    "Error!",
+                                    ConstHelper.unknownErrorMsg,
+                                    snackPosition: SnackPosition
+                                        .BOTTOM, // Position: TOP or BOTTOM
+                                  );
+                                }
+                                log('Firebase error: ${e.code} - ${e.message}');
+                              },
+                              codeSent: (String verificationId, int? resendToken) {
+                                homeController.otpVerificationId.value = verificationId;
+                                homeController.otpResendCode.value = resendToken ?? 0;
+                                EasyLoading.dismiss();
+                                Get.snackbar(
+                                  'Otp sent',
+                                  'Otp sent successfully.',
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  colorText: ConstHelper.whiteColor,
+                                  backgroundColor: ConstHelper.darkBlueColor,
+                                );
+                                txtOTP1.clear();
+                                txtOTP2.clear();
+                                txtOTP3.clear();
+                                txtOTP4.clear();
+                                txtOTP5.clear();
+                                txtOTP6.clear();
+                                otp1FocusNode.requestFocus();
+                                homeController.start.value = 30;
+                                homeController.startTimer();
+                              },
+                              codeAutoRetrievalTimeout: (String verificationId) {
+                                EasyLoading.dismiss();
+                                log('Auto-retrieval timeout for: $verificationId');
+                              },
+                              forceResendingToken:
+                              homeController.otpResendCode.value == 0 ? null : homeController.otpResendCode.value,
+                            );
+                          } catch (error) {
+                            EasyLoading.dismiss();
+                            Get.snackbar(
+                              "Error!",
+                              "Something went wrong",
+                              snackPosition: SnackPosition
+                                  .BOTTOM, // Position: TOP or BOTTOM
+                            );
+                            log('Catch error: $error');
+                          }
+                        },
+                        child:  Text(
+                          "Resend",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: ConstHelper.darkBlueColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              /*  Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text("OTP not received?",style: TextStyle(color: ConstHelper.blackColor.withOpacity(0.8),fontSize: Get.width*0.04,),),
                     GestureDetector(
                       onTap: () async {
-                        await Future.delayed(const Duration(milliseconds: 200,),);
-                        EasyLoading.show(status: ConstHelper.pleaseWaitMsg,);
+                        await Future.delayed(const Duration(milliseconds: 200));
+                        EasyLoading.show(status: ConstHelper.pleaseWaitMsg);
+
+                        if (!(await ConstHelper.checkInternet())) {
+                          EasyLoading.dismiss();
+                          Get.snackbar(
+                            "No Internet",
+                            'Please check your internet connection',
+                            snackPosition: SnackPosition.BOTTOM,
+                          );
+                          return;
+                        }
+
                         try {
                           await FirebaseAuth.instance.verifyPhoneNumber(
                             phoneNumber: '+91 ${homeController.mobileNo.value}',
-                            verificationCompleted:
-                                (PhoneAuthCredential credential) {
-                              print(
-                                  'adadadasd ${credential.verificationId}~~${credential.smsCode}');
-                              print(
-                                  'adadadasd ${credential.smsCode}~~${credential.token}');
-                              print(
-                                  'adadadasd ${credential.accessToken}~~${credential.providerId}');
-                              print('adadadasd ${credential.signInMethod}');
+                            verificationCompleted: (PhoneAuthCredential credential) {
+                              print('Auto-verification complete');
                               EasyLoading.dismiss();
                             },
-                            verificationFailed: (FirebaseAuthException e) async {
-                              // EasyLoading.dismiss();
-                              print('Error~~ : ${e.code}~${e.message}');
+                            verificationFailed: (FirebaseAuthException e) {
+                              EasyLoading.dismiss();
                               if (e.code == 'invalid-phone-number') {
-                                EasyLoading.dismiss();
-                                ConstHelper.errorDialog(
-                                  text: ConstHelper
+                                Get.snackbar(
+                                  "Verify Phone Number",
+                                  ConstHelper
                                       .invalidPhoneNumberErrorMsg,
-                                  seconds: 10,
+                                  snackPosition: SnackPosition
+                                      .BOTTOM, // Position: TOP or BOTTOM
                                 );
                               } else if (e.code == 'too-many-requests') {
-                                EasyLoading.dismiss();
-                                ConstHelper.errorDialog(
-                                  text: ConstHelper.manyRequestErrorMsg,
-                                  seconds: 10,
+                                Get.snackbar(
+                                  "Error!",
+                                  ConstHelper
+                                      .manyRequestErrorMsg,
+                                  snackPosition: SnackPosition
+                                      .BOTTOM, // Position: TOP or BOTTOM
                                 );
-                              } else if (e.code == 'unknown') {
-                                EasyLoading.dismiss();
-                                ConstHelper.errorDialog(
-                                  text: ConstHelper.unknownErrorMsg,
-                                  seconds: 10,
+                              } else {
+                                Get.snackbar(
+                                  "Error!",
+                                  ConstHelper.unknownErrorMsg,
+                                  snackPosition: SnackPosition
+                                      .BOTTOM, // Position: TOP or BOTTOM
                                 );
                               }
-                              // print('Error~~ : ${e.credential ?? {}}~${e.email}');
-                              // print('Error~~ : ${e.tenantId}~${e.plugin}');
-                              // print('Error~~ : ${jsonEncode(e.stackTrace ??{})}~${e.phoneNumber}');
-                              // print('Error~~ : ${jsonEncode(e)}');
-                              log(e.toString());
+                              log('Firebase error: ${e.code} - ${e.message}');
                             },
                             codeSent: (String verificationId, int? resendToken) {
-                              print('Success : $verificationId $resendToken');
                               homeController.otpVerificationId.value = verificationId;
-                              // Get.to(const OTPPage(), transition: Transition.fadeIn,);
+                              homeController.otpResendCode.value = resendToken ?? 0;
                               EasyLoading.dismiss();
-                              ConstHelper.successDialog(
-                                text: ConstHelper.otpSentMsg,
-                                seconds: 10,
+                              Get.snackbar(
+                                'Otp sent',
+                                 'Otp sent successfully.',
+                                snackPosition: SnackPosition.BOTTOM,
+                                colorText: ConstHelper.whiteColor,
+                                backgroundColor: ConstHelper.darkBlueColor,
                               );
                             },
                             codeAutoRetrievalTimeout: (String verificationId) {
-                              print('TimeoutError : $verificationId');
                               EasyLoading.dismiss();
+                              log('Auto-retrieval timeout for: $verificationId');
                             },
-                            forceResendingToken: homeController.otpResendCode.value == 0 ? null : homeController.otpResendCode.value,
+                            forceResendingToken:
+                            homeController.otpResendCode.value == 0 ? null : homeController.otpResendCode.value,
                           );
-                        } catch(error) {
+                        } catch (error) {
                           EasyLoading.dismiss();
-                          ConstHelper.errorDialog(text: ConstHelper.somethingErrorMsg, seconds: 10,);
+                          Get.snackbar(
+                            "Error!",
+                            "Something went wrong",
+                            snackPosition: SnackPosition
+                                .BOTTOM, // Position: TOP or BOTTOM
+                          );
+                          log('Catch error: $error');
                         }
                       },
                       child: Text(" RESEND!",style: TextStyle(decoration:TextDecoration.underline,
                           color: ConstHelper.darkBlueColor,
-                          fontSize: Get.width*0.045,
+                          fontSize: Get.width*0.04,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 1),),
                     ),
                   ],
-                ),
+                ),*/
                 SizedBox(height: Get.width/7,),
                 GestureDetector(
                   // onTap: () {
@@ -495,6 +642,15 @@ class _OTPPageState extends State<OTPPage> {
                         ),
                       );
                       try {
+                        if (!(await ConstHelper.checkInternet())) {
+                          EasyLoading.dismiss();
+                          Get.snackbar(
+                            "No Internet",
+                            'Please check your internet connection',
+                            snackPosition: SnackPosition.BOTTOM,
+                          );
+                          return;
+                        }
                      /*   await ApiHelper.apiHelper
                             .loginUser(
                           mobileNo: homeController.mobileNo.trim(),
@@ -554,9 +710,18 @@ class _OTPPageState extends State<OTPPage> {
                             .signInWithCredential(credential)
                             .then(
                               (value) async {
-                            homeController.firebaseFCMToken.value =
-                            await FirebaseHelper.firebaseHelper
-                                .getFirebaseToken();
+                                var token;
+                                if (Platform.isIOS) {
+                                  token = await FirebaseMessaging.instance
+                                      .getAPNSToken();
+                                  debugPrint('APNS Token: $token');
+                                } else {
+                                  FirebaseMessaging messaging =
+                                      FirebaseMessaging.instance;
+                                  token = await messaging.getToken();
+                                  debugPrint('APNS Token: $token');
+                                }
+                            homeController.firebaseFCMToken.value = token;
 
                             print( homeController.firebaseFCMToken.value);
                             await ApiHelper.apiHelper
@@ -595,11 +760,14 @@ class _OTPPageState extends State<OTPPage> {
                                 // );
                               } else {
                                 EasyLoading.dismiss();
-                                ConstHelper.errorDialog(
-                                  text: userData['msg'] ??
+                                Get.snackbar(
+                                  "Error!",
+                                  userData['msg'] ??
                                       ConstHelper.unauthorizedMsg,
-                                  seconds: 10,
+                                  snackPosition: SnackPosition
+                                      .BOTTOM, // Position: TOP or BOTTOM
                                 );
+
                               }
                             });
                           },
@@ -607,23 +775,29 @@ class _OTPPageState extends State<OTPPage> {
                       } on FirebaseAuthException catch (error) {
                         if (error.code == 'invalid-verification-code') {
                           EasyLoading.dismiss();
-                          ConstHelper.errorDialog(
-                            text: ConstHelper.invalidOTPErrorMsg,
-                            seconds: 10,
+                          Get.snackbar(
+                            "Invalid Otp!",
+                            ConstHelper.invalidOTPErrorMsg,
+                            snackPosition: SnackPosition
+                                .BOTTOM, // Position: TOP or BOTTOM
                           );
                         } else {
                           EasyLoading.dismiss();
-                          ConstHelper.errorDialog(
-                            text: ConstHelper.somethingErrorMsg,
-                            seconds: 10,
+                          Get.snackbar(
+                            "Error!",
+                            ConstHelper.somethingErrorMsg,
+                            snackPosition: SnackPosition
+                                .BOTTOM, // Position: TOP or BOTTOM
                           );
                         }
                       } catch (error) {
                         print('Error : $error');
                         EasyLoading.dismiss();
-                        ConstHelper.errorDialog(
-                          text: ConstHelper.somethingErrorMsg,
-                          seconds: 10,
+                        Get.snackbar(
+                          "Error!",
+                          ConstHelper.somethingErrorMsg,
+                          snackPosition: SnackPosition
+                              .BOTTOM, // Position: TOP or BOTTOM
                         );
                       }
                     }

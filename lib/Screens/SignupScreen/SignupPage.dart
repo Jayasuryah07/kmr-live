@@ -190,9 +190,14 @@ class _SignupPageState extends State<SignupPage> {
                     onTap: () async {
                       await Future.delayed(
                           const Duration(milliseconds: 200));
-                      if (!await ConstHelper.checkInternet()) {
-                      _showError(ConstHelper.internetMsg);
-                      return;
+                      if (!(await ConstHelper.checkInternet())) {
+                        EasyLoading.dismiss();
+                        Get.snackbar(
+                          "No Internet",
+                          'Please check your internet connection',
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                        return;
                       }
                      if (!formKey.currentState!.validate())  return;
                       EasyLoading.show(status: ConstHelper.pleaseWaitMsg);
@@ -266,7 +271,8 @@ class _SignupPageState extends State<SignupPage> {
                         textAlign: TextAlign.center,
                         text: TextSpan(
                         text: "Existing user?  ",
-                          style: TextStyle( color: ConstHelper.greyColor,
+                          style: TextStyle(
+                            color: ConstHelper.blackColor.withOpacity(0.8),
                             fontSize: Get.width*0.04,
                             fontWeight: FontWeight.w500,),
                         children: [

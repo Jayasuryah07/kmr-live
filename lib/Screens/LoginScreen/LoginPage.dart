@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
@@ -33,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   FocusNode usernameFocusNode = FocusNode();
   final controller = WebViewController();
+  RxBool check = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +43,6 @@ class _LoginPageState extends State<LoginPage> {
 
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-
         backgroundColor: ConstHelper.whiteColor,
         body: Column(
           children: [
@@ -98,6 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                               controller: txtUsername,
                               focusNode: usernameFocusNode,
                               keyboardType: TextInputType.number,
+                              textInputAction: TextInputAction.done,
                               maxLength: 10,
                               style:TextStyle(
                                 fontSize: Get.width*0.045,
@@ -105,7 +108,11 @@ class _LoginPageState extends State<LoginPage> {
                                 color: ConstHelper.blackColor,
                                 letterSpacing: 1
                               ),
-
+                              onChanged: (value) {
+                                if(!(value!.trim().isNotEmpty && value.length != 10)){
+                                  usernameFocusNode.unfocus();
+                                }
+                              },
                               decoration: InputDecoration(
                                 counterText: "",
                                   // border: OutlineInputBorder(),
@@ -136,7 +143,100 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: Get.height *0.02,
                         ),
-                        Obx(
+                       Obx(() =>  Row(children: [
+                         Checkbox(
+                           tristate: true,
+                           value: check.value,
+                           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                           //focusColor: ConstHelper.darkBlueColor,
+                          // fillColor: MaterialStatePropertyAll(ConstHelper.whiteColor),
+                           activeColor:check.value
+                               ? ConstHelper.darkBlueColor
+                               : ConstHelper.whiteColor,
+                           visualDensity: VisualDensity.compact,
+                           onChanged: (value) async {
+                            check.value =
+                             !check.value;
+                           },),
+                         SizedBox(
+                           width: Get.width / 30,
+                         ),
+                         GestureDetector(
+                           onTap: () async {
+                             check.value =
+                             !check.value;
+                           },
+                           child: Text(
+                             "I agree to the ",
+                             style: TextStyle(
+                               color: ConstHelper.blackColor.withOpacity(0.8),
+                               fontSize: Get.width*0.04,
+                             ),
+                           ),
+                         ),
+                         GestureDetector(
+                           onTap: () async {
+                             if (!(await ConstHelper.checkInternet())) {
+                             Get.snackbar(
+                             "No Internet",
+                             'Please check your internet connection',
+                             snackPosition: SnackPosition
+                                 .BOTTOM, // Position: TOP or BOTTOM
+                             );
+                             return;
+                             }
+                             controller
+                               ..setJavaScriptMode(JavaScriptMode.unrestricted)
+                               ..loadRequest(Uri.parse("https://kmrlive.in/privacypolicy"));
+                             showDialog(
+                               barrierDismissible: false,
+                               context: context,
+                               builder: (context) {
+                                 return AlertDialog(
+                                   backgroundColor:ConstHelper.whiteColor,
+                                   surfaceTintColor: ConstHelper.darkBlueColor,
+                                   insetPadding: EdgeInsets.symmetric(horizontal: Get.width * 0.025), // 95% width
+                                   titlePadding: EdgeInsets.only(top: 10,right: 10,bottom: 10),
+                                   title: Row(
+                                     mainAxisAlignment: MainAxisAlignment.end,
+                                     children: [
+                                       GestureDetector(
+                                         onTap: (){
+                                           Navigator.pop(context);
+                                         },
+                                         child: Container(
+                                             padding: EdgeInsets.all(3),
+                                             decoration: BoxDecoration(
+                                                 shape: BoxShape.circle,
+                                                 color: ConstHelper.greyColor.withOpacity(0.5)
+                                             ),
+                                             child: Icon(Icons.close,color: ConstHelper.blackColor,)),
+                                       ),
+                                     ],
+                                   ),
+                                   contentPadding: EdgeInsets.all(0),
+                                   content: Container(
+                                     width: Get.width*0.9, // Adjust the width here
+                                     height: Get.height * 0.9, // Optional: control height
+                                     child: WebViewWidget(controller: controller),
+                                   ),
+                                 );
+                               },
+                             );
+                           },
+                           child: Text(
+                             "Terms & Conditions",
+                             style: TextStyle(
+                                 decoration: TextDecoration.underline,
+                                 color: ConstHelper.darkBlueColor,
+                                 fontSize: Get.width*0.04,
+                                 fontWeight: FontWeight.bold
+                             ),
+                           ),
+                         ),
+                       ],),),
+
+                     /*   Obx(
                           () => Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -178,14 +278,16 @@ class _LoginPageState extends State<LoginPage> {
                                 onTap: () {
                                   controller
                                     ..setJavaScriptMode(JavaScriptMode.unrestricted)
-                                    ..loadRequest(Uri.parse("http://kmrlive.in/privacypolicy.html"));
+                                    ..loadRequest(Uri.parse("https://kmrlive.in/privacypolicy"));
                                   showDialog(
                                     barrierDismissible: false,
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
+                                        backgroundColor:ConstHelper.whiteColor,
+                                        surfaceTintColor: ConstHelper.darkBlueColor,
                                         insetPadding: EdgeInsets.symmetric(horizontal: Get.width * 0.025), // 95% width
-                                        titlePadding: EdgeInsets.only(top: 10,right: 10,bottom: 0),
+                                        titlePadding: EdgeInsets.only(top: 10,right: 10,bottom: 10),
                                         title: Row(
                                           mainAxisAlignment: MainAxisAlignment.end,
                                           children: [
@@ -225,12 +327,13 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ],
                           ),
-                        ),
+                        ),*/
                         SizedBox(
                           height: Get.width / 7,
                         ),
                         GestureDetector(
                           onTap: () async {
+                            homeController.start.value = 0;
                             // Get.off(const OTPPage(),transition: Transition.fadeIn,);
 
                             usernameFocusNode.unfocus();
@@ -239,24 +342,20 @@ class _LoginPageState extends State<LoginPage> {
                               usernameFocusNode.requestFocus();
                             }
                             if (formKey.currentState!.validate()) {
-                              if (homeController.check.value) {
-                                EasyLoading.show(
-                                  status: ConstHelper.pleaseWaitMsg,
-                                );
-                                await Future.delayed(
-                                  const Duration(
-                                    milliseconds: 100,
-                                  ),
-                                );
+                              if (check.value) {
                                 if (!(await ConstHelper.checkInternet())) {
-                                  EasyLoading.dismiss();
-                                  ConstHelper.errorDialog(
-                                    text: ConstHelper.internetMsg,
-                                    seconds: 10,
+                                  Get.snackbar(
+                                    "No Internet",
+                                    'Please check your internet connection',
+                                    snackPosition: SnackPosition
+                                        .BOTTOM, // Position: TOP or BOTTOM
                                   );
+                                  return;
                                 } else {
+                                  EasyLoading.show(
+                                    status: ConstHelper.pleaseWaitMsg,
+                                  );
                                   try {
-
                                     await ApiHelper.apiHelper
                                         .checkMobileNumber(
                                       mobileNo: txtUsername.text,
@@ -265,34 +364,25 @@ class _LoginPageState extends State<LoginPage> {
                                       (value) async {
                                         if (value.isNotEmpty) {
                                           if (value['code'] == 200) {
-                                             Get.to(
-                                        const OTPPage(),
-                                        transition: Transition.fadeIn,
-                                      );
-                                      homeController.mobileNo.value =
-                                          txtUsername.text;
-                                      homeController.password.value =
-                                          value['data'] ?? '';
-                                      homeController
-                                          .firebaseFCMToken.value =
-                                      await FirebaseHelper
-                                          .firebaseHelper
-                                          .getFirebaseToken();
-
-
-                                            await FirebaseAuth.instance.setSettings(
-                                            appVerificationDisabledForTesting:
-                                            false, // Ensure this is false for production
-                                            );
                                             homeController.mobileNo.value =
                                                 txtUsername.text;
                                             homeController.password.value =
                                                 value['data'] ?? '';
+                                             var token;
+                                             if (Platform.isIOS) {
+                                               token = await FirebaseMessaging.instance
+                                                   .getAPNSToken();
+                                               debugPrint('APNS Token: $token');
+                                             } else {
+                                               try {
+                                                 token = await FirebaseMessaging.instance.getToken();
+                                                 print("FCM Token: $token");
+                                               } catch (e) {
+                                                 print("🔥 Error getting FCM token: $e");
+                                               }
+                                             }
                                             homeController
-                                                .firebaseFCMToken.value =
-                                            await FirebaseHelper
-                                                .firebaseHelper
-                                                .getFirebaseToken();
+                                                .firebaseFCMToken.value = token;
                                             await FirebaseAuth.instance
                                                 .verifyPhoneNumber(
                                               phoneNumber: '+91 ${txtUsername.text}',
@@ -313,25 +403,33 @@ class _LoginPageState extends State<LoginPage> {
 
                                                     switch (e.code) {
                                                       case 'invalid-phone-number':
-                                                        ConstHelper.errorDialog(
-                                                          text: ConstHelper
+                                                        EasyLoading.dismiss();
+                                                        Get.snackbar(
+                                                          "Verify Phone Number",
+                                                          ConstHelper
                                                               .invalidPhoneNumberErrorMsg,
-                                                          seconds: 10,
+                                                          snackPosition: SnackPosition
+                                                              .BOTTOM, // Position: TOP or BOTTOM
                                                         );
+
                                                         break;
                                                       case 'too-many-requests':
                                                         EasyLoading.dismiss();
-                                                        ConstHelper.errorDialog(
-                                                          text: ConstHelper
+                                                        Get.snackbar(
+                                                          "Error!",
+                                                          ConstHelper
                                                               .manyRequestErrorMsg,
-                                                          seconds: 10,
+                                                          snackPosition: SnackPosition
+                                                              .BOTTOM, // Position: TOP or BOTTOM
                                                         );
                                                         break;
                                                       default:
                                                         EasyLoading.dismiss();
-                                                        ConstHelper.errorDialog(
-                                                          text:"Error: ${e.message ?? "Something went wrong"}",
-                                                          seconds: 10,
+                                                        Get.snackbar(
+                                                          "Error!",
+                                                          e.message ?? "Something went wrong",
+                                                          snackPosition: SnackPosition
+                                                              .BOTTOM, // Position: TOP or BOTTOM
                                                         );
                                                     }
                                                 // EasyLoading.dismiss();
@@ -340,24 +438,30 @@ class _LoginPageState extends State<LoginPage> {
                                                 if (e.code ==
                                                     'invalid-phone-number') {
                                                   EasyLoading.dismiss();
-                                                  ConstHelper.errorDialog(
-                                                    text: ConstHelper
+                                                  Get.snackbar(
+                                                    "Verify Phone Number",
+                                                    ConstHelper
                                                         .invalidPhoneNumberErrorMsg,
-                                                    seconds: 10,
+                                                    snackPosition: SnackPosition
+                                                        .BOTTOM, // Position: TOP or BOTTOM
                                                   );
                                                 } else if (e.code ==
                                                     'too-many-requests') {
                                                   EasyLoading.dismiss();
-                                                  ConstHelper.errorDialog(
-                                                    text: ConstHelper
+                                                  Get.snackbar(
+                                                    "Error!",
+                                                    ConstHelper
                                                         .manyRequestErrorMsg,
-                                                    seconds: 10,
+                                                    snackPosition: SnackPosition
+                                                        .BOTTOM, // Position: TOP or BOTTOM
                                                   );
                                                 } else if (e.code == 'unknown') {
                                                  EasyLoading.dismiss();
-                                                 ConstHelper.errorDialog(
-                                                   text: ConstHelper.unknownErrorMsg,
-                                                   seconds: 10,
+                                                 Get.snackbar(
+                                                   "Error!",
+                                                   ConstHelper.unknownErrorMsg,
+                                                   snackPosition: SnackPosition
+                                                       .BOTTOM, // Position: TOP or BOTTOM
                                                  );
                                                  /* homeController.mobileNo.value =
                                                       txtUsername.text;
@@ -438,6 +542,7 @@ class _LoginPageState extends State<LoginPage> {
                                                     resendToken ?? 0;
                                                 homeController.otpVerificationId
                                                     .value = verificationId;
+
                                                 Get.to(
                                                   const OTPPage(),
                                                   transition: Transition.fadeIn,
@@ -449,8 +554,10 @@ class _LoginPageState extends State<LoginPage> {
                                                   colorText: ConstHelper.whiteColor,
                                                   backgroundColor: ConstHelper.darkBlueColor,
                                                 );
-
+                                                homeController.start.value = 30;
+                                                homeController.startTimer();
                                                 EasyLoading.dismiss();
+
                                               },
                                               codeAutoRetrievalTimeout:
                                                   (String verificationId) {
@@ -472,18 +579,23 @@ class _LoginPageState extends State<LoginPage> {
                                           }
                                         } else {
                                           EasyLoading.dismiss();
-                                          ConstHelper.errorDialog(
-                                            text: ConstHelper.unauthorizedMsg,
-                                            seconds: 10,
+                                          Get.snackbar(
+                                            "Error!",
+                                            ConstHelper.unauthorizedMsg,
+                                            snackPosition: SnackPosition
+                                                .BOTTOM, // Position: TOP or BOTTOM
                                           );
+
                                         }
                                       },
                                     );
                                   } catch (error) {
                                     EasyLoading.dismiss();
-                                    ConstHelper.errorDialog(
-                                      text: ConstHelper.somethingErrorMsg,
-                                      seconds: 10,
+                                    Get.snackbar(
+                                      "Error!",
+                                      ConstHelper.somethingErrorMsg,
+                                      snackPosition: SnackPosition
+                                          .BOTTOM, // Position: TOP or BOTTOM
                                     );
                                   }
                                 }
@@ -496,10 +608,8 @@ class _LoginPageState extends State<LoginPage> {
                                   colorText: ConstHelper.whiteColor,
                                   backgroundColor: ConstHelper.darkBlueColor,
                                 );
-
                               }
                             }
-                            EasyLoading.dismiss();
                           },
                           child: Container(
                             width: Get.width,
@@ -530,7 +640,7 @@ class _LoginPageState extends State<LoginPage> {
                             Text(
                               "Do not have account?",
                               style: TextStyle(
-                                color: ConstHelper.greyColor,
+                                color: ConstHelper.blackColor.withOpacity(0.8),
                                 fontSize: Get.width*0.04,
                                 fontWeight: FontWeight.w500,
                               ),

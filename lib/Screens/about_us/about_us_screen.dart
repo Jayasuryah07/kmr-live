@@ -21,9 +21,9 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   Widget build(BuildContext context) {
 
   //  print(controller.aboutUsModel.value.data?.companyMobile??"");
-    return Obx(() => Scaffold(
+    return Obx(() => SafeArea(child: Scaffold(
       appBar: AppBar(
-        backgroundColor: ConstHelper.darkBlueColor,
+        backgroundColor: ConstHelper.lightBlueColor,
         leading: GestureDetector(
           onTap: () {
             Get.back();
@@ -35,6 +35,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
             ),
           ),
         ),
+        titleSpacing: 0,
         title: Text(
           "About Us",
           style: TextStyle(
@@ -130,7 +131,16 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               imageIconData: Icons.email_outlined,
               isIcon: true,
               context: context,
-              onTap: () {
+              onTap: () async {
+                if (!(await ConstHelper.checkInternet())) {
+                Get.snackbar(
+                "No Internet",
+                'Please check your internet connection',
+                snackPosition: SnackPosition
+                    .BOTTOM, // Position: TOP or BOTTOM
+                );
+                return;
+                }
                 _launchURL(
                     "mailto:${controller.aboutUsModel.value.data?.companyEmail??""}");
               },
@@ -140,7 +150,16 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               imageIconData: Icons.public,
               isIcon: true,
               context: context,
-              onTap: () {
+              onTap: () async {
+                if (!(await ConstHelper.checkInternet())) {
+                Get.snackbar(
+                "No Internet",
+                'Please check your internet connection',
+                snackPosition: SnackPosition
+                    .BOTTOM, // Position: TOP or BOTTOM
+                );
+                return;
+                }
                 _launchURL(
                     controller.aboutUsModel.value.data?.companyWebsite??"");
               },
@@ -164,7 +183,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
           ),
         ],
       ),
-    ));
+    )));
   }
   void _launchURL(String url) async {
     final Uri uri = Uri.parse(url);

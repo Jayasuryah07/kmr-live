@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'Screens/HomeScreen/HomePage.dart';
 import 'Screens/LoginScreen/LoginPage.dart';
+import 'Screens/SplashScreen/SplashPage.dart';
 import 'Screens/SplashScreen/splash_common_page.dart';
 import 'Utils/ConstHelper.dart';
 import 'Utils/SharedPrefHelper.dart';
@@ -37,6 +39,7 @@ Future<void> main() async {
       ),
     );
   }
+  await FirebaseMessaging.instance.requestPermission();
 
   await SharedPrefHelper.sharedPrefHelper.initSharedPref();
   SystemChrome.setPreferredOrientations(
@@ -59,9 +62,9 @@ class MyApp extends StatelessWidget {
       statusBarBrightness: Brightness.dark,
       // For iOS
 
-      systemNavigationBarColor: ConstHelper.whiteColor,
+      systemNavigationBarColor: ConstHelper.darkBlueColor,
       // Navigation bar background
-      systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarIconBrightness: Brightness.light,
       // Icons color in navigation bar
       systemNavigationBarDividerColor: ConstHelper.whiteColor,
     ));
@@ -73,7 +76,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: ConstHelper.navigatorKey,
       builder: EasyLoading.init(),
       routes: {
-        '/' : (p0) => const SplashCommonPage(),
+        '/' : (p0) => const SplashPage(),
         'login' : (p0) => const LoginPage(),
         'home' : (p0) => const HomePage(),
       },

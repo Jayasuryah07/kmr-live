@@ -42,7 +42,7 @@ class _SpotPageState extends State<SpotPage> {
                     color: ConstHelper.darkBlueColor,
                   ),
                 )
-              : homeController.searchStart.value
+              : /*homeController.searchStart.value
                   ? homeController.searchedSpotRateDataList.isEmpty
                       ? RefreshIndicator(
                           onRefresh: () async {
@@ -382,7 +382,7 @@ class _SpotPageState extends State<SpotPage> {
                             },
                           ),
                         )
-                  : homeController.allSpotRateDataList.isEmpty
+                  :*/ homeController.allSpotRateDataList.isEmpty
                       ? RefreshIndicator(
                           onRefresh: () async {
                             await homeController.getSpotRateData(
@@ -394,17 +394,25 @@ class _SpotPageState extends State<SpotPage> {
                           child: ListView(
                             children: [
                               Padding(
-                                padding: EdgeInsets.only(top: Get.height / 2.8),
-                                child: Center(
-                                  child: Text(
-                                    ConstHelper.dataNotAvailableMsg,
-                                    style: TextStyle(
-                                      color: ConstHelper.darkBlueColor,
-                                      fontWeight: FontWeight.w600,
-                                        fontSize: Get.width*0.04,
-                                        letterSpacing: 1
+                                padding: EdgeInsets.symmetric(
+                                  vertical: Get.height / 3.8,
+                                  horizontal: Get.width * 0.04,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        "Oops! Nothing here now—fresh content incoming!",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: ConstHelper.darkBlueColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: Get.width*0.045,
+                                            letterSpacing: 1
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -450,7 +458,10 @@ class _SpotPageState extends State<SpotPage> {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Row(
+                                    child:Column(
+                                      children: [
+                                        Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         SizedBox(
                                           height: Get.width / 5,
@@ -510,215 +521,228 @@ class _SpotPageState extends State<SpotPage> {
                                         Expanded(
                                           child: Column(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 homeController
-                                                                .allSpotRateDataList[
-                                                                    index]
-                                                                .vendorSpotHeading ==
-                                                            null ||
-                                                        homeController
-                                                            .allSpotRateDataList[
-                                                                index]
-                                                            .vendorSpotHeading!
-                                                            .trim()
-                                                            .isEmpty
+                                                    .allSpotRateDataList[
+                                                index]
+                                                    .vendorSpotHeading ==
+                                                    null ||
+                                                    homeController
+                                                        .allSpotRateDataList[
+                                                    index]
+                                                        .vendorSpotHeading!
+                                                        .trim()
+                                                        .isEmpty
                                                     ? 'Heading N/A'
                                                     : homeController
-                                                        .allSpotRateDataList[
-                                                            index]
-                                                        .vendorSpotHeading!,
+                                                    .allSpotRateDataList[
+                                                index]
+                                                    .vendorSpotHeading!,
                                                 style: TextStyle(
-                                                  color: ConstHelper.blackColor,
-                                                  fontWeight: FontWeight.w600,
+                                                    color: ConstHelper.darkBlueColor,
+                                                    fontWeight: FontWeight.w600,
                                                     fontSize: Get.width*0.045,
                                                     letterSpacing: 1
                                                 ),
                                               ),
                                               Text(
                                                 homeController
-                                                                .allSpotRateDataList[
-                                                                    index]
-                                                                .vendorSpotDetails ==
-                                                            null ||
-                                                        homeController
-                                                            .allSpotRateDataList[
-                                                                index]
-                                                            .vendorSpotDetails!
-                                                            .trim()
-                                                            .isEmpty
+                                                    .allSpotRateDataList[
+                                                index]
+                                                    .vendorSpotDetails ==
+                                                    null ||
+                                                    homeController
+                                                        .allSpotRateDataList[
+                                                    index]
+                                                        .vendorSpotDetails!
+                                                        .trim()
+                                                        .isEmpty
                                                     ? 'Details N/A'
                                                     : homeController
-                                                        .allSpotRateDataList[
-                                                            index]
-                                                        .vendorSpotDetails!,
+                                                    .allSpotRateDataList[
+                                                index]
+                                                    .vendorSpotDetails!,
                                                 maxLines: 3,
                                                 style: TextStyle(
-                                                  color: ConstHelper.blackColor
-                                                      .withOpacity(0.6),
-                                                  fontWeight: FontWeight.w500,
+                                                    color: ConstHelper.blackColor
+                                                        .withOpacity(0.9),
+                                                    fontWeight: FontWeight.w400,
                                                     fontSize: Get.width*0.035,
                                                     letterSpacing: 1
                                                 ),
                                               ),
-                                              const Divider(),
-                                             
-                                              Row(
-                                                children: [
-                                                  Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: homeController
-                                                              .allSpotRateDataList[
-                                                          index]
-                                                              .vendorSpotCreatedDate ==
-                                                              null ||
-                                                              homeController
-                                                                  .allSpotRateDataList[
-                                                              index]
-                                                                  .vendorSpotCreatedDate!
-                                                                  .year <=
-                                                                  0
-                                                              ? 'Date N/A'
-                                                              : DateFormat(
-                                                              'dd/MMM/yyyy')
-                                                              .format(homeController
-                                                              .allSpotRateDataList[
-                                                          index]
-                                                              .vendorSpotCreatedDate!),
-                                                          style: TextStyle(
-                                                              fontSize: Get.width*0.035,
-                                                              letterSpacing: 1,
-                                                            color: ConstHelper
-                                                                .blackColor
-                                                                .withOpacity(0.6),
-                                                          ),
-                                                        ),
-                                                        const TextSpan(text: '  '),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),const Divider(),
 
-                                                        TextSpan(
-                                                          text: homeController
-                                                              .allSpotRateDataList[
-                                                          index]
-                                                              .vendorSpotCreatedTime ==
-                                                              null ||
-                                                              homeController
-                                                                  .allSpotRateDataList[
-                                                              index]
-                                                                  .vendorSpotCreatedTime!
-                                                                  .trim()
-                                                                  .isEmpty
-                                                              ? 'Time N/A'
-                                                              : DateFormat(
-                                                              'hh:mm a')
-                                                              .format(DateFormat(
-                                                              "HH:mm:ss")
-                                                              .parse(homeController
-                                                              .allSpotRateDataList[
-                                                          index]
-                                                              .vendorSpotCreatedTime!)),
-                                                          style: TextStyle(
-                                                              fontSize: Get.width*0.035,
-                                                              letterSpacing: 1,
-                                                            color: ConstHelper
-                                                                .blackColor
-                                                                .withOpacity(0.6),
-                                                          ),
-                                                        ),
-                                                      ],
+                                        Row(
+                                          children: [
+                                            Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text:  "🗓️ " +(homeController
+                                                        .allSpotRateDataList[
+                                                    index]
+                                                        .vendorSpotCreatedDate ==
+                                                        null ||
+                                                        homeController
+                                                            .allSpotRateDataList[
+                                                        index]
+                                                            .vendorSpotCreatedDate!
+                                                            .year <=
+                                                            0
+                                                        ? 'Date N/A'
+                                                        : DateFormat(
+                                                        'dd/MMM/yyyy')
+                                                        .format(homeController
+                                                        .allSpotRateDataList[
+                                                    index]
+                                                        .vendorSpotCreatedDate!)),
+                                                    style: TextStyle(
+                                                      fontSize: Get.width*0.035,
+                                                      letterSpacing: 1,
+                                                      fontWeight: FontWeight.w400,
+                                                      color: ConstHelper.blackColor
+                                                          .withOpacity(0.9),
                                                     ),
                                                   ),
-                                                  Expanded(
-                                                    child: Align(
-                                                      alignment: Alignment.centerRight,
-                                                      child: InkWell(
-                                                          onTap: () {
-                                                            showDialog(context: context, builder: (context) {
-                                                              return Dialog(
-                                                                backgroundColor: ConstHelper.whiteColor,
-                                                                surfaceTintColor: ConstHelper.whiteColor,
-                                                                child: SingleChildScrollView(
-                                                                  child: Container(
-                                                                    padding: EdgeInsets.symmetric(horizontal:  MediaQuery.of(context).size.width*0.03,vertical:  MediaQuery.of(context).size.height*0.01),
-                                                                    decoration: BoxDecoration(
-                                                                      color: ConstHelper.whiteColor,
-                                                                      border: Border.all(color: ConstHelper.darkBlueColor),
-                                                                      borderRadius:
-                                                                      BorderRadius.circular(5),
-                                                                    ),
-                                                                    child: Column(
-                                                                      mainAxisSize: MainAxisSize.min,
-                                                                      children: [
-                                                                        Text(
-                                                                          homeController
-                                                                              .allSpotRateDataList[
-                                                                          index]
-                                                                              .vendorSpotHeading ==
-                                                                              null ||
-                                                                              homeController
-                                                                                  .allSpotRateDataList[
-                                                                              index]
-                                                                                  .vendorSpotHeading!
-                                                                                  .trim()
-                                                                                  .isEmpty
-                                                                              ? 'Heading N/A'
-                                                                              : homeController
-                                                                              .allSpotRateDataList[
-                                                                          index]
-                                                                              .vendorSpotHeading!.toUpperCase(),
-                                                                          style: TextStyle(
-                                                                            color: ConstHelper.blackColor,
-                                                                            fontWeight: FontWeight.w600,
-                                                                              fontSize: Get.width*0.05,
-                                                                              letterSpacing: 1
-                                                                          ),
-                                                                        ),
-                                                                       Divider(),
-                                                                        Text(
-                                                                          homeController
-                                                                              .allSpotRateDataList[
-                                                                          index]
-                                                                              .vendorSpotDetails ==
-                                                                              null ||
-                                                                              homeController
-                                                                                  .allSpotRateDataList[
-                                                                              index]
-                                                                                  .vendorSpotDetails!
-                                                                                  .trim()
-                                                                                  .isEmpty
-                                                                              ? 'Details N/A'
-                                                                              : homeController
-                                                                              .allSpotRateDataList[
-                                                                          index]
-                                                                              .vendorSpotDetails!,
-                                                                          style: TextStyle(
-                                                                            color: ConstHelper.blackColor
-                                                                                .withOpacity(0.6),
-                                                                            fontWeight: FontWeight.w500,
-                                                                              fontSize: Get.width*0.04,
-                                                                              letterSpacing: 1
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            },);
-                                                          },
-                                                          splashColor: Colors.transparent,
-                                                          borderRadius: BorderRadius.circular(10),
-                                                          child: Text("View More",style: TextStyle(color: ConstHelper.greyColor,  fontSize: Get.width*0.03,
-                                                              letterSpacing: 1,fontWeight: FontWeight.w600),)),
+                                                  const TextSpan(text: '  '),
+                                                  TextSpan(
+                                                    text:  "🕒 " +(homeController
+                                                        .allSpotRateDataList[
+                                                    index]
+                                                        .vendorSpotCreatedTime ==
+                                                        null ||
+                                                        homeController
+                                                            .allSpotRateDataList[
+                                                        index]
+                                                            .vendorSpotCreatedTime!
+                                                            .trim()
+                                                            .isEmpty
+                                                        ? 'Time N/A'
+                                                        : DateFormat(
+                                                        'hh:mm a')
+                                                        .format(DateFormat(
+                                                        "HH:mm:ss")
+                                                        .parse(homeController
+                                                        .allSpotRateDataList[
+                                                    index]
+                                                        .vendorSpotCreatedTime!))),
+                                                    style: TextStyle(
+                                                      fontSize: Get.width*0.035,
+                                                      letterSpacing: 1,
+                                                      fontWeight: FontWeight.w400,
+                                                      color: ConstHelper.blackColor
+                                                          .withOpacity(0.9),
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                            ],
-                                          ),
-                                        )
+                                            ),
+                                            Expanded(
+                                              child: Align(
+                                                alignment: Alignment.centerRight,
+                                                child: InkWell(
+                                                    onTap: () {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return AlertDialog(
+                                                            backgroundColor: ConstHelper.whiteColor,
+                                                            surfaceTintColor: ConstHelper.whiteColor,
+                                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(Get.width*0.03))),
+                                                            insetPadding: EdgeInsets.symmetric(horizontal: Get.width * 0.025), // 95% width
+                                                            titlePadding: EdgeInsets.only(top: 10,right: 10,bottom: 10),
+                                                            title: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.end,
+                                                              children: [
+                                                                GestureDetector(
+                                                                  onTap: (){
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                  child: Container(
+                                                                      padding: EdgeInsets.all(3),
+                                                                      decoration: BoxDecoration(
+                                                                          shape: BoxShape.circle,
+                                                                          color: ConstHelper.greyColor.withOpacity(0.5)
+                                                                      ),
+                                                                      child: Icon(Icons.close,color: ConstHelper.blackColor,)),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            contentPadding: EdgeInsets.only(bottom: Get.height*0.01),// Reduce default constraints
+                                                            content:Container(
+                                                              width: Get.width * 0.95, // Expanded width
+                                                              padding: EdgeInsets.symmetric(
+                                                                horizontal: Get.width * 0.03,
+                                                                vertical: Get.height * 0.01,
+                                                              ),
+                                                              decoration: BoxDecoration(
+                                                                color: ConstHelper.whiteColor,
+                                                              //  border: Border.all(color: ConstHelper.darkBlueColor),
+                                                                borderRadius: BorderRadius.circular(5),
+                                                              ),
+                                                              child: Column(
+                                                                mainAxisSize: MainAxisSize.min,
+                                                                children: [
+                                                                  Text(
+                                                                    (homeController.allSpotRateDataList[index].vendorSpotHeading ?? '')
+                                                                        .trim()
+                                                                        .isEmpty
+                                                                        ? 'Heading N/A'
+                                                                        : homeController.allSpotRateDataList[index].vendorSpotHeading!
+                                                                        .toUpperCase(),
+                                                                    style: TextStyle(
+                                                                      color: ConstHelper.darkBlueColor,
+                                                                      fontWeight: FontWeight.w600,
+                                                                      fontSize: Get.width * 0.05,
+                                                                      letterSpacing: 1,
+                                                                    ),
+                                                                  ),
+                                                                  Divider(),
+                                                                  SizedBox(height: Get.height*0.7,child:  SingleChildScrollView(child:  Text(
+                                                                    (homeController.allSpotRateDataList[index].vendorSpotDetails ?? '')
+                                                                        .trim()
+                                                                        .isEmpty
+                                                                        ? 'Details N/A'
+                                                                        : homeController.allSpotRateDataList[index].vendorSpotDetails!,
+                                                                    style: TextStyle(
+                                                                        color: ConstHelper.blackColor.withOpacity(0.9),
+                                                                        fontWeight: FontWeight.w500,
+                                                                        fontSize: Get.width * 0.04,
+                                                                        letterSpacing: 1,
+                                                                        height: 2
+                                                                    ),
+                                                                  ),),
+                                                                   ),
+
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                      );
+
+                                                    },
+                                                    splashColor: Colors.transparent,
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    child: Text("View More",style: TextStyle(color: ConstHelper.darkBlueColor,
+                                                        decoration: TextDecoration.underline,
+                                                        fontSize: Get.width*0.035,
+                                                        letterSpacing: 1,
+                                                        fontWeight: FontWeight.w600,
+                                                    ),
+                                                    ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ],
                                     ),
                                   ),

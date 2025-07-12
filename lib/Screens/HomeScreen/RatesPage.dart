@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../Controllers/HomeController.dart';
 import '../../Utils/ConstHelper.dart';
@@ -21,11 +22,21 @@ class _RatesPageState extends State<RatesPage> {
   @override
   void initState() {
     // TODO: implement initState
-    if( homeController.allSubCategoryDataList.isNotEmpty)
-    homeController.getRateData(
+    if( homeController.allSubCategoryDataList.isNotEmpty) {
+      var val;
+      if(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub! == "All"){
+        val ="";
+      }else{
+        val = homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!;
+      }
+      homeController.getRateData(
         categoryValue: homeController.selectCategoryData.value.categoryName!,
-        subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
+          subCategoryValue:val
     );
+    }else{
+      homeController.allRatesDataList.clear();
+      homeController.searchedRatesDataList.clear();
+    }
     super.initState();
   }
 
@@ -46,7 +57,7 @@ class _RatesPageState extends State<RatesPage> {
                     color: ConstHelper.darkBlueColor,
                   ),
                 )
-              : homeController.searchStart.value
+              : /*homeController.searchStart.value
                   ? homeController.searchedRatesDataList.isEmpty || homeController.searchedRatesDataList.every(
                 (element) => element.vendorProduct!.isEmpty,
           )
@@ -54,7 +65,7 @@ class _RatesPageState extends State<RatesPage> {
                           onRefresh: () async {
                             await homeController.getRateData(
                                 categoryValue: homeController.selectCategoryData.value.categoryName!,
-                                subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
+                                subCategoryValue: homeController.allSubCategoryDataList .isEmpty?homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!:""
                             );
                           },
                           backgroundColor: ConstHelper.whiteColor,
@@ -85,7 +96,7 @@ class _RatesPageState extends State<RatesPage> {
                             print("GGGGGGGGGGG ${homeController.selectCategoryData.value.categoryName!}");
                             await homeController.getRateData(
                                 categoryValue: homeController.selectCategoryData.value.categoryName!,
-                                subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
+                                subCategoryValue: homeController.allSubCategoryDataList .isEmpty?homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!:""
                             );
                           },
                           backgroundColor: ConstHelper.whiteColor,
@@ -620,35 +631,56 @@ class _RatesPageState extends State<RatesPage> {
                             },
                           ),
                         )
-                  : homeController.allRatesDataList.isEmpty || homeController.allRatesDataList.every(
+                  : */homeController.allRatesDataList.isEmpty || homeController.allRatesDataList.every(
                 (element) => element.vendorProduct!.isEmpty,
           )
                       ? RefreshIndicator(
                           onRefresh: () async {
                             print("GGGGGGGGGGG ${homeController.selectCategoryData.value.categoryName!}");
+                            var val;
+                            if(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub! == "All"){
+                              val ="";
+                            }else{
+                              val = homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!;
+                            }
                             await homeController.getRateData(
                                 categoryValue: homeController.selectCategoryData.value.categoryName!,
-                                subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
+                                subCategoryValue:val
                             );
                           },
                           backgroundColor: ConstHelper.whiteColor,
                           color: ConstHelper.darkBlueColor,
                           child: ListView(
                             children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: Get.height / 2.8,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    ConstHelper.dataNotAvailableMsg,
-                                    style: TextStyle(
-                                      color: ConstHelper.darkBlueColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: Get.width*0.045,
-                                      letterSpacing: 1
-                                    ),
+                              SizedBox(
+                                height: Get.height*0.9,
+                                width: Get.width,
+                                child:  Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [ Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    // vertical: Get.height / 3.8,
+                                    horizontal: Get.width * 0.04,
                                   ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          "Oops! Nothing here now—fresh content incoming!",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: ConstHelper.darkBlueColor,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: Get.width*0.045,
+                                              letterSpacing: 1
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                ],
                                 ),
                               ),
                             ],
@@ -657,9 +689,15 @@ class _RatesPageState extends State<RatesPage> {
                       : RefreshIndicator(
                           onRefresh: () async {
                             print("PPPPPPPPPP");
+                            var val;
+                            if(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub! == "All"){
+                              val ="";
+                            }else{
+                              val = homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!;
+                            }
                             await homeController.getRateData(
                                 categoryValue: homeController.selectCategoryData.value.categoryName!,
-                                subCategoryValue: homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub!
+                                subCategoryValue:val
                             );
                           },
                           backgroundColor: ConstHelper.whiteColor,
@@ -667,7 +705,7 @@ class _RatesPageState extends State<RatesPage> {
                           child: ListView.builder(
                             itemCount: homeController.allRatesDataList.length,
                             itemBuilder: (context, index) {
-                              print(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub);
+                           //   print(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub);
                               return homeController.allRatesDataList[index].vendorProduct == null || homeController.allRatesDataList[index].vendorProduct!.isEmpty ?SizedBox():Padding(
                                 padding: EdgeInsets.only(
                                   top: Get.width / 30,
@@ -690,19 +728,21 @@ class _RatesPageState extends State<RatesPage> {
                                     ],
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(6.0),
                                     child: Column(
+                                     // mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             SizedBox(
-                                              height: Get.width / 7,
-                                              width: Get.width / 7,
+                                              height: Get.width / 5,
+                                              width: Get.width / 5,
                                               child: ClipRRect(
                                                 borderRadius:
                                                 BorderRadius.circular(6),
                                                 child: CachedNetworkImage(
-                                                  imageUrl:  ConstHelper.subCategoryImagePath+(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].categoriesSubImages??"") ,
+                                                  imageUrl:homeController.allRatesDataList[index].vendorProduct != null && homeController.allRatesDataList[index].vendorProduct!.isNotEmpty?ConstHelper.subCategoryImagePath+(homeController.allRatesDataList[index].vendorProduct?.first.categoriesSubImages??""):"",
                                                   fit: BoxFit.cover,
                                                   placeholder: (context, url) =>
                                                       Container(
@@ -797,7 +837,7 @@ class _RatesPageState extends State<RatesPage> {
                                                     style: TextStyle(
                                                       color: ConstHelper
                                                           .blackColor
-                                                          .withOpacity(0.6),
+                                                          .withOpacity(0.9),
                                                       fontWeight:
                                                           FontWeight.w500,
                                                       fontSize: Get.width*0.04,
@@ -807,59 +847,58 @@ class _RatesPageState extends State<RatesPage> {
                                                     TextSpan(
                                                       children: [
                                                         TextSpan(
-                                                          text: homeController
-                                                                          .allRatesDataList[
-                                                                              index]
-                                                                          .vendorCreatedDate ==
-                                                                      null ||
-                                                                  homeController
-                                                                          .allRatesDataList[
-                                                                              index]
-                                                                          .vendorCreatedDate!
-                                                                          .year <=
-                                                                      0
+                                                          text:  "🗓️${homeController
+                                                              .allRatesDataList[
+                                                          index]
+                                                              .vendorCreatedDate ==
+                                                              null ||
+                                                              homeController
+                                                                  .allRatesDataList[
+                                                              index]
+                                                                  .vendorCreatedDate!
+                                                                  .year <=
+                                                                  0
                                                               ? 'Date N/A'
                                                               : DateFormat(
-                                                                      'dd/MMM/yyyy')
-                                                                  .format(homeController
-                                                                      .allRatesDataList[
-                                                                          index]
-                                                                      .vendorCreatedDate!),
+                                                              'dd/MMM/yyyy')
+                                                              .format(homeController
+                                                              .allRatesDataList[
+                                                          index]
+                                                              .vendorCreatedDate!)}",
                                                           style: TextStyle(
-                                                            fontSize: Get.width*0.035,
-                                                            color: ConstHelper
-                                                                .blackColor
-                                                                .withOpacity(
-                                                                    0.6),
+                                                            fontSize: Get.width*0.03,
+                                                            letterSpacing: 1,
+                                                            fontWeight: FontWeight.w400,
+                                                            color: ConstHelper.blackColor
+                                                                .withOpacity(0.9),
                                                           ),
                                                         ),
-                                                        const TextSpan(
-                                                            text: '  '),
+                                                        const TextSpan(text: '  '),
                                                         TextSpan(
-                                                          text: homeController
-                                                                          .allRatesDataList[
-                                                                              index]
-                                                                          .vendorCreatedTime ==
-                                                                      null ||
-                                                                  homeController
-                                                                      .allRatesDataList[
-                                                                          index]
-                                                                      .vendorCreatedTime!
-                                                                      .trim()
-                                                                      .isEmpty
+                                                          text:  "🕒${homeController
+                                                              .allRatesDataList[
+                                                          index]
+                                                              .vendorCreatedTime ==
+                                                              null ||
+                                                              homeController
+                                                                  .allRatesDataList[
+                                                              index]
+                                                                  .vendorCreatedTime!
+                                                                  .trim()
+                                                                  .isEmpty
                                                               ? 'Time N/A'
                                                               : DateFormat('hh:mm a').format(DateFormat(
-                                                                      "HH:mm:ss")
-                                                                  .parse(homeController
-                                                                      .allRatesDataList[
-                                                                          index]
-                                                                      .vendorCreatedTime!)),
+                                                              "HH:mm:ss")
+                                                              .parse(homeController
+                                                              .allRatesDataList[
+                                                          index]
+                                                              .vendorCreatedTime!))}",
                                                           style: TextStyle(
-                                                            fontSize: Get.width*0.035,
-                                                            color: ConstHelper
-                                                                .blackColor
-                                                                .withOpacity(
-                                                                    0.6),
+                                                            fontSize: Get.width*0.03,
+                                                            letterSpacing: 1,
+                                                            fontWeight: FontWeight.w400,
+                                                            color: ConstHelper.blackColor
+                                                                .withOpacity(0.9),
                                                           ),
                                                         ),
                                                       ],
@@ -874,7 +913,12 @@ class _RatesPageState extends State<RatesPage> {
                                             Column(
                                               children: [
                                                 IconButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    _launchURL("tel: ${homeController
+                                                        .allRatesDataList[
+                                                    index]
+                                                        .vendorMobile??""}");
+                                                  },
                                                   icon: Icon(
                                                     Icons.call_rounded,
                                                     color:
@@ -890,304 +934,356 @@ class _RatesPageState extends State<RatesPage> {
                                             )
                                           ],
                                         ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: Color(0xffD8F2FF),
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                          child: DataTable(
-                                              columnSpacing: Get.width / 10,
-                                              columns: [
-                                                DataColumn(
+                                        Row(
+                                          children: [
+                                            Expanded(child:  DataTable(
+                                                horizontalMargin: Get.width*0.02,
+                                                headingRowHeight: Get.height*0.05,
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xffD8F2FF),
+                                                  borderRadius:
+                                                  BorderRadius.circular(5),
+                                                ),
+                                                columnSpacing: Get.width *0.04,
+                                                columns: [
+                                                  DataColumn(
                                                     label: Expanded(
-                                                        child: Text(
-                                                  "BRAND",
-                                                  style: TextStyle(
-                                                      color: Color(0xff001417),
-                                                      fontSize: Get.width*0.035,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ))),
-                                                DataColumn(
-                                                    label: Expanded(
-                                                        child: Text(
-                                                  "QUANTITY",
-                                                  style: TextStyle(
-                                                      color: Color(0xff001417),
-                                                      fontSize: Get.width*0.035,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ))),
-                                                DataColumn(
-                                                    label: Expanded(
-                                                        child: Text(
-                                                  "Min/Maz (+/-)",
-                                                  style: TextStyle(
-                                                      color: Color(0xff001417),
-                                                      fontSize: Get.width*0.035,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ))),
-                                              ],
-                                              rows: [
-
-                                                for (int j = 0; j < (homeController.allRatesDataList[index].vendorProduct == null || homeController.allRatesDataList[index].vendorProduct!.isEmpty?0:homeController.allRatesDataList[index].vendorProduct!.length < 2 ? homeController.allRatesDataList[index].vendorProduct!.length : homeController.allRatesDataList[index].vendorProduct!.sublist(0,2).length); j++)
-                                                  DataRow(cells: [
-                                                    DataCell(
-                                                      Text(
-                                                        homeController
-                                                                        .allRatesDataList[
-                                                                            index]
-                                                                        .vendorProduct![
-                                                                            j]
-                                                                        .vendorProduct ==
-                                                                    null ||
-                                                                homeController
-                                                                    .allRatesDataList[
-                                                                        index]
-                                                                    .vendorProduct![
-                                                                        j]
-                                                                    .vendorProduct!
-                                                                    .trim()
-                                                                    .isEmpty
-                                                            ? ConstHelper.naMsg
-                                                            : homeController
-                                                                .allRatesDataList[
-                                                                    index]
-                                                                .vendorProduct![
-                                                                    j]
-                                                                .vendorProduct!,
+                                                      child: Text(
+                                                        "BRAND",
                                                         style: TextStyle(
-                                                            color: Color(
-                                                                0xff5D646C),
+                                                            color: Color(0xff001417),
+                                                            fontSize: Get.width*0.035,
                                                             fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: Get.width*0.035,),
+                                                            FontWeight.w600),
+                                                      ),),),
+                                                  DataColumn(
+                                                    label: Expanded(
+                                                      child: Text(
+                                                        "QUANTITY",
+                                                        style: TextStyle(
+                                                            color: Color(0xff001417),
+                                                            fontSize: Get.width*0.035,
+                                                            fontWeight:
+                                                            FontWeight.w600),
+                                                      ),),),
+                                                  DataColumn(
+                                                    label: Expanded(
+                                                      child: Text(
+                                                        "Min/Max (+/-)",
+                                                        softWrap: true,
+                                                        maxLines: 2,
+                                                        textAlign: TextAlign.center,
+                                                        style: TextStyle(
+                                                            color: Color(0xff001417),
+                                                            fontSize: Get.width*0.035,
+                                                            fontWeight:
+                                                            FontWeight.w600),
                                                       ),
                                                     ),
-                                                    DataCell(
-                                                      Text(
-                                                        homeController
-                                                                        .allRatesDataList[
-                                                                            index]
-                                                                        .vendorProduct![
-                                                                            j]
-                                                                        .vendorProductSize ==
-                                                                    null ||
-                                                                homeController
-                                                                    .allRatesDataList[
-                                                                        index]
-                                                                    .vendorProduct![
-                                                                        j]
-                                                                    .vendorProductSize!
-                                                                    .trim()
-                                                                    .isEmpty
-                                                            ? ConstHelper.naMsg
-                                                            : homeController
-                                                                .allRatesDataList[
-                                                                    index]
-                                                                .vendorProduct![
-                                                                    j]
-                                                                .vendorProductSize!,
-                                                        style: TextStyle(
-                                                            color: Color(
-                                                                0xff5D646C),
+                                                  ),
+                                                ],
+                                                rows: [
+                                                  for (int j = 0; j < (homeController.allRatesDataList[index].vendorProduct == null || homeController.allRatesDataList[index].vendorProduct!.isEmpty?0:homeController.allRatesDataList[index].vendorProduct!.length < 2 ? homeController.allRatesDataList[index].vendorProduct!.length : homeController.allRatesDataList[index].vendorProduct!.sublist(0,2).length); j++)
+                                                    DataRow(cells: [
+                                                      DataCell(
+                                                        Text(
+                                                          homeController
+                                                              .allRatesDataList[
+                                                          index]
+                                                              .vendorProduct![
+                                                          j]
+                                                              .vendorProduct ==
+                                                              null ||
+                                                              homeController
+                                                                  .allRatesDataList[
+                                                              index]
+                                                                  .vendorProduct![
+                                                              j]
+                                                                  .vendorProduct!
+                                                                  .trim()
+                                                                  .isEmpty
+                                                              ? ConstHelper.naMsg
+                                                              : homeController
+                                                              .allRatesDataList[
+                                                          index]
+                                                              .vendorProduct![
+                                                          j]
+                                                              .vendorProduct!,
+                                                          style: TextStyle(
+                                                            color:ConstHelper.blackColor
+                                                                .withOpacity(0.9),
                                                             fontWeight:
-                                                                FontWeight.w500,
+                                                            FontWeight.w500,
                                                             fontSize: Get.width*0.035,),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    DataCell(
-                                                      Text(
-                                                        homeController
-                                                                        .allRatesDataList[
-                                                                            index]
-                                                                        .vendorProduct![
-                                                                            j]
-                                                                        .vendorProductRate ==
-                                                                    null ||
-                                                                homeController
-                                                                        .allRatesDataList[
-                                                                            index]
-                                                                        .vendorProduct![
-                                                                            j]
-                                                                        .vendorProductRate ==
-                                                                    0
-                                                            ? ConstHelper.naMsg
-                                                            : '${homeController.allRatesDataList[index].vendorProduct![j].vendorProductRate!}',
-                                                        style: TextStyle(
-                                                            color: Color(
-                                                                0xff5D646C),
+                                                      DataCell(
+                                                        Text(
+                                                          homeController
+                                                              .allRatesDataList[
+                                                          index]
+                                                              .vendorProduct![
+                                                          j]
+                                                              .vendorProductSize ==
+                                                              null ||
+                                                              homeController
+                                                                  .allRatesDataList[
+                                                              index]
+                                                                  .vendorProduct![
+                                                              j]
+                                                                  .vendorProductSize!
+                                                                  .trim()
+                                                                  .isEmpty
+                                                              ? ConstHelper.naMsg
+                                                              : homeController
+                                                              .allRatesDataList[
+                                                          index]
+                                                              .vendorProduct![
+                                                          j]
+                                                              .vendorProductSize!,
+                                                          style: TextStyle(
+                                                            color:ConstHelper.blackColor
+                                                                .withOpacity(0.9),
                                                             fontWeight:
-                                                                FontWeight.w500,
+                                                            FontWeight.w500,
                                                             fontSize: Get.width*0.035,),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ]),
-                                              ]),
+                                                      DataCell(
+                                                        Text(
+                                                          homeController
+                                                              .allRatesDataList[
+                                                          index]
+                                                              .vendorProduct![
+                                                          j]
+                                                              .vendorProductRate ==
+                                                              null ||
+                                                              homeController
+                                                                  .allRatesDataList[
+                                                              index]
+                                                                  .vendorProduct![
+                                                              j]
+                                                                  .vendorProductRate ==
+                                                                  0
+                                                              ? ConstHelper.naMsg
+                                                              : '₹ ${homeController.allRatesDataList[index].vendorProduct![j].vendorProductRate!}',
+                                                          style: TextStyle(
+                                                            color: ConstHelper.blackColor
+                                                                .withOpacity(0.9),
+                                                            fontWeight:
+                                                            FontWeight.w500,
+                                                            fontSize: Get.width*0.035,),
+                                                        ),
+                                                      ),
+                                                    ]),
+                                                ]),),
+                                          ],
                                         ),
+
                                         SizedBox(height: homeController.allRatesDataList[index].vendorProduct == null || homeController.allRatesDataList[index].vendorProduct!.isEmpty?0:Get.width/60,),
 
                                         Align(
                                           alignment: Alignment.centerRight,
                                             child: InkWell(
                                                 onTap: () {
-                                                  showDialog(context: context, builder: (context) {
-                                                    return Dialog(
-                                                      backgroundColor: ConstHelper.whiteColor,
-                                                      child: SingleChildScrollView(
-                                                        child: Column(
-                                                          mainAxisSize: MainAxisSize.min,
+                                                  showDialog(
+                                                    barrierDismissible: false,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return AlertDialog(
+                                                        backgroundColor:ConstHelper.whiteColor,
+                                                        surfaceTintColor: ConstHelper.whiteColor,
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(Get.width*0.03))),
+                                                        insetPadding: EdgeInsets.symmetric(horizontal: Get.width * 0.025), // 95% width
+                                                        titlePadding: EdgeInsets.only(top: 10,right: 10,bottom: 10),
+                                                        title: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.end,
                                                           children: [
-                                                            Container(
-                                                              padding: EdgeInsets.symmetric(horizontal:  MediaQuery.of(context).size.width*0.03,vertical:  MediaQuery.of(context).size.height*0.01),
-                                                              decoration: BoxDecoration(
-                                                                color: ConstHelper.whiteColor,
-                                                                border: Border.all(color: ConstHelper.darkBlueColor),
-                                                                borderRadius:
-                                                                BorderRadius.circular(5),
-                                                              ),
-                                                              child: DataTable(
-                                                                  columnSpacing: Get.width / 10,
-                                                                  columns: [
-                                                                    DataColumn(
-                                                                        label: Expanded(
-                                                                            child: Text(
-                                                                              "BRAND",
-                                                                              style: TextStyle(
-                                                                                  color: Color(0xff001417),
-                                                                                  fontSize: Get.width*0.035,
-                                                                                  fontWeight:
-                                                                                  FontWeight.w500),
-                                                                            ))),
-                                                                    DataColumn(
-                                                                        label: Expanded(
-                                                                            child: Text(
-                                                                              "QUANTITY",
-                                                                              style: TextStyle(
-                                                                                  color: Color(0xff001417),
-                                                                                  fontSize: Get.width*0.035,
-                                                                                  fontWeight:
-                                                                                  FontWeight.w500),
-                                                                            ))),
-                                                                    DataColumn(
-                                                                        label: Expanded(
-                                                                            child: Text(
-                                                                              "Min/Maz (+/-)",
-                                                                              style: TextStyle(
-                                                                                  color: Color(0xff001417),
-                                                                                  fontSize: Get.width*0.035,
-                                                                                  fontWeight:
-                                                                                  FontWeight.w500),
-                                                                            ))),
-                                                                  ],
-                                                                  rows: [
-
-                                                                    for (int j = 0; j < (homeController.allRatesDataList[index].vendorProduct == null || homeController.allRatesDataList[index].vendorProduct!.isEmpty?0:homeController.allRatesDataList[index].vendorProduct!.length); j++)
-                                                                      DataRow(cells: [
-                                                                        DataCell(
-                                                                          Text(
-                                                                            homeController
-                                                                                .allRatesDataList[
-                                                                            index]
-                                                                                .vendorProduct![
-                                                                            j]
-                                                                                .vendorProduct ==
-                                                                                null ||
-                                                                                homeController
-                                                                                    .allRatesDataList[
-                                                                                index]
-                                                                                    .vendorProduct![
-                                                                                j]
-                                                                                    .vendorProduct!
-                                                                                    .trim()
-                                                                                    .isEmpty
-                                                                                ? ConstHelper.naMsg
-                                                                                : homeController
-                                                                                .allRatesDataList[
-                                                                            index]
-                                                                                .vendorProduct![
-                                                                            j]
-                                                                                .vendorProduct!,
-                                                                            style: TextStyle(
-                                                                                color: Color(
-                                                                                    0xff5D646C),
-                                                                                fontWeight:
-                                                                                FontWeight.w500,
-                                                                                fontSize: Get.width*0.035),
-                                                                          ),
-                                                                        ),
-                                                                        DataCell(
-                                                                          Text(
-                                                                            homeController
-                                                                                .allRatesDataList[
-                                                                            index]
-                                                                                .vendorProduct![
-                                                                            j]
-                                                                                .vendorProductSize ==
-                                                                                null ||
-                                                                                homeController
-                                                                                    .allRatesDataList[
-                                                                                index]
-                                                                                    .vendorProduct![
-                                                                                j]
-                                                                                    .vendorProductSize!
-                                                                                    .trim()
-                                                                                    .isEmpty
-                                                                                ? ConstHelper.naMsg
-                                                                                : homeController
-                                                                                .allRatesDataList[
-                                                                            index]
-                                                                                .vendorProduct![
-                                                                            j]
-                                                                                .vendorProductSize!,
-                                                                            style: TextStyle(
-                                                                                color: Color(
-                                                                                    0xff5D646C),
-                                                                                fontWeight:
-                                                                                FontWeight.w500,
-                                                                                fontSize: Get.width*0.035),
-                                                                          ),
-                                                                        ),
-                                                                        DataCell(
-                                                                          Text(
-                                                                            homeController
-                                                                                .allRatesDataList[
-                                                                            index]
-                                                                                .vendorProduct![
-                                                                            j]
-                                                                                .vendorProductRate ==
-                                                                                null ||
-                                                                                homeController
-                                                                                    .allRatesDataList[
-                                                                                index]
-                                                                                    .vendorProduct![
-                                                                                j]
-                                                                                    .vendorProductRate ==
-                                                                                    0
-                                                                                ? ConstHelper.naMsg
-                                                                                : '${homeController.allRatesDataList[index].vendorProduct![j].vendorProductRate!}',
-                                                                            style: TextStyle(
-                                                                                color: Color(
-                                                                                    0xff5D646C),
-                                                                                fontWeight:
-                                                                                FontWeight.w500,
-                                                                                fontSize: Get.width*0.035),
-                                                                          ),
-                                                                        ),
-                                                                      ]),
-                                                                  ]),
+                                                            GestureDetector(
+                                                              onTap: (){
+                                                                Navigator.pop(context);
+                                                              },
+                                                              child: Container(
+                                                                  padding: EdgeInsets.all(3),
+                                                                  decoration: BoxDecoration(
+                                                                      shape: BoxShape.circle,
+                                                                      color: ConstHelper.greyColor.withOpacity(0.5)
+                                                                  ),
+                                                                  child: Icon(Icons.close,color: ConstHelper.blackColor,)),
                                                             ),
                                                           ],
                                                         ),
-                                                      ),
-                                                    );
-                                                  },);
+                                                        contentPadding: EdgeInsets.only(bottom: Get.height*0.01),
+                                                        content:  Container(
+                                                            width: Get.width*0.9,
+                                                            height: Get.height * 0.85,
+                                                          decoration: BoxDecoration(
+                                                            color: ConstHelper.whiteColor,
+                                                            //  border: Border.all(color: ConstHelper.darkBlueColor),
+                                                              borderRadius: BorderRadius.all(Radius.circular(Get.width*0.03))
+
+                                                          ),
+                                                        child:   SingleChildScrollView(
+                                                          child: Column(
+                                                            mainAxisSize: MainAxisSize.min,
+                                                            children: [
+                                                              Container(
+                                                                padding: EdgeInsets.symmetric(horizontal:  MediaQuery.of(context).size.width*0.04,vertical:  MediaQuery.of(context).size.height*0.01),
+                                                                decoration: BoxDecoration(
+                                                                  color: ConstHelper.whiteColor,
+                                                                //  border: Border.all(color: ConstHelper.darkBlueColor),
+                                                                  borderRadius:
+                                                                  BorderRadius.circular(5),
+                                                                ),
+                                                                child: DataTable(
+                                                                    columnSpacing: Get.width *0.01,
+                                                                    horizontalMargin: 0,
+                                                                    columns: [
+                                                                      DataColumn(
+                                                                        label: Expanded(
+                                                                          child: Text(
+                                                                            "BRAND",
+                                                                            softWrap: true,
+                                                                            maxLines: 2,
+                                                                            style: TextStyle(
+                                                                                color: Color(0xff001417),
+                                                                                fontSize: Get.width*0.04,
+                                                                                fontWeight:
+                                                                                FontWeight.w500),
+                                                                          ),),),
+                                                                      DataColumn(
+                                                                        label: Expanded(
+                                                                          child: Text(
+                                                                            "QUANTITY",
+                                                                            style: TextStyle(
+                                                                                color: Color(0xff001417),
+                                                                                fontSize: Get.width*0.04,
+                                                                                fontWeight:
+                                                                                FontWeight.w500),
+                                                                          ),),),
+                                                                      DataColumn(
+                                                                        label: Expanded(
+                                                                          child: Text(
+                                                                            "Min/Max (+/-)",
+                                                                            softWrap: true,
+                                                                            maxLines: 2,
+                                                                            textAlign:TextAlign.center,
+                                                                            style: TextStyle(
+                                                                                color: const Color(0xff001417),
+                                                                                fontSize: Get.width*0.04,
+                                                                                fontWeight:
+                                                                                FontWeight.w500),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                    rows: [
+
+                                                                      for (int j = 0; j < (homeController.allRatesDataList[index].vendorProduct == null || homeController.allRatesDataList[index].vendorProduct!.isEmpty?0:homeController.allRatesDataList[index].vendorProduct!.length); j++)
+                                                                        DataRow(cells: [
+                                                                          DataCell(
+                                                                            Text(
+                                                                              homeController
+                                                                                  .allRatesDataList[
+                                                                              index]
+                                                                                  .vendorProduct![
+                                                                              j]
+                                                                                  .vendorProduct ==
+                                                                                  null ||
+                                                                                  homeController
+                                                                                      .allRatesDataList[
+                                                                                  index]
+                                                                                      .vendorProduct![
+                                                                                  j]
+                                                                                      .vendorProduct!
+                                                                                      .trim()
+                                                                                      .isEmpty
+                                                                                  ? ConstHelper.naMsg
+                                                                                  : homeController
+                                                                                  .allRatesDataList[
+                                                                              index]
+                                                                                  .vendorProduct![
+                                                                              j]
+                                                                                  .vendorProduct!,
+                                                                              style: TextStyle(
+                                                                                  color: ConstHelper.blackColor
+                                                                                      .withOpacity(0.9),
+                                                                                  fontWeight:
+                                                                                  FontWeight.w500,
+                                                                                  fontSize: Get.width*0.035),
+                                                                            ),
+                                                                          ),
+                                                                          DataCell(
+                                                                            Text(
+                                                                              homeController
+                                                                                  .allRatesDataList[
+                                                                              index]
+                                                                                  .vendorProduct![
+                                                                              j]
+                                                                                  .vendorProductSize ==
+                                                                                  null ||
+                                                                                  homeController
+                                                                                      .allRatesDataList[
+                                                                                  index]
+                                                                                      .vendorProduct![
+                                                                                  j]
+                                                                                      .vendorProductSize!
+                                                                                      .trim()
+                                                                                      .isEmpty
+                                                                                  ? ConstHelper.naMsg
+                                                                                  : homeController
+                                                                                  .allRatesDataList[
+                                                                              index]
+                                                                                  .vendorProduct![
+                                                                              j]
+                                                                                  .vendorProductSize!,
+                                                                              style: TextStyle(
+                                                                                  color:ConstHelper.blackColor
+                                                                                      .withOpacity(0.9),
+                                                                                  fontWeight:
+                                                                                  FontWeight.w500,
+                                                                                  fontSize: Get.width*0.035),
+                                                                            ),
+                                                                          ),
+                                                                          DataCell(
+                                                                            Text(
+                                                                              homeController
+                                                                                  .allRatesDataList[
+                                                                              index]
+                                                                                  .vendorProduct![
+                                                                              j]
+                                                                                  .vendorProductRate ==
+                                                                                  null ||
+                                                                                  homeController
+                                                                                      .allRatesDataList[
+                                                                                  index]
+                                                                                      .vendorProduct![
+                                                                                  j]
+                                                                                      .vendorProductRate ==
+                                                                                      0
+                                                                                  ? ConstHelper.naMsg
+                                                                                  : '₹ ${homeController.allRatesDataList[index].vendorProduct![j].vendorProductRate!}',
+                                                                              style: TextStyle(
+                                                                                  color:ConstHelper.blackColor
+                                                                                      .withOpacity(0.9),
+                                                                                  fontWeight:
+                                                                                  FontWeight.w500,
+                                                                                  fontSize: Get.width*0.035),
+                                                                            ),
+                                                                          ),
+                                                                        ]),
+                                                                    ]),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )),
+                                                      );
+                                                    },
+                                                  );
                                                 },
                                                 splashColor: Colors.transparent,
                                                 borderRadius: BorderRadius.circular(10),
-                                                child: Text("View More",style: TextStyle(color: ConstHelper.darkBlueColor,decoration:TextDecoration.underline,fontSize: Get.width*0.035,fontWeight: FontWeight.w600),)))
+                                                child: Text("View More",style: TextStyle(color: ConstHelper.darkBlueColor,decoration:TextDecoration.underline,fontSize: Get.width*0.035,fontWeight: FontWeight.w600),),),),
                                       ],
                                     ),
                                   ),
@@ -1199,5 +1295,11 @@ class _RatesPageState extends State<RatesPage> {
         ),
       ),
     ));
+  }
+}
+void _launchURL(String url) async {
+  final Uri uri = Uri.parse(url);
+  if (!await launchUrl(uri)) {
+    throw 'Could not launch $url';
   }
 }
