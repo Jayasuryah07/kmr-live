@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'Screens/HomeScreen/HomePage.dart';
 import 'Screens/LoginScreen/LoginPage.dart';
 import 'Screens/SplashScreen/SplashPage.dart';
-import 'Screens/SplashScreen/splash_common_page.dart';
 import 'Utils/ConstHelper.dart';
 import 'Utils/SharedPrefHelper.dart';
 
@@ -95,7 +94,7 @@ void configLoading() {
     ..backgroundColor = Colors.green
     ..indicatorColor = Colors.yellow
     ..textColor = Colors.yellow
-    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..maskColor = Colors.blue.withAlpha(128)
     ..userInteractions = false
     ..maskType = EasyLoadingMaskType.black
     ..dismissOnTap = false;

@@ -207,16 +207,18 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
     );
   }
 }
+
 /// Internet Connection Checking
 class NetworkConnectivity {
   static Future<bool> checkInternet() async {
     final connectivityResult = await Connectivity().checkConnectivity();
 
-    if (connectivityResult.first == ConnectivityResult.none) return false;
+    // Check if there is any network connection
+    if (connectivityResult == ConnectivityResult.none) return false;
 
+    // Then try to ping an actual external server
     try {
-      final result =
-      await http.get(Uri.parse('https://www.google.com')).timeout(
+      final result = await http.get(Uri.parse('https://www.google.com')).timeout(
         const Duration(seconds: 5),
       );
       return result.statusCode == 200;

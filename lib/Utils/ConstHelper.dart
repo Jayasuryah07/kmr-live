@@ -75,10 +75,9 @@ class ConstHelper {
 
   static Future<bool> checkInternet() async {
     try {
-      var connectivityResultList = await Connectivity().checkConnectivity();
-      return connectivityResultList.where((connectivityResult) => (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi)).toList().isNotEmpty;
-    }
-    catch(error) {
+      ConnectivityResult result = await Connectivity().checkConnectivity();
+      return result == ConnectivityResult.mobile || result == ConnectivityResult.wifi;
+    } catch (error) {
       return false;
     }
   }
