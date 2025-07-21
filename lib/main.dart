@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'Screens/HomeScreen/HomePage.dart';
-import 'Screens/LoginScreen/LoginPage.dart';
-import 'Screens/SplashScreen/SplashPage.dart';
-import 'Utils/ConstHelper.dart';
-import 'Utils/SharedPrefHelper.dart';
+import 'Screens/home_screen/home_page.dart';
+import 'Screens/login_screen/login_page.dart';
+import 'Screens/splash_screen/splash_page.dart';
+import 'Utils/const_helper.dart';
+import 'Utils/shared_pref_helper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +38,7 @@ Future<void> main() async {
       ),
     );
   }
+
   await FirebaseMessaging.instance.requestPermission();
 
   await SharedPrefHelper.sharedPrefHelper.initSharedPref();

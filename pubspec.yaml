@@ -61,7 +61,8 @@ dependencies:
   google_fonts:
   in_app_update: ^4.2.3
   package_info_plus: ^8.0.2
-  webview_flutter:
+  webview_flutter: ^4.7.0
+  http: ^1.2.1
 
 dev_dependencies:
   flutter_test:
