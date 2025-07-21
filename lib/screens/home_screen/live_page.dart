@@ -46,7 +46,7 @@ class _LivePageState extends State<LivePage> {
           categoryValue: homeController.selectCategoryData.value.categoryName!,
           subCategoryValue:val
       );
-    }else{
+    } else {
       searchedLiveDataList.clear();
       allLiveDataList.clear();
     }

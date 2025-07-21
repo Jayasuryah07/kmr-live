@@ -3,11 +3,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
-import '../../Controllers/home_controller.dart';
-import '../../Models/sub_category_model.dart';
-import '../../Utils/api_helper.dart';
-import '../../Utils/const_helper.dart';
+import 'package:kmr_flutter_application/Controllers/home_controller.dart';
+import 'package:kmr_flutter_application/Models/sub_category_model.dart';
+import 'package:kmr_flutter_application/Utils/api_helper.dart';
+import 'package:kmr_flutter_application/Utils/const_helper.dart';
 
 class BottomPage extends StatefulWidget {
   const BottomPage({super.key});
@@ -25,21 +24,21 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(30),
       borderSide: BorderSide(
-        color: ConstHelper.whiteColor.withOpacity(0.3),
+        color: ConstHelper.whiteColor.withAlpha(77),
         width: 1.5,
       ),
     ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(30),
       borderSide: BorderSide(
-        color: ConstHelper.whiteColor.withOpacity(0.3),
+        color: ConstHelper.whiteColor.withAlpha(77),
         width: 1.5,
       ),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(30),
       borderSide: BorderSide(
-        color: ConstHelper.whiteColor.withOpacity(0.3),
+        color: ConstHelper.whiteColor.withAlpha(77),
         width: 1.5,
       ),
     ),
@@ -48,7 +47,7 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
     ),
     hintText: 'Search....',
     hintStyle: TextStyle(
-      color: ConstHelper.whiteColor.withOpacity(0.7),
+      color: ConstHelper.whiteColor.withAlpha(179),
     ),
   );
 
@@ -64,13 +63,25 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
     } else {
       // Fallback for empty list (this shouldn't trigger if you have one item)
       homeController.selectedTabIndex.value = -1;
-    }homeController.selectedTabIndex.value = 0;
+    }
+    homeController.selectedTabIndex.value = 0;
+
+    // Fetch slider images
+    fetchSliderImages();
+
     super.initState();
+  }
+
+  void fetchSliderImages() async {
+    var sliderImageUrls = await ApiHelper.apiHelper.fetchCategorySliderApiUrl();
+    homeController.sliderImageUrls.value = sliderImageUrls;
+    setState(() {}); // Trigger a rebuild to update the UI
   }
 
   @override
   Widget build(BuildContext context) {
-    print( homeController.selectedIndex.value);
+
+    // debugPrint("" + homeController.selectedIndex.value);
     return SafeArea(
       child: Obx(
             () => Scaffold(
@@ -121,14 +132,14 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                       borderSide: BorderSide(
-                        color: ConstHelper.whiteColor.withOpacity(0.3),
+                        color: ConstHelper.whiteColor.withAlpha(77),
                         width: 1.5,
                       ),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                       borderSide: BorderSide(
-                        color: ConstHelper.whiteColor.withOpacity(0.3),
+                        color: ConstHelper.whiteColor.withAlpha(77),
                         width: 1.5,
                       ),
                     ),
@@ -155,7 +166,7 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                       borderSide: BorderSide(
-                        color: ConstHelper.whiteColor.withOpacity(0.3),
+                        color: ConstHelper.whiteColor.withAlpha(77),
                         width: 1.5,
                       ),
                     ),
@@ -164,7 +175,7 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
                     ),
                     hintText: 'Search....',
                     hintStyle: TextStyle(
-                      color: ConstHelper.whiteColor.withOpacity(0.7),
+                      color: ConstHelper.whiteColor.withAlpha(179),
                     ),
                   ),
 
@@ -363,8 +374,8 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
 
             ],
             bottom: PreferredSize(
-              preferredSize: homeController.allSubCategoryDataList.isEmpty ?Size.fromHeight(0): Size.fromHeight(Get.width / 8),
-              child: homeController.allSubCategoryDataList.isEmpty ?SizedBox():DefaultTabController(
+              preferredSize: homeController.allSubCategoryDataList.isEmpty ? const Size.fromHeight(0): Size.fromHeight(Get.width / 8),
+              child: homeController.allSubCategoryDataList.isEmpty ? const SizedBox():DefaultTabController(
                 length: homeController.allSubCategoryDataList.length,
                 child:SizedBox(
                   height: Get.height*0.07,
@@ -454,14 +465,14 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide(
-                      color: ConstHelper.whiteColor.withOpacity(0.3),
+                      color: ConstHelper.whiteColor.withAlpha(77),
                       width: 1.5,
                     ),
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide(
-                      color: ConstHelper.whiteColor.withOpacity(0.3),
+                      color: ConstHelper.whiteColor.withAlpha(77),
                       width: 1.5,
                     ),
                   ),
@@ -487,7 +498,7 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide(
-                      color: ConstHelper.whiteColor.withOpacity(0.3),
+                      color: ConstHelper.whiteColor.withAlpha(77),
                       width: 1.5,
                     ),
                   ),
@@ -496,7 +507,7 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
                   ),
                   hintText: 'Search....',
                   hintStyle: TextStyle(
-                    color: ConstHelper.whiteColor.withOpacity(0.7),
+                    color: ConstHelper.whiteColor.withAlpha(179),
                   ),
                 ),
                 style: TextStyle(
@@ -638,109 +649,211 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
             //     )),
           ),
           backgroundColor: ConstHelper.whiteColor,
-          body:Column(children: [
-            Visibility(
-              visible: homeController.selectedIndex.value != 1,
-              child: Column(
-                children: [
-                  CarouselSlider(
-                    items: [
-                      1,
-                      2,
-                      3,
-                    ].map((i) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 1,
-                        ),
-                        child: SizedBox(
-                          width: Get.width,
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl:
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUPIfiGgUML8G3ZqsNLHfaCnZK3I5g4tJabQ&s",
-                            placeholder: (context, url) => Center(
-                              child: CircularProgressIndicator(
-                                color: ConstHelper.darkBlueColor,
-                              ),
-                            ),
-                            errorWidget: (context, url, error) => Center(
-                              child: Image.asset(
-                                'assets/image/imageNotFound.png',
-                                color: ConstHelper.blackColor,
+
+
+
+
+
+
+
+
+
+          // body:Column(children: [
+          //   Visibility(
+          //     visible: homeController.selectedIndex.value != 1,
+          //     child: Column(
+          //       children: [
+          //
+          //         CarouselSlider(
+          //           items: [
+          //             1,
+          //             2,
+          //             3,
+          //           ].map((i) {
+          //             return Padding(
+          //               padding: const EdgeInsets.symmetric(
+          //                 horizontal: 1,
+          //               ),
+          //               child: SizedBox(
+          //                 width: Get.width,
+          //                 child: CachedNetworkImage(
+          //                   fit: BoxFit.cover,
+          //                   imageUrl:
+          //                   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUPIfiGgUML8G3ZqsNLHfaCnZK3I5g4tJabQ&s",
+          //                   placeholder: (context, url) => Center(
+          //                     child: CircularProgressIndicator(
+          //                       color: ConstHelper.darkBlueColor,
+          //                     ),
+          //                   ),
+          //                   errorWidget: (context, url, error) => Center(
+          //                     child: Image.asset(
+          //                       'assets/image/imageNotFound.png',
+          //                       color: ConstHelper.blackColor,
+          //                       fit: BoxFit.cover,
+          //                     ),
+          //                   ),
+          //                 ),
+          //               ),
+          //             );
+          //           }).toList(),
+          //           options: CarouselOptions(
+          //             height: Get.width / 3,
+          //             // aspectRatio: 1,
+          //             viewportFraction: 1,
+          //             // autoPlay: imageUrls.length > 1,
+          //             // enableInfiniteScroll: imageUrls.length > 1,
+          //             // enlargeCenterPage: true,
+          //             initialPage: 0,
+          //             enableInfiniteScroll: true,
+          //             reverse: false,
+          //             autoPlay: true,
+          //             autoPlayInterval: const Duration(seconds: 3),
+          //             autoPlayAnimationDuration: const Duration(milliseconds: 800),
+          //             autoPlayCurve: Curves.fastOutSlowIn,
+          //             scrollDirection: Axis.horizontal,
+          //             onPageChanged: (index, reason) =>
+          //             homeController.sliderIndex.value = index,
+          //           ),
+          //         ),
+          //
+          //         SizedBox(
+          //           height: Get.width / 90,
+          //         ),
+          //         Obx(
+          //               () => Row(
+          //             mainAxisAlignment: MainAxisAlignment.center,
+          //             children: [
+          //               1,
+          //               2,
+          //               3,
+          //             ]
+          //                 .asMap()
+          //                 .entries
+          //                 .map(
+          //                   (e) => Container(
+          //                 margin: EdgeInsets.only(
+          //                   left: e.key == 0 ? 0 : Get.width / 150,
+          //                 ),
+          //                 height: e.key == homeController.sliderIndex.value
+          //                     ? Get.width / 45
+          //                     : Get.width / 80,
+          //                 width: e.key == homeController.sliderIndex.value
+          //                     ? Get.width / 45
+          //                     : Get.width / 80,
+          //                 decoration: BoxDecoration(
+          //                   color: e.key == homeController.sliderIndex.value
+          //                       ? ConstHelper.darkBlueColor
+          //                       : ConstHelper.cementColor,
+          //                   shape: BoxShape.circle,
+          //                 ),
+          //               ),
+          //             )
+          //                 .toList(),
+          //           ),
+          //         ),
+          //         SizedBox(
+          //           height: Get.width / 20,
+          //         ),
+          //       ],
+          //     ),),
+          //
+          //   Expanded(child:  homeController.screens[homeController.selectedIndex.value])
+          //
+          // ],),
+
+          body: Column(
+            children: [
+              Obx(() {
+                final sliderImages = homeController.sliderImageUrls;
+                debugPrint("Slider Images Column: $sliderImages");
+
+                return Visibility(
+                  // visible: homeController.selectedIndex.value != 1,
+                  child: sliderImages.isEmpty
+                      ? const SizedBox(
+                    height: 180,
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                      : Column(
+                    children: [
+                      CarouselSlider(
+                        items: sliderImages.map((url) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 1),
+                            child: SizedBox(
+                              width: Get.width,
+                              child: CachedNetworkImage(
+                                imageUrl: url,
                                 fit: BoxFit.cover,
+                                placeholder: (context, url) => Center(
+                                  child: CircularProgressIndicator(
+                                    color: ConstHelper.darkBlueColor,
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) => Center(
+                                  child: Image.asset(
+                                    'assets/image/imageNotFound.png',
+                                    color: ConstHelper.blackColor,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          );
+                        }).toList(),
+                        options: CarouselOptions(
+                          height: Get.width / 3,
+                          viewportFraction: 1,
+                          initialPage: 0,
+                          enableInfiniteScroll: sliderImages.length > 1,
+                          autoPlay: sliderImages.length > 1,
+                          autoPlayInterval: const Duration(seconds: 3),
+                          autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          scrollDirection: Axis.horizontal,
+                          onPageChanged: (index, reason) {
+                            homeController.sliderIndex.value = index;
+                          },
                         ),
-                      );
-                    }).toList(),
-                    options: CarouselOptions(
-                      height: Get.width / 3,
-                      // aspectRatio: 1,
-                      viewportFraction: 1,
-                      // autoPlay: imageUrls.length > 1,
-                      // enableInfiniteScroll: imageUrls.length > 1,
-                      // enlargeCenterPage: true,
-                      initialPage: 0,
-                      enableInfiniteScroll: true,
-                      reverse: false,
-                      autoPlay: true,
-                      autoPlayInterval: const Duration(seconds: 3),
-                      autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      scrollDirection: Axis.horizontal,
-                      onPageChanged: (index, reason) =>
-                      homeController.sliderIndex.value = index,
-                    ),
+                      ),
+                      SizedBox(height: Get.width / 90),
+                      Obx(() => Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: sliderImages.asMap().entries.map((e) {
+                          final isSelected = e.key == homeController.sliderIndex.value;
+                          final size = isSelected ? Get.width / 45 : Get.width / 80;
+                          return Container(
+                            margin: EdgeInsets.only(
+                              left: e.key == 0 ? 0 : Get.width / 150,
+                            ),
+                            height: size,
+                            width: size,
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? ConstHelper.darkBlueColor
+                                  : ConstHelper.cementColor,
+                              shape: BoxShape.circle,
+                            ),
+                          );
+                        }).toList(),
+                      )),
+                      SizedBox(height: Get.width / 20),
+                    ],
                   ),
-                  SizedBox(
-                    height: Get.width / 90,
-                  ),
-                  Obx(
-                        () => Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        1,
-                        2,
-                        3,
-                      ]
-                          .asMap()
-                          .entries
-                          .map(
-                            (e) => Container(
-                          margin: EdgeInsets.only(
-                            left: e.key == 0 ? 0 : Get.width / 150,
-                          ),
-                          height: e.key == homeController.sliderIndex.value
-                              ? Get.width / 45
-                              : Get.width / 80,
-                          width: e.key == homeController.sliderIndex.value
-                              ? Get.width / 45
-                              : Get.width / 80,
-                          decoration: BoxDecoration(
-                            color: e.key == homeController.sliderIndex.value
-                                ? ConstHelper.darkBlueColor
-                                : ConstHelper.cementColor,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      )
-                          .toList(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: Get.width / 20,
-                  ),
-                ],
-              ),),
+                );
+              }),
 
-            Expanded(child:  homeController.screens[homeController.selectedIndex.value])
+              /// Main Screen Content
+              Expanded(
+                child: Obx(() =>
+                homeController.screens[homeController.selectedIndex.value]),
+              ),
+            ],
+          ),
 
-          ],),
           bottomNavigationBar: NavigationBar(
             backgroundColor: ConstHelper.whiteColor,
-            destinations: [
+            destinations: const [
               NavigationDestination(
                   icon: Icon(Icons.front_hand_outlined), label: "Live"),
               NavigationDestination(
@@ -761,6 +874,7 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
                 return;
               }
               if(value != 3){
+
                 await ApiHelper.apiHelper
                     .getCategoryIdWiseSubCategoryDataList(
                   categoryId: homeController.selectCategoryData.value.categoryName!,
@@ -800,8 +914,8 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
               homeController.searchClick.value = false;
               homeController.selectedIndex.value = value;
 
-              print("Selected Tab Index: ${homeController.selectedTabIndex.value}");
-              print("Selected Index: ${homeController.selectedIndex.value}");
+              debugPrint("Selected Tab Index: ${homeController.selectedTabIndex.value}");
+              debugPrint("Selected Index: ${homeController.selectedIndex.value}");
             },
             height: Get.width / 6,
           ),
@@ -817,5 +931,6 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
       ),
     );
   }
+
 }
 

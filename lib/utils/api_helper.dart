@@ -9,6 +9,7 @@ import 'package:get/get.dart' as getX;
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:kmr_flutter_application/Models/about_us_model.dart';
 import 'package:kmr_flutter_application/Models/notification_model.dart';
+import 'package:kmr_flutter_application/Utils/const_helper.dart';
 
 import '../Controllers/home_controller.dart';
 import '../Models/category_data_model.dart';
@@ -25,6 +26,7 @@ class ApiHelper {
   ApiHelper._();
 
   static ApiHelper apiHelper = ApiHelper._();
+
   API api = API();
   String authorizationToken =
       'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNmIyNGYwOTc5YTRkYmYxMWJmMmRhNzNhNGYwYjAwNWVjZDQwNzZhMDIzMDNlZjVjYWY1YmIwYzE3NzdiZDQ1OWU1MDQ5MWE0MTkzZWY3YzEiLCJpYXQiOjE3MTU1NzkwNzIuNzQzNjk5MDczNzkxNTAzOTA2MjUsIm5iZiI6MTcxNTU3OTA3Mi43NDM3MDE5MzQ4MTQ0NTMxMjUsImV4cCI6MTc0NzExNTA3Mi43MzA1ODI5NTI0OTkzODk2NDg0Mzc1LCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.PKcii6hvnpbaeY7LMT4upRaQTpdyuq1Z4OetjKPbh9wXct0e8EYN_cekpADpBVC6TZDXgZUDNNGtAwgCoPQNUCRkbJblp2QctbSVh-g6DN-l4JTINPvPAE5LDlQXRxRDwXFwB2QIiWUyMDj69wrPfVaHaE3rUMH3bM6QT6a5WuOta4jd6eOOqUnobTgRrC0Cuqwe1SAymbia5yPQtSudoO1FvK7r2rA_fzjyrEZdNu82LmcaTRjv9NiFroQLS-dhxL0rUOh3jLuRcycNB6nOBx33X-_UGV8R6ShpBsSgNG6itwmesX5rVUWBQzSSHSfUNMZbwf5uQOidpvUUewdSypednscnmPRKs8uCWUWiUabKWHAJ56ndIMSjXqZhOzNJfEcuQhWyKJ_ZEklJGGvVYs49Pq2FJuIHWqAwVL_KhZd2iDWM8qZ0pFyFyLr6QDB37q_h818UJi3v6XsIsr7B5IJpQq1AdQnOZ9Up60I-9o2i-HXJxo8EDVOXmunslS-wnh4UCUm-mjTjAm8y7pMQ2Q99-0Z5vOtrc5-4cJHKUQBHW0s44qPjVPgyPW6cwjBRN1c_7wl1oSUOVR4hNBafnxtWlqNc8UkakGaWJKtE7FAgISRQ-jt8KudKSsd55uR6YPnROV2duuI2glrz_rZQXZoe6agkMwpwUBobV_SnmGE';
@@ -67,27 +69,27 @@ class ApiHelper {
     required String deviceId,
   }) async {
 
-      getAuthorizationToken();
-      var data = FormData.fromMap({
-        'mobile': mobileNo,
-        'password': password,
-        'device_id': deviceId,
-      });
-      debugPrint({
-        'mobile': mobileNo,
-        'password': password,
-        'device_id': deviceId,
-      }.toString());
-      Response response = await api.dio.post(
-        'login',
-        data: data,
-      );
-      if (response.statusCode == 200) {
-        var data = response.data;
-        return data;
-      } else {
-        return {};
-      }
+    getAuthorizationToken();
+    var data = FormData.fromMap({
+      'mobile': mobileNo,
+      'password': password,
+      'device_id': deviceId,
+    });
+    debugPrint({
+      'mobile': mobileNo,
+      'password': password,
+      'device_id': deviceId,
+    }.toString());
+    Response response = await api.dio.post(
+      'login',
+      data: data,
+    );
+    if (response.statusCode == 200) {
+      var data = response.data;
+      return data;
+    } else {
+      return {};
+    }
 
   }  Future signUpUser({
     required String mobileNo,
@@ -144,9 +146,9 @@ class ApiHelper {
       Response response = await api.dio.post(
         'create-feedback',
         data: data,
-          options: Options(
-            headers: headers,
-          ),);
+        options: Options(
+          headers: headers,
+        ),);
       if (response.statusCode == 200) {
         var data = response.data;
         return data;
@@ -163,34 +165,34 @@ class ApiHelper {
     required String? subCategoryValue,
   }) async {
 
-      getAuthorizationToken();
-      var data = FormData.fromMap({
-        'c_value': categoryValue,
-        'c_sub_value': subCategoryValue,
-      });
-      debugPrint({
-        'c_value': categoryValue,
-        'c_sub_value': subCategoryValue,
-      }.toString());
+    getAuthorizationToken();
+    var data = FormData.fromMap({
+      'c_value': categoryValue,
+      'c_sub_value': subCategoryValue,
+    });
+    debugPrint({
+      'c_value': categoryValue,
+      'c_sub_value': subCategoryValue,
+    }.toString());
 
-      var headers = {'Authorization': 'Bearer $authorizationToken'};
+    var headers = {'Authorization': 'Bearer $authorizationToken'};
 
-      // Dio dio = Dio();
+    // Dio dio = Dio();
 
-      Response response = await api.dio.post('fetch-live',
-          data: data,
-          options: Options(
-            headers: headers,
-          ));
+    Response response = await api.dio.post('fetch-live',
+        data: data,
+        options: Options(
+          headers: headers,
+        ));
 
-      if (response.statusCode == 200) {
-        var data = response.data;
-        debugPrint('Success: $data');
-        return LiveDataListModel.fromJson(data)
-                ;
-      } else {
-        return LiveDataListModel();
-      }
+    if (response.statusCode == 200) {
+      var data = response.data;
+      debugPrint('Success: $data');
+      return LiveDataListModel.fromJson(data)
+      ;
+    } else {
+      return LiveDataListModel();
+    }
 
   }
 
@@ -227,6 +229,35 @@ class ApiHelper {
     }
   }
 
+  Future<List<String>> fetchCategorySliderApiUrl() async {
+    try {
+      getAuthorizationToken(); // This should set authorizationToken
+
+      var headers = {'Authorization': 'Bearer $authorizationToken'};
+
+      final response = await api.dio.post(
+        'fetch-slider',
+        options: Options(headers: headers),
+      );
+
+      debugPrint("fetchCategorySliderApiUrl statusCode: ${response.statusCode}");
+      debugPrint("fetchCategorySliderApiUrl response: ${response.data}");
+
+      if (response.statusCode == 200) {
+        final data = response.data["data"];
+        if (data is List) {
+          return data
+              .map<String>((item) => ConstHelper.sliderImagePath + item["slider_images"].toString())
+              .toList();
+        }
+      }
+      return [];
+    } catch (error) {
+      debugPrint("Error fetching slider: $error");
+      return [];
+    }
+  }
+
   Future<VendorRateModel> getAllRatesDataList({
     required String categoryValue,
     required String? subCategoryValue,
@@ -237,10 +268,10 @@ class ApiHelper {
         'c_value': categoryValue,
         'c_sub_value': subCategoryValue,
       });
-   debugPrint({
-     'c_value': categoryValue,
-     'c_sub_value': subCategoryValue,
-   }.toString());
+      debugPrint({
+        'c_value': categoryValue,
+        'c_sub_value': subCategoryValue,
+      }.toString());
       var headers = {'Authorization': 'Bearer $authorizationToken'};
 
       // Dio dio = Dio();
@@ -289,8 +320,8 @@ class ApiHelper {
         return List.from(data == null
             ? []
             : (data['data'] ?? [])
-                .map((e) => VendorSpotRateDataModel.fromJson(e))
-                .toList());
+            .map((e) => VendorSpotRateDataModel.fromJson(e))
+            .toList());
       } else {
         return [];
       }
@@ -318,8 +349,8 @@ class ApiHelper {
         return List.from(data == null
             ? []
             : (data['data'] ?? [])
-                .map((e) => NewsDataModel.fromJson(e))
-                .toList());
+            .map((e) => NewsDataModel.fromJson(e))
+            .toList());
       } else {
         return [];
       }
@@ -347,8 +378,8 @@ class ApiHelper {
         return List.from(data == null
             ? []
             : (data['data'] ?? [])
-                .map((e) => CategoryDataModel.fromJson(e))
-                .toList());
+            .map((e) => CategoryDataModel.fromJson(e))
+            .toList());
       } else {
         return [];
       }
@@ -360,15 +391,15 @@ class ApiHelper {
 
   Future<List<SubCategoryDataModel>> getCategoryIdWiseSubCategoryDataList(
       {required String categoryId,
-      required int index
+        required int index
       }) async {
     try {
       getAuthorizationToken();
-     debugPrint(categoryId);
+      debugPrint(categoryId);
       var headers = {'Authorization': 'Bearer $authorizationToken'};
 
       // Dio dio = Dio();
-     var path = index ==0?'fetch-live-sub-category':index ==1?"fetch-rates-sub-category":"fetch-spot-rates-sub-category";
+      var path = index ==0?'fetch-live-sub-category':index ==1?"fetch-rates-sub-category":"fetch-spot-rates-sub-category";
       Response response = await api.dio.post(/*'fetch-sub-category'*/path,
           data: {'c_value': categoryId},
           options: Options(
@@ -381,8 +412,8 @@ class ApiHelper {
         return List.from(data == null
             ? []
             : (data['data'] ?? [])
-                .map((e) => SubCategoryDataModel.fromJson(e))
-                .toList());
+            .map((e) => SubCategoryDataModel.fromJson(e))
+            .toList());
       } else {
         return [];
       }
@@ -438,8 +469,8 @@ class ApiHelper {
       if (response.statusCode == 200) {
         debugPrint("fetchUserApiUrl response:- ${response.data}");
 
-          userModel = userModelFromJson(jsonEncode(response.data));
-          loading.value = false;
+        userModel = userModelFromJson(jsonEncode(response.data));
+        loading.value = false;
 
       } else {
         loading.value = false;
@@ -447,7 +478,7 @@ class ApiHelper {
     } catch (error) {        loading.value = false;
 
     debugPrint(error.toString());
-      return userModel;
+    return userModel;
     }
     return userModel;
   }
@@ -470,7 +501,7 @@ class ApiHelper {
         debugPrint("fetchAboutUsApiUrl response:- ${response.data}");
 
         aboutUsModel = aboutUsModelFromJson(jsonEncode(response.data));
-          loading.value = false;
+        loading.value = false;
 
       } else {
         loading.value = false;
@@ -478,7 +509,7 @@ class ApiHelper {
     } catch (error) {        loading.value = false;
 
     debugPrint(error.toString());
-      return aboutUsModel;
+    return aboutUsModel;
     }
     return aboutUsModel;
   }
@@ -516,7 +547,7 @@ class ApiHelper {
   // }) async {
   //   try {
   //     getAuthorizationToken();
-  //     var headers = {'Authorization': 'Bearer $authorizationToken'};
+  //
   //     loading.value = true;
   //     Response response = await api.dio.post('fetch-notification',
   //         options: Options(
@@ -568,4 +599,5 @@ class ApiHelper {
       return {};
     }
   }
+
 }

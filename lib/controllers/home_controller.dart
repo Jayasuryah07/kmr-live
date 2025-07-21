@@ -33,6 +33,7 @@ class HomeController extends GetxController {
   RxInt selectedTabIndex = 0.obs;
   RxList<LiveDataModel> allLiveDataList = <LiveDataModel>[].obs;
   GlobalKey<ScaffoldState> drawerKey = GlobalKey<ScaffoldState>();
+  RxList<String> sliderImageUrls = <String>[].obs;
 
   RxList<VendorRateDataModel> allRatesDataList = <VendorRateDataModel>[].obs;
   RxList<SubCatg> allSubCtgList = <SubCatg>[].obs;
@@ -74,6 +75,7 @@ class HomeController extends GetxController {
   RxString firebaseFCMToken = "".obs;
   Rx<UserDataModel> userDataWithToken = UserDataModel().obs;
   Rx<User> userData = User().obs;
+
 
   Future<void> getUserData() async {
     String userStringData =

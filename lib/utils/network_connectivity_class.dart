@@ -17,7 +17,6 @@ import '../Screens/login_screen/login_page.dart';
 import 'api_helper.dart';
 import 'shared_pref_helper.dart';
 
-
 class NoInternetScreen extends StatefulWidget {
   const NoInternetScreen({super.key});
 
