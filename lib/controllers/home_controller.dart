@@ -129,7 +129,6 @@ class HomeController extends GetxController {
       loadData.value = false;
     }
 
-
   }
   // Method to filter products based on search query
   void filterLiveData(String searchQuery) {
