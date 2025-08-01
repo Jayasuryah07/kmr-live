@@ -19,7 +19,6 @@ class _SpotPageState extends State<SpotPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     homeController.getSpotRateData(
         categoryValue: homeController.selectCategoryData.value.categoryName!,
     );

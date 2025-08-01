@@ -53,7 +53,6 @@ class _BottomPageState extends State<BottomPage>with TickerProviderStateMixin {
 
   @override
   void initState() {
-    // TODO: implement initState
     if (homeController.allSubCategoryDataList.isNotEmpty) {
       homeController.tabController = TabController(
         length: homeController.allSubCategoryDataList.length,

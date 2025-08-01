@@ -51,7 +51,6 @@ class _OTPPageState extends State<OTPPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     //listenToIncomingSMS(context);
     super.initState();
   }

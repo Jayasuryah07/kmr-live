@@ -35,8 +35,6 @@ class _SplashCommonPageState extends State<SplashCommonPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     Timer(const Duration(milliseconds: 500,), () async => await checkLogin(),);
     super.initState();
   }

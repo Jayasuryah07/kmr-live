@@ -19,7 +19,6 @@ class _RatesPageState extends State<RatesPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     if( homeController.allSubCategoryDataList.isNotEmpty) {
       String val;
       if(homeController.allSubCategoryDataList[homeController.selectedTabIndex.value].vendorProductCategorySub! == "All"){

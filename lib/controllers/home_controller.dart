@@ -76,7 +76,6 @@ class HomeController extends GetxController {
   Rx<UserDataModel> userDataWithToken = UserDataModel().obs;
   Rx<User> userData = User().obs;
 
-
   Future<void> getUserData() async {
     String userStringData =
         SharedPrefHelper.sharedPreferences.getString('userData') ?? '';
