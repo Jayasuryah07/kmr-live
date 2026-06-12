@@ -210,7 +210,10 @@ class _SignupPageState extends State<SignupPage> {
                         email:emailCon.value.text,
                         city: remarkCon.value.text,
                       );
-
+                      print("=================================");
+                      print("Signup Response => $response");
+                      print("Response Type => ${response.runtimeType}");
+                      print("=================================");
                       if (response.isNotEmpty &&response['code'] == 200) {
                         EasyLoading.dismiss();
                         Get.snackbar(
@@ -233,16 +236,18 @@ class _SignupPageState extends State<SignupPage> {
                           backgroundColor: ConstHelper.darkBlueColor,
                         );
                       }
-                      } catch (error) {
-                        EasyLoading.dismiss();
-                        Get.snackbar(
-                          'Error!',
-                          ConstHelper.somethingErrorMsg,
-                          snackPosition: SnackPosition.BOTTOM,
-                          colorText: ConstHelper.whiteColor,
-                          backgroundColor: ConstHelper.darkBlueColor,
-                        );
-                      }
+                      } catch (error, stackTrace) {
+                              EasyLoading.dismiss();
+
+                              print("SIGNUP ERROR => $error");
+                              print("STACK => $stackTrace");
+
+                              Get.snackbar(
+                                'Error!',
+                                error.toString(),
+                                snackPosition: SnackPosition.BOTTOM,
+                              );
+                            }
                     },
                     child: Container(
                       width: Get.width,

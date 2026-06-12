@@ -43,8 +43,10 @@ class ApiHelper {
   }) async {
     try {
       getAuthorizationToken();
+      final trimmedMobile = mobileNo.trim();
+      debugPrint("checkMobileNumber sending mobile: '$trimmedMobile'");
       var data = FormData.fromMap({
-        'mobile': mobileNo,
+        'mobile': trimmedMobile,
       });
       Response response = await api.dio.post(
         'check-mobile',
@@ -71,14 +73,14 @@ class ApiHelper {
 
     getAuthorizationToken();
     var data = FormData.fromMap({
-      'mobile': mobileNo,
-      'password': password,
-      'device_id': deviceId,
+      'mobile': mobileNo.trim(),
+      'password': password.trim(),
+      'device_id': deviceId.trim(),
     });
     debugPrint({
-      'mobile': mobileNo,
-      'password': password,
-      'device_id': deviceId,
+      'mobile': mobileNo.trim(),
+      'password': password.trim(),
+      'device_id': deviceId.trim(),
     }.toString());
     Response response = await api.dio.post(
       'login',
@@ -92,41 +94,38 @@ class ApiHelper {
     }
 
   }  Future signUpUser({
-    required String mobileNo,
-    required String name,
-    required String email,
-    required String city,
-  }) async {
-    try {
-      getAuthorizationToken();
-      var data = FormData.fromMap({
-        'name': name ,
-        'mobile': mobileNo,
-        'email': email,
-        'city': city,
-      });
-      debugPrint({
-        'name': name ,
-        'mobile': mobileNo,
-        'email': email,
-        'city': city,
-      }.toString());
-      Response response = await api.dio.post(
-        'panel-create-vendor-user-signup',
-        data: data,
-      );
-      var body = response.data;
-      debugPrint(body);
-      if (response.statusCode == 200) {
-        return body;
-      } else {
-        return body;
-      }
-    } catch (error) {
-      return {};
-    }
-  }
+  required String mobileNo,
+  required String name,
+  required String email,
+  required String city,
+}) async {
+  try {
+    getAuthorizationToken();
 
+    var data = FormData.fromMap({
+      'name': name.trim(),
+      'mobile': mobileNo.trim(),
+      'email': email.trim(),
+      'city': city.trim(),
+    });
+
+    print("REQUEST => ${data.fields}");
+
+    Response response = await api.dio.post(
+      'panel-create-vendor-user-signup',
+      data: data,
+    );
+
+    print("STATUS => ${response.statusCode}");
+    print("RAW RESPONSE => ${response.data}");
+
+    return response.data;
+  } catch (error, stackTrace) {
+    print("SIGNUP API ERROR => $error");
+    print("STACKTRACE => $stackTrace");
+    rethrow;
+  }
+}
   Future<Map> postFeedBackApi({
     required String sub,
     required String des,

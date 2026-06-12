@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "161668906055-r3vgrtbuuegja3atuvoi2gkdf35qqm7q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kmr.agsolutions",
+            "certificate_hash": "61e19ed390293659f8d91561b50eb448293212dc"
+          }
+        },
+        {
           "client_id": "161668906055-sa4p2h3jl2sv3ug1c20di5cdm6mrooqc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -168,7 +168,7 @@ class _SplashPageState extends State<SplashPage> {
         backgroundColor: ConstHelper.whiteColor,
         body: Center(
           child: Image.asset(
-            "assets/image/kmr_logo.jpg",
+            "assets/image/spa.png",
             width: Get.width/2,
           ),
         ),
